@@ -16,16 +16,43 @@ An AI-powered application that analyzes car damage images and provides:
 
 - Python 3.9+
 - Groq API key
+- Git
 
 ## Installation with Virtual Environment (Recommended)
 
-1. Clone the repository
+### Option 1: Clone the repository (if you don't have the code yet)
+
 ```bash
 git clone https://github.com/yourusername/car_insurance_claims_ai_agent.git
 cd car_insurance_claims_ai_agent
 ```
 
-2. Create a virtual environment
+### Option 2: If you already have the code and want to connect to a remote
+
+If you already have the code locally but need to connect it to a remote repository:
+
+```bash
+# Navigate to your project directory
+cd car_insurance_claims_ai_agent
+
+# Initialize git if not already done
+git init
+
+# Add the remote repository
+git remote add origin https://github.com/yourusername/car_insurance_claims_ai_agent.git
+
+# If the remote has files that aren't in your local repository (like README or LICENSE)
+# fetch and merge them with your local files
+git fetch
+git merge origin/main --allow-unrelated-histories
+
+# Push your local changes to the remote
+git push -u origin main
+```
+
+### Setting up the environment
+
+1. Create a virtual environment
 ```bash
 # On macOS/Linux
 python3 -m venv .venv
@@ -34,7 +61,7 @@ python3 -m venv .venv
 py -m venv .venv
 ```
 
-3. Activate the virtual environment
+2. Activate the virtual environment
 ```bash
 # On macOS/Linux
 source .venv/bin/activate
@@ -43,12 +70,12 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-4. Install dependencies
+3. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-5. Create a `.env` file with your Groq API key (or copy from `.env.example`)
+4. Create a `.env` file with your Groq API key (or copy from `.env.example`)
 ```bash
 # Groq API Key
 GROQ_API_KEY=your_groq_api_key_here
@@ -160,6 +187,45 @@ curl -X POST -F "image=@path/to/car_image.jpg" http://localhost:8000/api/assess-
 }
 ```
 
+## Development Workflow
+
+### Pushing Changes to Remote Repository
+
+After making changes to your code:
+
+```bash
+# Add your changes
+git add .
+
+# Commit your changes with a descriptive message
+git commit -m "Description of the changes"
+
+# Pull any changes from the remote repository
+git pull origin main
+
+# Push your changes to the remote repository
+git push origin main
+```
+
+### Working with Branches
+
+```bash
+# Create a new branch for a feature
+git checkout -b feature-name
+
+# Make your changes and commit them
+git add .
+git commit -m "Implement feature-name"
+
+# Push the branch to the remote repository
+git push -u origin feature-name
+
+# When ready to merge, switch to main and merge
+git checkout main
+git merge feature-name
+git push origin main
+```
+
 ## Troubleshooting
 
 If you encounter issues:
@@ -169,16 +235,22 @@ If you encounter issues:
 3. For verbose logging, use the `-v` flag with the CLI tool
 4. Make sure the image file exists and is accessible
 
-## Development
+### Git-related Issues
 
-### Running Tests
+If you encounter issues with git:
+
+1. Check your remote URL: `git remote -v`
+2. Ensure you have the latest changes: `git fetch origin`
+3. If you have conflicts during merge: `git status` to view conflicting files, then resolve them and commit
+
+## Testing
 
 ```bash
 # Activate virtual environment first
 pytest tests/
 ```
 
-### Docker Support
+## Docker Support
 
 Build and run using Docker:
 
