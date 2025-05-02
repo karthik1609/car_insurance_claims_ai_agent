@@ -1,0 +1,1 @@
+"""Core package for Car Insurance Claims AI Agent""" 

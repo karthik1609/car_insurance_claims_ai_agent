@@ -1,0 +1,1 @@
+"""Schema models for Car Insurance Claims AI Agent""" 
