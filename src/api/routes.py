@@ -11,12 +11,20 @@ from src.core.config import settings
 from src.schemas.damage_assessment_enhanced import EnhancedDamageAssessmentResponse, DamageAssessmentItem
 from src.utils.image_utils import validate_image, resize_image_if_needed
 from src.utils.fraud_detection import detect_potential_fraud
+from src.routes.whatsapp_webhook import router as whatsapp_router
+from src.routes.telegram_bot import router as telegram_router
 
 # Configure logging
 logger = logging.getLogger(__name__)
 
 # Create router
 router = APIRouter(tags=["Damage Assessment"])
+
+# Include the WhatsApp webhook router
+router.include_router(whatsapp_router, prefix="/whatsapp", tags=["WhatsApp"])
+
+# Include the Telegram webhook router
+router.include_router(telegram_router, prefix="/telegram", tags=["Telegram"])
 
 def get_vision_service():
     """Get the Groq vision service"""

@@ -441,4 +441,25 @@ class GroqService:
         except Exception as e:
             logger.error(f"Groq API error: {str(e)}")
             logger.error(traceback.format_exc())
-            raise Exception(f"Error communicating with Groq: {str(e)}") 
+            raise Exception(f"Error communicating with Groq: {str(e)}")
+    
+    def analyze_car_damage_sync(self, image_bytes: bytes) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+        """
+        Synchronous version of analyze_car_damage for use in non-async contexts (like WhatsApp webhook)
+        
+        Args:
+            image_bytes: The raw bytes of the uploaded image
+            
+        Returns:
+            Union[Dict[str, Any], List[Dict[str, Any]]]: Single damage assessment or list of assessments if multiple cars detected
+        """
+        import asyncio
+        
+        # Create a new event loop to run the async function
+        loop = asyncio.new_event_loop()
+        try:
+            asyncio.set_event_loop(loop)
+            result = loop.run_until_complete(self.analyze_car_damage(image_bytes))
+            return result
+        finally:
+            loop.close() 

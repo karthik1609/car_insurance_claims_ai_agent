@@ -11,6 +11,7 @@ An AI-powered service for analyzing car damage from images using computer vision
 - Fraud detection logic
 - Postman collection for easy API testing
 - Azure Container Apps deployment support
+- WhatsApp integration for damage assessment via messaging
 
 ## Requirements
 
@@ -112,6 +113,17 @@ curl -X POST -F "image=@path/to/your/image.jpg" http://localhost:8000/assess-dam
 
 - `POST /assess-damage`: Upload an image to get damage assessment
 - `GET /health`: Check if the service is operational
+- `POST /whatsapp/webhook`: WhatsApp integration webhook
+- `GET /whatsapp/webhook`: WhatsApp webhook verification endpoint
+
+## WhatsApp Integration
+
+The service includes integration with WhatsApp, allowing users to:
+- Send a message to receive instructions
+- Submit car damage photos directly through WhatsApp
+- Receive detailed damage assessments and cost estimates
+
+For setup instructions, see our [WhatsApp Integration Guide](WHATSAPP_INTEGRATION.md).
 
 ## Docker Support
 
