@@ -1,0 +1,325 @@
+2025-05-02 13:50:28 - __main__ - INFO - Starting server at 0.0.0.0:8000
+2025-05-02 13:50:28 - uvicorn.error - INFO - Started server process [23428]
+2025-05-02 13:50:28 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 13:50:28 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 13:50:37 - uvicorn.access - INFO - 127.0.0.1:64884 - "GET /docs HTTP/1.1" 200
+2025-05-02 13:50:38 - uvicorn.access - INFO - 127.0.0.1:64884 - "GET /openapi.json HTTP/1.1" 200
+2025-05-02 13:51:09 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 13:51:09 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 13:51:09 - src.api.routes - INFO - Processing uploaded image: ruined-car-russian-s-war-ukraine.jpg
+2025-05-02 13:51:09 - src.api.routes - INFO - Validating image
+2025-05-02 13:51:09 - src.api.routes - INFO - Running fraud detection
+2025-05-02 13:51:09 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh)
+2025-05-02 13:51:09 - src.api.routes - WARNING - HTTP Exception: Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh). If this is a mistake, try again with a different image or contact support.
+2025-05-02 13:51:09 - uvicorn.access - INFO - 127.0.0.1:64906 - "POST /assess-damage?skip_fraud_check=false HTTP/1.1" 400
+2025-05-02 13:51:41 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 13:51:41 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 13:51:41 - src.api.routes - INFO - Processing uploaded image: exploded-car-russian-s-war-ukraine.jpg
+2025-05-02 13:51:41 - src.api.routes - INFO - Validating image
+2025-05-02 13:51:41 - src.api.routes - INFO - Fraud detection skipped
+2025-05-02 13:51:41 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 13:51:42 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 13:51:42 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 13:51:42 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 13:51:46 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 13:51:46 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 13:51:46 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 13:51:46 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 13:51:46 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 13:51:46 - uvicorn.access - INFO - 127.0.0.1:64920 - "POST /assess-damage?skip_fraud_check=true HTTP/1.1" 500
+2025-05-02 13:51:46 - uvicorn.error - ERROR - Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/fastapi/routing.py", line 327, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/fastapi/routing.py", line 176, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 1 validation errors:
+  {'type': 'list_type', 'loc': ('response',), 'msg': 'Input should be a valid list', 'input': {'vehicle_info': {'make': 'Unknown', 'model': 'Unknown', 'year': 'Unknown', 'color': 'Unknown', 'type': 'Pickup Truck', 'trim': 'Unknown', 'make_certainty': 0, 'model_certainty': 0}, 'damage_data': {'damaged_parts': [{'part': 'Body', 'damage_type': 'Fire Damage', 'severity': 'Severe', 'repair_action': 'Replace'}, {'part': 'Engine', 'damage_type': 'Fire Damage', 'severity': 'Severe', 'repair_action': 'Replace'}, {'part': 'Cab Structure', 'damage_type': 'Fire Damage', 'severity': 'Severe', 'repair_action': 'Replace'}, {'part': 'Wheels and Tires', 'damage_type': 'Fire Damage', 'severity': 'Severe', 'repair_action': 'Replace'}, {'part': 'Electrical System', 'damage_type': 'Fire Damage', 'severity': 'Severe', 'repair_action': 'Replace'}], 'cost_breakdown': {'parts': [{'name': 'New Body Shell', 'cost': 8000}, {'name': 'Engine Replacement', 'cost': 5000}, {'name': 'Cab Structure Replacement', 'cost': 3000}, {'name': 'Wheels and Tires', 'cost': 2000}, {'name': 'Electrical System Components', 'cost': 1500}], 'labor': [{'service': 'Disassembly and Inspection', 'hours': 10, 'rate': 100, 'cost': 1000}, {'service': 'Body Replacement and Alignment', 'hours': 20, 'rate': 120, 'cost': 2400}, {'service': 'Engine Installation', 'hours': 15, 'rate': 120, 'cost': 1800}, {'service': 'Electrical System Rebuild', 'hours': 12, 'rate': 100, 'cost': 1200}], 'additional_fees': [{'description': 'Towing and Storage', 'cost': 500}, {'description': 'Disposal Fees', 'cost': 300}], 'total_estimate': {'min': 18000, 'max': 29370.000000000004, 'expected': 26700, 'currency': 'EUR'}}}}}
+
+2025-05-02 13:56:07 - uvicorn.error - INFO - Shutting down
+2025-05-02 13:56:07 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 13:56:07 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 13:56:07 - uvicorn.error - INFO - Finished server process [23428]
+2025-05-02 13:56:07 - uvicorn.error - INFO - Started server process [24217]
+2025-05-02 13:56:07 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 13:56:07 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 13:57:03 - uvicorn.error - INFO - Shutting down
+2025-05-02 13:57:03 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 13:57:03 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 13:57:03 - uvicorn.error - INFO - Finished server process [24217]
+2025-05-02 13:57:03 - uvicorn.error - INFO - Started server process [24343]
+2025-05-02 13:57:03 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 13:57:03 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 13:57:32 - uvicorn.error - INFO - Shutting down
+2025-05-02 13:57:32 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 13:57:32 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 13:57:32 - uvicorn.error - INFO - Finished server process [24343]
+2025-05-02 13:57:32 - uvicorn.error - INFO - Started server process [24423]
+2025-05-02 13:57:32 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 13:57:32 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 13:57:41 - uvicorn.error - INFO - Shutting down
+2025-05-02 13:57:41 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 13:57:41 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 13:57:41 - uvicorn.error - INFO - Finished server process [24423]
+2025-05-02 13:57:44 - uvicorn.error - INFO - Started server process [24453]
+2025-05-02 13:57:44 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 13:57:44 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 13:57:56 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 13:57:56 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 13:57:56 - src.api.routes - INFO - Processing uploaded image: exploded-car-russian-s-war-ukraine.jpg
+2025-05-02 13:57:56 - src.api.routes - INFO - Validating image
+2025-05-02 13:57:56 - src.api.routes - INFO - Fraud detection skipped
+2025-05-02 13:57:56 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 13:57:57 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 13:57:57 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 13:57:57 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 13:58:01 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 13:58:01 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 13:58:01 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 13:58:01 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 13:58:01 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 13:58:01 - uvicorn.access - INFO - 127.0.0.1:65181 - "POST /assess-damage?skip_fraud_check=true HTTP/1.1" 200
+2025-05-02 14:00:52 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:00:52 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:00:52 - src.api.routes - INFO - Processing uploaded image: exploded-car-russian-s-war-ukraine.jpg
+2025-05-02 14:00:52 - src.api.routes - INFO - Validating image
+2025-05-02 14:00:52 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:00:52 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh)
+2025-05-02 14:00:52 - src.api.routes - WARNING - HTTP Exception: Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh). If this is a mistake, try again with a different image or contact support.
+2025-05-02 14:00:52 - uvicorn.access - INFO - 127.0.0.1:65258 - "POST /assess-damage?skip_fraud_check=false HTTP/1.1" 400
+2025-05-02 14:03:10 - uvicorn.error - INFO - Shutting down
+2025-05-02 14:03:10 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 14:03:10 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 14:03:10 - uvicorn.error - INFO - Finished server process [24453]
+2025-05-02 14:03:11 - uvicorn.error - INFO - Started server process [25163]
+2025-05-02 14:03:11 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 14:03:11 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 14:04:30 - uvicorn.error - INFO - Shutting down
+2025-05-02 14:04:30 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 14:04:30 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 14:04:30 - uvicorn.error - INFO - Finished server process [25163]
+2025-05-02 14:04:30 - uvicorn.error - INFO - Started server process [25348]
+2025-05-02 14:04:30 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 14:04:30 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 14:04:34 - uvicorn.error - INFO - Shutting down
+2025-05-02 14:04:34 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 14:04:34 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 14:04:34 - uvicorn.error - INFO - Finished server process [25348]
+2025-05-02 14:04:35 - uvicorn.error - INFO - Started server process [25369]
+2025-05-02 14:04:35 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 14:04:35 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 14:04:38 - uvicorn.error - INFO - Shutting down
+2025-05-02 14:04:38 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 14:04:38 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 14:04:38 - uvicorn.error - INFO - Finished server process [25369]
+2025-05-02 14:04:39 - uvicorn.error - INFO - Started server process [25391]
+2025-05-02 14:04:39 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 14:04:39 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 14:05:00 - uvicorn.error - INFO - Shutting down
+2025-05-02 14:05:00 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 14:05:00 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 14:05:00 - uvicorn.error - INFO - Finished server process [25391]
+2025-05-02 14:05:00 - uvicorn.error - INFO - Started server process [25454]
+2025-05-02 14:05:00 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 14:05:00 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 14:05:11 - uvicorn.error - INFO - Shutting down
+2025-05-02 14:05:11 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-02 14:05:11 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-02 14:05:11 - uvicorn.error - INFO - Finished server process [25454]
+2025-05-02 14:05:11 - uvicorn.error - INFO - Started server process [25486]
+2025-05-02 14:05:11 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-02 14:05:11 - uvicorn.error - INFO - Application startup complete.
+2025-05-02 14:06:08 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:06:08 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:06:08 - src.api.routes - INFO - Processing uploaded image: exploded-car-russian-s-war-ukraine.jpg
+2025-05-02 14:06:08 - src.api.routes - INFO - Validating image
+2025-05-02 14:06:09 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:06:09 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh)
+2025-05-02 14:06:09 - src.api.routes - INFO - Returning fraud warning without assessment
+2025-05-02 14:06:09 - uvicorn.access - INFO - 127.0.0.1:50041 - "POST /assess-damage?skip_fraud_check=false HTTP/1.1" 202
+2025-05-02 14:06:18 - uvicorn.access - INFO - 127.0.0.1:50051 - "GET /docs HTTP/1.1" 200
+2025-05-02 14:06:18 - uvicorn.access - INFO - 127.0.0.1:50051 - "GET /openapi.json HTTP/1.1" 200
+2025-05-02 14:06:47 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:06:47 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:06:47 - src.api.routes - INFO - Processing uploaded image: exploded-car-russian-s-war-ukraine.jpg
+2025-05-02 14:06:47 - src.api.routes - INFO - Validating image
+2025-05-02 14:06:47 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:06:47 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh)
+2025-05-02 14:06:47 - src.api.routes - INFO - Returning fraud warning without assessment
+2025-05-02 14:06:47 - uvicorn.access - INFO - 127.0.0.1:50075 - "POST /assess-damage?skip_fraud_check=false&process_anyway=false HTTP/1.1" 202
+2025-05-02 14:07:01 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:07:01 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:07:01 - src.api.routes - INFO - Processing uploaded image: exploded-car-russian-s-war-ukraine.jpg
+2025-05-02 14:07:01 - src.api.routes - INFO - Validating image
+2025-05-02 14:07:01 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:07:01 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh)
+2025-05-02 14:07:01 - src.api.routes - INFO - Processing despite fraud detection (process_anyway=true)
+2025-05-02 14:07:01 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 14:07:01 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 14:07:01 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 14:07:01 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 14:07:06 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 14:07:06 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 14:07:06 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 14:07:06 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 14:07:06 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 14:07:06 - uvicorn.access - INFO - 127.0.0.1:50078 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
+2025-05-02 14:07:43 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:07:43 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:07:43 - src.api.routes - INFO - Processing uploaded image: road-accident-with-smashed-cars.jpg
+2025-05-02 14:07:43 - src.api.routes - INFO - Validating image
+2025-05-02 14:07:43 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:07:43 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop CS6 (Windows)
+2025-05-02 14:07:43 - src.api.routes - INFO - Processing despite fraud detection (process_anyway=true)
+2025-05-02 14:07:43 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 14:07:43 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 14:07:43 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 14:07:43 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 14:07:48 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 14:07:48 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 14:07:48 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 14:07:48 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 14:07:48 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 14:07:48 - uvicorn.access - INFO - 127.0.0.1:50089 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
+2025-05-02 14:08:34 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:08:34 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:08:34 - src.api.routes - INFO - Processing uploaded image: front-view-car-got-into-skid-crashed-into-tree-snowy-road.jpg
+2025-05-02 14:08:34 - src.api.routes - INFO - Validating image
+2025-05-02 14:08:34 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:08:34 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop CC 2018 (Windows)
+2025-05-02 14:08:34 - src.api.routes - INFO - Processing despite fraud detection (process_anyway=true)
+2025-05-02 14:08:34 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 14:08:35 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 14:08:35 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 14:08:35 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 14:08:39 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 14:08:39 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 14:08:39 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 14:08:39 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 14:08:39 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 14:08:39 - uvicorn.access - INFO - 127.0.0.1:50109 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
+2025-05-02 14:09:21 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:09:21 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:09:21 - src.api.routes - INFO - Processing uploaded image: luxury-car.jpg
+2025-05-02 14:09:21 - src.api.routes - INFO - Validating image
+2025-05-02 14:09:21 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:09:21 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 14:09:21 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 14:09:21 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 14:09:21 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 14:09:24 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 14:09:24 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 14:09:24 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 14:09:24 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 14:09:24 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 14:09:24 - uvicorn.access - INFO - 127.0.0.1:50135 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 200
+2025-05-02 14:09:56 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:09:56 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:09:56 - src.api.routes - INFO - Processing uploaded image: studio-recreation-park-hogwarts-japan.jpg
+2025-05-02 14:09:56 - src.api.routes - INFO - Validating image
+2025-05-02 14:09:56 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:09:56 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop Lightroom 6.3 (Macintosh)
+2025-05-02 14:09:56 - src.api.routes - INFO - Processing despite fraud detection (process_anyway=true)
+2025-05-02 14:09:56 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 14:09:56 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 14:09:56 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 14:09:56 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 14:10:00 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 14:10:00 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 14:10:00 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 14:10:00 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 14:10:00 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 14:10:00 - uvicorn.access - INFO - 127.0.0.1:50156 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
+2025-05-02 14:10:27 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:10:27 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:10:27 - src.api.routes - INFO - Processing uploaded image: ruined-car-russian-s-war-ukraine.jpg
+2025-05-02 14:10:27 - src.api.routes - INFO - Validating image
+2025-05-02 14:10:27 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:10:27 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh)
+2025-05-02 14:10:27 - src.api.routes - INFO - Processing despite fraud detection (process_anyway=true)
+2025-05-02 14:10:27 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 14:10:28 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 14:10:28 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 14:10:28 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 14:10:33 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 14:10:33 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 14:10:33 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 14:10:33 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 14:10:33 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 14:10:33 - uvicorn.access - INFO - 127.0.0.1:50200 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
+2025-05-02 14:10:41 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:10:41 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:10:41 - src.api.routes - INFO - Processing uploaded image: woman-crashed-into-car-girl-helmet-people-quarrel-accident.jpg
+2025-05-02 14:10:41 - src.api.routes - INFO - Validating image
+2025-05-02 14:10:41 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:10:41 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop Lightroom Classic 10.0 (Macintosh)
+2025-05-02 14:10:41 - src.api.routes - INFO - Processing despite fraud detection (process_anyway=true)
+2025-05-02 14:10:41 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 14:10:41 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 14:10:41 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 14:10:41 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 14:10:46 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 14:10:46 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 14:10:46 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 14:10:46 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 14:10:46 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 14:10:46 - uvicorn.access - INFO - 127.0.0.1:50206 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
+2025-05-02 14:11:10 - src.services.groq_service - INFO - Initializing Groq service with API key
+2025-05-02 14:11:10 - src.services.groq_service - INFO - Using model: meta-llama/llama-4-maverick-17b-128e-instruct
+2025-05-02 14:11:10 - src.api.routes - INFO - Processing uploaded image: man-photographing-his-vehicle-with-damages-accident-insurance-with-smart-phone.jpg
+2025-05-02 14:11:10 - src.api.routes - INFO - Validating image
+2025-05-02 14:11:10 - src.api.routes - INFO - Running fraud detection
+2025-05-02 14:11:10 - src.api.routes - WARNING - Potential fraud detected: Image appears to be edited with Adobe Photoshop CC 2017 (Macintosh)
+2025-05-02 14:11:10 - src.api.routes - INFO - Processing despite fraud detection (process_anyway=true)
+2025-05-02 14:11:10 - src.api.routes - INFO - Resizing image if needed
+2025-05-02 14:11:10 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-02 14:11:10 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-02 14:11:10 - src.services.groq_service - INFO - Calling Groq API
+2025-05-02 14:11:15 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-02 14:11:15 - src.services.groq_service - INFO - Received response from Groq API
+2025-05-02 14:11:15 - src.services.groq_service - INFO - Successfully parsed JSON response
+2025-05-02 14:11:15 - src.services.groq_service - INFO - Validated total costs
+2025-05-02 14:11:15 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-02 14:11:15 - uvicorn.access - INFO - 127.0.0.1:50215 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
+2025-05-02 14:59:09 - uvicorn.error - INFO - Shutting down
+2025-05-02 14:59:10 - uvicorn.error - INFO - Finished server process [25486]

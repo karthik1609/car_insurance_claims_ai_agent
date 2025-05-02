@@ -1,0 +1,58 @@
+apiVersion: 2023-05-01
+type: Microsoft.App/containerApps
+name: insurance-claims-api
+location: centralindia
+properties:
+  environmentId: /subscriptions/47f08ab0-54e4-45d4-97a8-be6377ce4faf/resourceGroups/MCP_resource/providers/Microsoft.App/managedEnvironments/mcp-server-env
+  configuration:
+    activeRevisionsMode: Single
+    ingress:
+      external: true
+      targetPort: 8000
+      transport: auto
+      allowInsecure: false
+      traffic:
+        - latestRevision: true
+          weight: 100
+    registries:
+      - server: insuuranceclaimspoc.azurecr.io
+        username: insuuranceclaimspoc
+        passwordSecretRef: acr-password
+    secrets:
+      - name: acr-password
+        value: PLACEHOLDER_FOR_PASSWORD
+      - name: groq-api-key
+        value: ${GROQ_API_KEY}
+  template:
+    containers:
+      - image: insuuranceclaimspoc.azurecr.io/car-insurance-claims-ai-agent:v1.0.0
+        name: car-insurance-claims-ai-agent
+        env:
+          - name: REQUESTS_CA_BUNDLE
+            value: /etc/ssl/certs/ca-certificates.crt
+          - name: SSL_CERT_FILE
+            value: /etc/ssl/certs/ca-certificates.crt
+          - name: GROQ_API_KEY
+            secretRef: groq-api-key
+        resources:
+          cpu: 0.5
+          memory: 1Gi
+        probes:
+          - type: Liveness
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          - type: Readiness
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1 

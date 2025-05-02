@@ -1,263 +1,224 @@
 # Car Insurance Claims AI Agent
 
-An AI-powered application that analyzes car damage images and provides:
-- Vehicle make and model identification (with confidence levels)
-- Detailed damage assessment for affected parts
-- Comprehensive repair cost estimation in EUR
+An AI-powered service for analyzing car damage from images using computer vision and large language models.
 
 ## Features
 
-- CLI tool and API for car damage assessment
-- Integration with Groq AI (Llama 4 Maverick model) for precise damage analysis
-- Structured JSON output with detailed damage inventory and cost breakdown
-- Both command-line interface and RESTful API with FastAPI
+- Image-based damage analysis using Groq API (Llama 4 Maverick model)
+- Detailed damage assessment with repair cost estimates
+- Simple command-line interface
+- RESTful API with FastAPI
+- Fraud detection logic
+- Postman collection for easy API testing
+- Azure Container Apps deployment support
 
-## Prerequisites
+## Requirements
 
-- Python 3.9+
+- Python 3.8+
 - Groq API key
-- Git
+- Docker (for containerized deployment)
+- Azure CLI (for Azure deployment)
 
-## Installation with Virtual Environment (Recommended)
+## Setup with Virtual Environment
 
-### Option 1: Clone the repository (if you don't have the code yet)
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/car_insurance_claims_ai_agent.git
+   cd car_insurance_claims_ai_agent
+   ```
 
-```bash
-git clone https://github.com/yourusername/car_insurance_claims_ai_agent.git
-cd car_insurance_claims_ai_agent
-```
+2. Create and activate a virtual environment:
+   ```
+   # On macOS/Linux
+   python -m venv venv
+   source venv/bin/activate
 
-### Option 2: If you already have the code and want to connect to a remote
+   # On Windows
+   python -m venv venv
+   venv\Scripts\activate
+   ```
 
-If you already have the code locally but need to connect it to a remote repository:
+3. Install the dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
 
-```bash
-# Navigate to your project directory
-cd car_insurance_claims_ai_agent
-
-# Initialize git if not already done
-git init
-
-# Add the remote repository
-git remote add origin https://github.com/yourusername/car_insurance_claims_ai_agent.git
-
-# If the remote has files that aren't in your local repository (like README or LICENSE)
-# fetch and merge them with your local files
-git fetch
-git merge origin/main --allow-unrelated-histories
-
-# Push your local changes to the remote
-git push -u origin main
-```
-
-### Setting up the environment
-
-1. Create a virtual environment
-```bash
-# On macOS/Linux
-python3 -m venv .venv
-
-# On Windows
-py -m venv .venv
-```
-
-2. Activate the virtual environment
-```bash
-# On macOS/Linux
-source .venv/bin/activate
-
-# On Windows
-.venv\Scripts\activate
-```
-
-3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-4. Create a `.env` file with your Groq API key (or copy from `.env.example`)
-```bash
-# Groq API Key
-GROQ_API_KEY=your_groq_api_key_here
-
-# API Configuration
-API_HOST=0.0.0.0
-API_PORT=8000
-DEBUG_MODE=true
-
-# Model Configuration
-GROQ_MODEL=meta-llama/llama-4-maverick-17b-128e-instruct
-```
+4. Set up environment variables:
+   ```
+   cp .env.example .env
+   ```
+   Edit the `.env` file and add your Groq API key:
+   ```
+   GROQ_API_KEY=your_groq_api_key
+   ```
 
 ## Usage
 
 ### Command Line Interface
 
-Analyze a car damage image using the CLI:
+To analyze a car image using the CLI:
 
-```bash
-# Basic usage
-python cli.py path/to/car_image.jpg
-
-# With verbose output
-python cli.py path/to/car_image.jpg -v
+```
+python cli.py path/to/your/image.jpg
 ```
 
-Example output:
+For verbose output:
+
 ```
-Car Damage Assessment Report
----------------------------
-Vehicle: McLaren 720S (2017, Silver)
-Make Certainty: 98.5%
-Model Certainty: 92.1%
-
-Damage Assessment:
-1. Driver's Side Door - Moderate tear/rip 
-   * Action: Repair and repaint
-
-2. Driver's Side Mirror - Severe breakage
-   * Action: Replace
-
-Cost Breakdown:
-- Parts: €1000
-- Labor: €775
-- Additional Fees: €125
-
-Total Estimate: €1900 (Range: €1400 - €2090)
+python cli.py path/to/your/image.jpg -v
 ```
 
-### RESTful API
+### API Server
 
-Start the API server:
-```bash
+To start the API server:
+
+```
 python run.py
 ```
 
-The API will be available at `http://localhost:8000`. You can customize the host and port in the `.env` file.
+The API will be available at http://localhost:8000.
 
-#### Endpoint: POST /api/assess-damage
+### Using the API
 
-Submit an image for damage assessment:
+#### With Postman
 
-```bash
-curl -X POST -F "image=@path/to/car_image.jpg" http://localhost:8000/api/assess-damage
+We provide a Postman collection to help you test the API:
+
+1. Import the collection from the `postman` directory
+2. Import the environment files for local or production use
+3. Use the Assess Damage endpoint to upload images and get assessments
+
+For detailed instructions, see the [Postman README](postman/README.md).
+
+#### With cURL
+
+```
+curl -X POST -F "image=@path/to/your/image.jpg" http://localhost:8000/assess-damage
 ```
 
-#### Sample Response
+To skip fraud detection:
 
-```json
-{
-  "vehicle_info": {
-    "make": "McLaren",
-    "model": "720S",
-    "year": 2017,
-    "color": "Silver",
-    "type": "Sports Coupe",
-    "trim": "Base",
-    "make_certainty": 0.985,
-    "model_certainty": 0.921
-  },
-  "damage_data": {
-    "damaged_parts": [
-      {
-        "part_name": "Driver's Side Door",
-        "damage_type": "Tear/Rip",
-        "severity": "Moderate",
-        "repair_action": "Repair and repaint"
-      },
-      {
-        "part_name": "Driver's Side Mirror",
-        "damage_type": "Breakage",
-        "severity": "Severe",
-        "repair_action": "Replace"
-      }
-    ],
-    "cost_breakdown": {
-      "parts_cost": 1000,
-      "labor_cost": 775,
-      "additional_fees": 125
-    },
-    "total_estimate": 1900,
-    "estimate_range": {
-      "min": 1400,
-      "max": 2090
-    },
-    "currency": "EUR"
-  }
-}
+```
+curl -X POST -F "image=@path/to/your/image.jpg" http://localhost:8000/assess-damage?skip_fraud_check=true
 ```
 
-## Development Workflow
+To process despite potential fraud:
 
-### Pushing Changes to Remote Repository
-
-After making changes to your code:
-
-```bash
-# Add your changes
-git add .
-
-# Commit your changes with a descriptive message
-git commit -m "Description of the changes"
-
-# Pull any changes from the remote repository
-git pull origin main
-
-# Push your changes to the remote repository
-git push origin main
+```
+curl -X POST -F "image=@path/to/your/image.jpg" http://localhost:8000/assess-damage?process_anyway=true
 ```
 
-### Working with Branches
+## API Endpoints
 
-```bash
-# Create a new branch for a feature
-git checkout -b feature-name
-
-# Make your changes and commit them
-git add .
-git commit -m "Implement feature-name"
-
-# Push the branch to the remote repository
-git push -u origin feature-name
-
-# When ready to merge, switch to main and merge
-git checkout main
-git merge feature-name
-git push origin main
-```
-
-## Troubleshooting
-
-If you encounter issues:
-
-1. Ensure your Groq API key is valid and properly set in the `.env` file
-2. Check that you've activated the virtual environment before running commands
-3. For verbose logging, use the `-v` flag with the CLI tool
-4. Make sure the image file exists and is accessible
-
-### Git-related Issues
-
-If you encounter issues with git:
-
-1. Check your remote URL: `git remote -v`
-2. Ensure you have the latest changes: `git fetch origin`
-3. If you have conflicts during merge: `git status` to view conflicting files, then resolve them and commit
-
-## Testing
-
-```bash
-# Activate virtual environment first
-pytest tests/
-```
+- `POST /assess-damage`: Upload an image to get damage assessment
+- `GET /health`: Check if the service is operational
 
 ## Docker Support
 
-Build and run using Docker:
+### Building and Running with Docker Compose
+
+Build and run with Docker Compose for local development:
+
+```
+docker-compose up -d
+```
+
+For production environments:
+```
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+### Multi-Platform Docker Builds
+
+We provide scripts to build and push multi-platform Docker images that work on different architectures (amd64, arm64).
+
+#### Using the Shell Script (macOS/Linux)
 
 ```bash
-docker-compose up -d
+# Build only for local testing
+./build-and-push.sh --build-only
+
+# Build and push to a registry
+./build-and-push.sh --registry myregistry.azurecr.io --tag v1.0.0
+
+# Build for specific platforms
+./build-and-push.sh --platforms "linux/amd64,linux/arm64" --registry myregistry.azurecr.io
+```
+
+#### Using the PowerShell Script (Windows)
+
+```powershell
+# Build only for local testing
+.\build-and-push.ps1 -BuildOnly
+
+# Build and push to a registry
+.\build-and-push.ps1 -Registry myregistry.azurecr.io -Tag v1.0.0
+
+# Build for specific platforms
+.\build-and-push.ps1 -Platforms "linux/amd64,linux/arm64" -Registry myregistry.azurecr.io
+```
+
+### Azure Container Registry (ACR) Deployment
+
+We provide a specialized script for Azure deployments that handles all the steps for building and pushing multi-platform images to ACR:
+
+```bash
+# Deploy to ACR
+./deploy-to-acr.sh --acr-name myregistry --tag v1.0.0
+
+# Deploy to ACR with custom platforms
+./deploy-to-acr.sh --acr-name myregistry --tag v1.0.0 --platforms "linux/amd64,linux/arm64,linux/arm/v7"
+```
+
+The script will:
+1. Login to Azure and your ACR
+2. Build a multi-platform Docker image
+3. Push the image to your ACR
+4. Provide commands for deploying to Azure Container Instances
+
+## Azure Container Apps Deployment
+
+For deploying to Azure Container Apps with proper SSL support for Groq API connectivity, we provide a streamlined deployment script:
+
+```bash
+# Set your API key
+export GROQ_API_KEY=your_groq_api_key
+
+# Deploy to Azure Container Apps
+./deploy-container-app.sh
+```
+
+The script automatically:
+- Creates a Container App with public access
+- Configures it for secure external API connections
+- Sets up proper SSL certificates for Groq API
+- Displays the public endpoint URL
+
+For detailed Azure deployment instructions, see our [Azure Deployment Guide](AZURE_DEPLOYMENT.md).
+
+### Running in Production
+
+For production environments, use the production Docker Compose file:
+
+```bash
+# Set environment variables
+export REGISTRY=myregistry.azurecr.io
+export TAG=v1.0.0
+export REPLICAS=3
+export API_PORT=8000
+
+# Start the service
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+## Development
+
+### Running Tests
+
+```
+python -m pytest tests/
 ```
 
 ## License
 
-MIT License 
+[MIT License](LICENSE) 

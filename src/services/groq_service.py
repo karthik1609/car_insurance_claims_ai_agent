@@ -5,11 +5,11 @@ import base64
 import logging
 import json
 import traceback
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Union
 from groq import AsyncGroq
 
 from src.core.config import settings
-from src.schemas.damage_assessment_enhanced import EnhancedDamageAssessmentResponse
+from src.schemas.damage_assessment_enhanced import EnhancedDamageAssessmentResponse, DamageAssessmentItem
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -24,12 +24,12 @@ class GroqService:
         self.model = "meta-llama/llama-4-maverick-17b-128e-instruct"
         logger.info(f"Using model: {self.model}")
     
-    def validate_total_costs(self, assessment_data: Dict[str, Any]) -> Dict[str, Any]:
+    def validate_total_costs(self, assessment_data: Union[Dict[str, Any], List[Dict[str, Any]]]) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """
         Validates and recalculates total costs to ensure mathematical consistency
         
         Args:
-            assessment_data: The assessment data from the model
+            assessment_data: The assessment data from the model, either a dict or list of dicts
             
         Returns:
             The assessment data with corrected total costs
@@ -45,29 +45,83 @@ class GroqService:
                     
                 cost_breakdown = assessment_data["damage_data"]["cost_breakdown"]
                 
-                # Calculate total parts cost
-                parts_total = sum(part["cost"] for part in cost_breakdown["parts"])
+                # Add min/max costs to parts if not present (using fluctuation percentage)
+                for part in cost_breakdown["parts"]:
+                    if "min_cost" not in part:
+                        part["min_cost"] = round(part["cost"] * 0.9, 2)
+                    if "max_cost" not in part:
+                        part["max_cost"] = round(part["cost"] * 1.1, 2)
                 
-                # Calculate total labor cost
-                labor_total = sum(labor["cost"] for labor in cost_breakdown["labor"])
+                # Add min/max costs to labor if not present
+                for labor in cost_breakdown["labor"]:
+                    if "min_cost" not in labor:
+                        labor["min_cost"] = round(labor["cost"] * 0.9, 2)
+                    if "max_cost" not in labor:
+                        labor["max_cost"] = round(labor["cost"] * 1.1, 2)
                 
-                # Calculate total additional fees
-                fees_total = sum(fee["cost"] for fee in cost_breakdown["additional_fees"])
+                # Add min/max costs to additional fees if not present
+                for fee in cost_breakdown["additional_fees"]:
+                    if "min_cost" not in fee:
+                        fee["min_cost"] = round(fee["cost"] * 0.9, 2)
+                    if "max_cost" not in fee:
+                        fee["max_cost"] = round(fee["cost"] * 1.1, 2)
                 
-                # Calculate actual total
-                actual_total = parts_total + labor_total + fees_total
-                logger.debug(f"Calculated totals - Parts: {parts_total}, Labor: {labor_total}, Fees: {fees_total}, Actual total: {actual_total}")
+                # Calculate category totals
+                parts_min_total = sum(part["min_cost"] for part in cost_breakdown["parts"])
+                parts_max_total = sum(part["max_cost"] for part in cost_breakdown["parts"])
+                parts_expected_total = sum(part["cost"] for part in cost_breakdown["parts"])
+                
+                labor_min_total = sum(labor["min_cost"] for labor in cost_breakdown["labor"])
+                labor_max_total = sum(labor["max_cost"] for labor in cost_breakdown["labor"])
+                labor_expected_total = sum(labor["cost"] for labor in cost_breakdown["labor"])
+                
+                fees_min_total = sum(fee["min_cost"] for fee in cost_breakdown["additional_fees"])
+                fees_max_total = sum(fee["max_cost"] for fee in cost_breakdown["additional_fees"])
+                fees_expected_total = sum(fee["cost"] for fee in cost_breakdown["additional_fees"])
+                
+                # Add category totals
+                if "parts_total" not in cost_breakdown:
+                    cost_breakdown["parts_total"] = {
+                        "min": parts_min_total,
+                        "max": parts_max_total,
+                        "expected": parts_expected_total
+                    }
+                else:
+                    cost_breakdown["parts_total"]["min"] = parts_min_total
+                    cost_breakdown["parts_total"]["max"] = parts_max_total
+                    cost_breakdown["parts_total"]["expected"] = parts_expected_total
+                
+                if "labor_total" not in cost_breakdown:
+                    cost_breakdown["labor_total"] = {
+                        "min": labor_min_total,
+                        "max": labor_max_total,
+                        "expected": labor_expected_total
+                    }
+                else:
+                    cost_breakdown["labor_total"]["min"] = labor_min_total
+                    cost_breakdown["labor_total"]["max"] = labor_max_total
+                    cost_breakdown["labor_total"]["expected"] = labor_expected_total
+                
+                if "fees_total" not in cost_breakdown:
+                    cost_breakdown["fees_total"] = {
+                        "min": fees_min_total,
+                        "max": fees_max_total,
+                        "expected": fees_expected_total
+                    }
+                else:
+                    cost_breakdown["fees_total"]["min"] = fees_min_total
+                    cost_breakdown["fees_total"]["max"] = fees_max_total
+                    cost_breakdown["fees_total"]["expected"] = fees_expected_total
+                
+                # Calculate overall totals (sum of categories)
+                min_total = parts_min_total + labor_min_total + fees_min_total
+                max_total = parts_max_total + labor_max_total + fees_max_total
+                expected_total = parts_expected_total + labor_expected_total + fees_expected_total
                 
                 # Update the total estimate
-                # Keep min and max if they're reasonable, otherwise derive from actual total
-                if cost_breakdown["total_estimate"]["min"] > actual_total:
-                    cost_breakdown["total_estimate"]["min"] = actual_total * 0.9
-                
-                if cost_breakdown["total_estimate"]["max"] < actual_total:
-                    cost_breakdown["total_estimate"]["max"] = actual_total * 1.1
-                
-                # Set expected to actual calculation
-                cost_breakdown["total_estimate"]["expected"] = actual_total
+                cost_breakdown["total_estimate"]["min"] = min_total
+                cost_breakdown["total_estimate"]["max"] = max_total
+                cost_breakdown["total_estimate"]["expected"] = expected_total
                 
                 # Set default certainty values if not provided
                 if "make_certainty" not in assessment_data["vehicle_info"]:
@@ -88,29 +142,83 @@ class GroqService:
                         
                     cost_breakdown = item["damage_data"]["cost_breakdown"]
                     
-                    # Calculate total parts cost
-                    parts_total = sum(part["cost"] for part in cost_breakdown["parts"])
+                    # Add min/max costs to parts if not present (using fluctuation percentage)
+                    for part in cost_breakdown["parts"]:
+                        if "min_cost" not in part:
+                            part["min_cost"] = round(part["cost"] * 0.9, 2)
+                        if "max_cost" not in part:
+                            part["max_cost"] = round(part["cost"] * 1.1, 2)
                     
-                    # Calculate total labor cost
-                    labor_total = sum(labor["cost"] for labor in cost_breakdown["labor"])
+                    # Add min/max costs to labor if not present
+                    for labor in cost_breakdown["labor"]:
+                        if "min_cost" not in labor:
+                            labor["min_cost"] = round(labor["cost"] * 0.9, 2)
+                        if "max_cost" not in labor:
+                            labor["max_cost"] = round(labor["cost"] * 1.1, 2)
                     
-                    # Calculate total additional fees
-                    fees_total = sum(fee["cost"] for fee in cost_breakdown["additional_fees"])
+                    # Add min/max costs to additional fees if not present
+                    for fee in cost_breakdown["additional_fees"]:
+                        if "min_cost" not in fee:
+                            fee["min_cost"] = round(fee["cost"] * 0.9, 2)
+                        if "max_cost" not in fee:
+                            fee["max_cost"] = round(fee["cost"] * 1.1, 2)
                     
-                    # Calculate actual total
-                    actual_total = parts_total + labor_total + fees_total
-                    logger.debug(f"Calculated totals - Parts: {parts_total}, Labor: {labor_total}, Fees: {fees_total}, Actual total: {actual_total}")
+                    # Calculate category totals
+                    parts_min_total = sum(part["min_cost"] for part in cost_breakdown["parts"])
+                    parts_max_total = sum(part["max_cost"] for part in cost_breakdown["parts"])
+                    parts_expected_total = sum(part["cost"] for part in cost_breakdown["parts"])
+                    
+                    labor_min_total = sum(labor["min_cost"] for labor in cost_breakdown["labor"])
+                    labor_max_total = sum(labor["max_cost"] for labor in cost_breakdown["labor"])
+                    labor_expected_total = sum(labor["cost"] for labor in cost_breakdown["labor"])
+                    
+                    fees_min_total = sum(fee["min_cost"] for fee in cost_breakdown["additional_fees"])
+                    fees_max_total = sum(fee["max_cost"] for fee in cost_breakdown["additional_fees"])
+                    fees_expected_total = sum(fee["cost"] for fee in cost_breakdown["additional_fees"])
+                    
+                    # Add category totals
+                    if "parts_total" not in cost_breakdown:
+                        cost_breakdown["parts_total"] = {
+                            "min": parts_min_total,
+                            "max": parts_max_total,
+                            "expected": parts_expected_total
+                        }
+                    else:
+                        cost_breakdown["parts_total"]["min"] = parts_min_total
+                        cost_breakdown["parts_total"]["max"] = parts_max_total
+                        cost_breakdown["parts_total"]["expected"] = parts_expected_total
+                    
+                    if "labor_total" not in cost_breakdown:
+                        cost_breakdown["labor_total"] = {
+                            "min": labor_min_total,
+                            "max": labor_max_total,
+                            "expected": labor_expected_total
+                        }
+                    else:
+                        cost_breakdown["labor_total"]["min"] = labor_min_total
+                        cost_breakdown["labor_total"]["max"] = labor_max_total
+                        cost_breakdown["labor_total"]["expected"] = labor_expected_total
+                    
+                    if "fees_total" not in cost_breakdown:
+                        cost_breakdown["fees_total"] = {
+                            "min": fees_min_total,
+                            "max": fees_max_total,
+                            "expected": fees_expected_total
+                        }
+                    else:
+                        cost_breakdown["fees_total"]["min"] = fees_min_total
+                        cost_breakdown["fees_total"]["max"] = fees_max_total
+                        cost_breakdown["fees_total"]["expected"] = fees_expected_total
+                    
+                    # Calculate overall totals (sum of categories)
+                    min_total = parts_min_total + labor_min_total + fees_min_total
+                    max_total = parts_max_total + labor_max_total + fees_max_total
+                    expected_total = parts_expected_total + labor_expected_total + fees_expected_total
                     
                     # Update the total estimate
-                    # Keep min and max if they're reasonable, otherwise derive from actual total
-                    if cost_breakdown["total_estimate"]["min"] > actual_total:
-                        cost_breakdown["total_estimate"]["min"] = actual_total * 0.9
-                    
-                    if cost_breakdown["total_estimate"]["max"] < actual_total:
-                        cost_breakdown["total_estimate"]["max"] = actual_total * 1.1
-                    
-                    # Set expected to actual calculation
-                    cost_breakdown["total_estimate"]["expected"] = actual_total
+                    cost_breakdown["total_estimate"]["min"] = min_total
+                    cost_breakdown["total_estimate"]["max"] = max_total
+                    cost_breakdown["total_estimate"]["expected"] = expected_total
                     
                     # Set default certainty values if not provided
                     if "make_certainty" not in item["vehicle_info"]:
@@ -118,10 +226,6 @@ class GroqService:
                     
                     if "model_certainty" not in item["vehicle_info"]:
                         item["vehicle_info"]["model_certainty"] = 80.0
-                
-                # Return the first item if there was only one item
-                if len(assessment_data) == 1:
-                    return assessment_data[0]
                 
                 return assessment_data
             else:
@@ -133,7 +237,7 @@ class GroqService:
             logger.error(traceback.format_exc())
             raise
     
-    async def analyze_car_damage(self, image_bytes: bytes) -> EnhancedDamageAssessmentResponse:
+    async def analyze_car_damage(self, image_bytes: bytes) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """
         Analyze car image using Llama 4 Maverick model to detect damage and estimate repair costs
         
@@ -141,7 +245,7 @@ class GroqService:
             image_bytes: The raw bytes of the uploaded image
             
         Returns:
-            EnhancedDamageAssessmentResponse: Structured damage assessment with detailed cost breakdown
+            Union[Dict[str, Any], List[Dict[str, Any]]]: Single damage assessment or list of assessments if multiple cars detected
         """
         # Encode image to base64
         base64_image = base64.b64encode(image_bytes).decode('utf-8')
@@ -156,11 +260,19 @@ class GroqService:
         2. Comprehensive damage assessment (location, type, severity, repair approach)
         3. Detailed repair cost breakdown with itemized services and parts
         
-        Your response MUST be in JSON format as a list of objects, where each object has exactly two keys:
+        IMPORTANT: If you see multiple cars in the image, you MUST return a list of objects, one for each car, following the format below.
+        If there is only one car, you may return either a single object or a list with one object.
+        
+        Your response MUST be structured with the following keys for each car:
         1. "vehicle_info": Contains all vehicle identification details
         2. "damage_data": Contains complete damage assessment and cost breakdown
         
-        Example of the expected JSON structure:
+        For every cost value throughout your assessment (parts, labor, fees), you MUST provide three values:
+        1. "cost": The expected/most likely cost
+        2. "min_cost": The minimum estimated cost
+        3. "max_cost": The maximum estimated cost
+        
+        Example of the expected JSON structure for multiple cars:
         
         [
           {
@@ -191,38 +303,86 @@ class GroqService:
               ],
               "cost_breakdown": {
                 "parts": [
-                  {"name": "Paint supplies", "cost": 150},
-                  {"name": "Primer", "cost": 50}
+                  {"name": "Paint supplies", "cost": 150, "min_cost": 130, "max_cost": 170},
+                  {"name": "Primer", "cost": 50, "min_cost": 45, "max_cost": 55}
                 ],
                 "labor": [
-                  {"service": "Bumper removal and reinstallation", "hours": 1.5, "rate": 85, "cost": 127.5},
-                  {"service": "Dent repair", "hours": 2, "rate": 90, "cost": 180},
-                  {"service": "Paint preparation", "hours": 1, "rate": 80, "cost": 80},
-                  {"service": "Painting and finishing", "hours": 2.5, "rate": 85, "cost": 212.5}
+                  {"service": "Bumper removal and reinstallation", "hours": 1.5, "rate": 85, "cost": 127.5, "min_cost": 110, "max_cost": 145},
+                  {"service": "Dent repair", "hours": 2, "rate": 90, "cost": 180, "min_cost": 160, "max_cost": 200},
+                  {"service": "Paint preparation", "hours": 1, "rate": 80, "cost": 80, "min_cost": 70, "max_cost": 90},
+                  {"service": "Painting and finishing", "hours": 2.5, "rate": 85, "cost": 212.5, "min_cost": 190, "max_cost": 235}
                 ],
                 "additional_fees": [
-                  {"description": "Disposal fees", "cost": 25},
-                  {"description": "Shop supplies", "cost": 35}
+                  {"description": "Disposal fees", "cost": 25, "min_cost": 20, "max_cost": 30},
+                  {"description": "Shop supplies", "cost": 35, "min_cost": 30, "max_cost": 40}
                 ],
+                "parts_total": {
+                  "min": 175,
+                  "max": 225,
+                  "expected": 200
+                },
+                "labor_total": {
+                  "min": 530,
+                  "max": 670,
+                  "expected": 600
+                },
+                "fees_total": {
+                  "min": 50,
+                  "max": 70,
+                  "expected": 60
+                },
                 "total_estimate": {
-                  "min": 800,
-                  "max": 1200,
+                  "min": 755,
+                  "max": 965,
                   "expected": 860,
                   "currency": "EUR"
                 }
               }
             }
+          },
+          {
+            "vehicle_info": {
+              "make": "Honda",
+              "model": "Civic",
+              "year": "2020",
+              "color": "Red",
+              "type": "Sedan",
+              "trim": "Sport",
+              "make_certainty": 92.0,
+              "model_certainty": 85.0
+            },
+            "damage_data": {
+              // Similar structure as above
+            }
           }
         ]
         
-        Ensure your analysis is detailed and structured exactly as shown. The format must be consistent to work with Microsoft Copilot extensions. Use "Minor", "Moderate", or "Severe" for damage severity.
+        Example of the expected JSON structure for a single car:
         
-        Make sure that your "total_estimate" has three cost values:
-        1. "min" - the minimum expected cost
-        2. "max" - the maximum expected cost
-        3. "expected" - the most likely cost
+        {
+          "vehicle_info": {
+            "make": "Toyota",
+            "model": "Corolla",
+            "year": "2019",
+            "color": "Blue",
+            "type": "Sedan",
+            "trim": "LE",
+            "make_certainty": 95.5,
+            "model_certainty": 87.3
+          },
+          "damage_data": {
+            // Same structure as in the list example
+          }
+        }
         
-        The expected cost should be the sum of all parts, labor, and additional fees. The min and max should be reasonable ranges around this expected cost.
+        Ensure your analysis is detailed and structured exactly as shown. The format must be consistent to work with the insurance system. Use "Minor", "Moderate", or "Severe" for damage severity.
+        
+        IMPORTANT RULES FOR COST CALCULATIONS:
+        1. For each individual item (parts, labor, fees), provide a reasonable min_cost and max_cost around the expected cost.
+        2. Calculate category totals as the sum of individual items: parts_total.expected = sum(part.cost) for all parts.
+        3. Calculate min and max for each category the same way: parts_total.min = sum(part.min_cost).
+        4. The overall total_estimate values MUST follow the rule: total_estimate.min = sum of all category mins
+        5. Similarly: total_estimate.max = sum of all category maxes, and total_estimate.expected = sum of all category expected values.
         
         For vehicle identification, provide certainty percentages for make and model:
         1. "make_certainty" - confidence level (0-100) that the make is correctly identified
@@ -236,13 +396,14 @@ class GroqService:
             # Call Groq API
             response = await self.client.chat.completions.create(
                 model=self.model,
+                # Allow flexible response format to handle both single object and list of objects
                 response_format={"type": "json_object"},
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {
                         "role": "user", 
                         "content": [
-                            {"type": "text", "text": "Analyze this car image and provide a detailed damage assessment with cost breakdown:"},
+                            {"type": "text", "text": "Analyze this car image and provide a detailed damage assessment with cost breakdown. If multiple cars are visible, analyze each one separately:"},
                             {
                                 "type": "image_url",
                                 "image_url": {

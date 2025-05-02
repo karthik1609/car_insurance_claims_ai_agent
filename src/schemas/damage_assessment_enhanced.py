@@ -22,22 +22,40 @@ class DamagedPart(BaseModel):
     severity: str = Field(..., description="Severity of damage (Minor, Moderate, Severe)")
     repair_action: str = Field(..., description="Recommended repair action")
 
+class CostEstimate(BaseModel):
+    """Cost estimate with min, max, and expected values"""
+    min: float = Field(..., description="Minimum estimated cost")
+    max: float = Field(..., description="Maximum estimated cost")
+    expected: float = Field(..., description="Expected (most likely) cost")
+
 class PartItem(BaseModel):
     """Part needed for repair"""
     name: str = Field(..., description="Name of the part")
-    cost: float = Field(..., description="Cost of the part")
+    cost: float = Field(..., description="Expected cost of the part")
+    min_cost: float = Field(..., description="Minimum cost estimate for the part")
+    max_cost: float = Field(..., description="Maximum cost estimate for the part")
 
 class LaborItem(BaseModel):
     """Labor service for repair"""
     service: str = Field(..., description="Description of the service")
     hours: float = Field(..., description="Number of hours required")
     rate: float = Field(..., description="Hourly rate")
-    cost: float = Field(..., description="Total cost for this service")
+    cost: float = Field(..., description="Expected total cost for this service")
+    min_cost: float = Field(..., description="Minimum cost estimate for this service")
+    max_cost: float = Field(..., description="Maximum cost estimate for this service")
 
 class AdditionalFee(BaseModel):
     """Additional fees for repair"""
     description: str = Field(..., description="Description of the fee")
-    cost: float = Field(..., description="Cost of the fee")
+    cost: float = Field(..., description="Expected cost of the fee")
+    min_cost: float = Field(..., description="Minimum cost estimate for the fee")
+    max_cost: float = Field(..., description="Maximum cost estimate for the fee")
+
+class CategoryTotal(BaseModel):
+    """Total for a category (parts, labor, or fees)"""
+    min: float = Field(..., description="Minimum total cost for this category")
+    max: float = Field(..., description="Maximum total cost for this category")
+    expected: float = Field(..., description="Expected total cost for this category")
 
 class TotalEstimate(BaseModel):
     """Total cost estimate range"""
@@ -51,6 +69,9 @@ class CostBreakdown(BaseModel):
     parts: List[PartItem] = Field([], description="List of parts needed for repair")
     labor: List[LaborItem] = Field([], description="List of labor services required")
     additional_fees: List[AdditionalFee] = Field([], description="List of additional fees")
+    parts_total: CategoryTotal = Field(..., description="Total for all parts")
+    labor_total: CategoryTotal = Field(..., description="Total for all labor")
+    fees_total: CategoryTotal = Field(..., description="Total for all additional fees")
     total_estimate: TotalEstimate = Field(..., description="Total cost estimate range")
 
 class DamageData(BaseModel):

@@ -1,0 +1,308 @@
+{
+	"info": {
+		"_postman_id": "b8a17e7d-5f9e-4e2c-9bca-1d92e7f9a63b",
+		"name": "Car Damage Assessment API",
+		"description": "API for assessing car damage from images, identifying vehicle make/model, and estimating repair costs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Assess Damage",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "",
+							"description": "Image of the damaged car (JPEG, PNG)"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/assess-damage?skip_fraud_check={{skipFraudCheck}}&process_anyway={{processAnyway}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"assess-damage"
+					],
+					"query": [
+						{
+							"key": "skip_fraud_check",
+							"value": "{{skipFraudCheck}}",
+							"description": "Skip fraud detection entirely (not recommended for production)"
+						},
+						{
+							"key": "process_anyway",
+							"value": "{{processAnyway}}",
+							"description": "Process the request even if potential fraud is detected"
+						}
+					]
+				},
+				"description": "Upload an image of a damaged car to get make/model, damage assessment, and repair cost estimation"
+			},
+			"response": [
+				{
+					"name": "Successful Assessment",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "",
+									"description": "Image of the damaged car (JPEG, PNG)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assess-damage?skip_fraud_check=false&process_anyway=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assess-damage"
+							],
+							"query": [
+								{
+									"key": "skip_fraud_check",
+									"value": "false"
+								},
+								{
+									"key": "process_anyway",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "[\n  {\n    \"vehicle_info\": {\n      \"make\": \"Toyota\",\n      \"model\": \"Corolla\",\n      \"year\": \"2019\",\n      \"color\": \"Blue\",\n      \"type\": \"Sedan\",\n      \"trim\": \"LE\",\n      \"make_certainty\": 95.5,\n      \"model_certainty\": 87.3\n    },\n    \"damage_data\": {\n      \"damaged_parts\": [\n        {\n          \"part\": \"Front Bumper\",\n          \"damage_type\": \"Scratch\",\n          \"severity\": \"Moderate\",\n          \"repair_action\": \"Repaint\"\n        },\n        {\n          \"part\": \"Hood\",\n          \"damage_type\": \"Dent\",\n          \"severity\": \"Minor\",\n          \"repair_action\": \"Repair and Repaint\"\n        }\n      ],\n      \"cost_breakdown\": {\n        \"parts\": [\n          {\"name\": \"Paint supplies\", \"cost\": 150, \"min_cost\": 130, \"max_cost\": 170},\n          {\"name\": \"Primer\", \"cost\": 50, \"min_cost\": 45, \"max_cost\": 55}\n        ],\n        \"labor\": [\n          {\"service\": \"Bumper removal and reinstallation\", \"hours\": 1.5, \"rate\": 85, \"cost\": 127.5, \"min_cost\": 110, \"max_cost\": 145},\n          {\"service\": \"Dent repair\", \"hours\": 2, \"rate\": 90, \"cost\": 180, \"min_cost\": 160, \"max_cost\": 200},\n          {\"service\": \"Paint preparation\", \"hours\": 1, \"rate\": 80, \"cost\": 80, \"min_cost\": 70, \"max_cost\": 90},\n          {\"service\": \"Painting and finishing\", \"hours\": 2.5, \"rate\": 85, \"cost\": 212.5, \"min_cost\": 190, \"max_cost\": 235}\n        ],\n        \"additional_fees\": [\n          {\"description\": \"Disposal fees\", \"cost\": 25, \"min_cost\": 20, \"max_cost\": 30},\n          {\"description\": \"Shop supplies\", \"cost\": 35, \"min_cost\": 30, \"max_cost\": 40}\n        ],\n        \"parts_total\": {\n          \"min\": 175,\n          \"max\": 225,\n          \"expected\": 200\n        },\n        \"labor_total\": {\n          \"min\": 530,\n          \"max\": 670,\n          \"expected\": 600\n        },\n        \"fees_total\": {\n          \"min\": 50,\n          \"max\": 70,\n          \"expected\": 60\n        },\n        \"total_estimate\": {\n          \"min\": 755,\n          \"max\": 965,\n          \"expected\": 860,\n          \"currency\": \"EUR\"\n        }\n      }\n    }\n  }\n]"
+				},
+				{
+					"name": "Fraud Detected",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "",
+									"description": "Image of the damaged car (JPEG, PNG)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assess-damage?skip_fraud_check=false&process_anyway=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assess-damage"
+							],
+							"query": [
+								{
+									"key": "skip_fraud_check",
+									"value": "false"
+								},
+								{
+									"key": "process_anyway",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"warning\": \"Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh)\",\n  \"message\": \"The image may be modified or manipulated. If this is a mistake, retry with process_anyway=true or contact support.\",\n  \"assessment\": null\n}"
+				},
+				{
+					"name": "Fraud Detected but Processed Anyway",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "",
+									"description": "Image of the damaged car (JPEG, PNG)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assess-damage?skip_fraud_check=false&process_anyway=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assess-damage"
+							],
+							"query": [
+								{
+									"key": "skip_fraud_check",
+									"value": "false"
+								},
+								{
+									"key": "process_anyway",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"warning\": \"Potential fraud detected: Image appears to be edited with Adobe Photoshop 23.3 (Macintosh)\",\n  \"message\": \"Assessment completed but fraud detection triggered. Results may be unreliable.\",\n  \"assessment\": [\n    {\n      \"vehicle_info\": {\n        \"make\": \"Unknown\",\n        \"model\": \"Unknown\",\n        \"year\": \"Unknown\",\n        \"color\": \"Unknown\",\n        \"type\": \"Sedan or Hatchback\",\n        \"trim\": \"Unknown\",\n        \"make_certainty\": 0,\n        \"model_certainty\": 0\n      },\n      \"damage_data\": {\n        \"damaged_parts\": [\n          {\n            \"part\": \"Body\",\n            \"damage_type\": \"Fire damage\",\n            \"severity\": \"Severe\",\n            \"repair_action\": \"Replace\"\n          },\n          {\n            \"part\": \"Engine\",\n            \"damage_type\": \"Fire damage\",\n            \"severity\": \"Severe\",\n            \"repair_action\": \"Replace\"\n          }\n        ],\n        \"cost_breakdown\": {\n          \"parts\": [\n            {\"name\": \"Replacement vehicle body\", \"cost\": 5000, \"min_cost\": 4500, \"max_cost\": 5500},\n            {\"name\": \"Engine replacement\", \"cost\": 3000, \"min_cost\": 2700, \"max_cost\": 3300}\n          ],\n          \"labor\": [\n            {\"service\": \"Vehicle inspection and assessment\", \"hours\": 2, \"rate\": 100, \"cost\": 200, \"min_cost\": 180, \"max_cost\": 220}\n          ],\n          \"additional_fees\": [\n            {\"description\": \"Towing fees\", \"cost\": 200, \"min_cost\": 180, \"max_cost\": 220}\n          ],\n          \"parts_total\": {\n            \"min\": 7200,\n            \"max\": 8800,\n            \"expected\": 8000\n          },\n          \"labor_total\": {\n            \"min\": 180,\n            \"max\": 220,\n            \"expected\": 200\n          },\n          \"fees_total\": {\n            \"min\": 180,\n            \"max\": 220,\n            \"expected\": 200\n          },\n          \"total_estimate\": {\n            \"min\": 7560,\n            \"max\": 9240,\n            \"expected\": 8400,\n            \"currency\": \"EUR\"\n          }\n        }\n      }\n    }\n  ]\n}"
+				},
+				{
+					"name": "Invalid Image",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "",
+									"description": "Image of the damaged car (JPEG, PNG)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/assess-damage",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"assess-damage"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"detail\": \"Invalid image file\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "Check if the API is up and running"
+			},
+			"response": [
+				{
+					"name": "Health Check - OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"status\": \"ok\",\n  \"version\": \"1.0.0\",\n  \"message\": \"Service is healthy\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+} 
