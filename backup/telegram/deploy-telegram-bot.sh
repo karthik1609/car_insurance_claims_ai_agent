@@ -4,31 +4,33 @@ set -e
 # Script to deploy Telegram bot integration for Car Damage Assessor
 # Bot username: @CarDamageAssessorBot
 
-ACR_NAME="insuuranceclaimspoc"
+# Set variables
 RESOURCE_GROUP="MCP_resource"
 APP_NAME="insurance-claims-api"
 BOT_USERNAME="CarDamageAssessorBot"
 
-# Make sure the bot token is set in your environment
-if [ -z "$TELEGRAM_BOT_TOKEN_CAR_ASSESSOR" ]; then
+# Get the token from environment variable
+TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN_CAR_ASSESSOR:-}
+if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
   echo "Error: TELEGRAM_BOT_TOKEN_CAR_ASSESSOR environment variable is not set"
   exit 1
 fi
 
 # Make sure Groq API key is set
+GROQ_API_KEY=${GROQ_API_KEY:-}
 if [ -z "$GROQ_API_KEY" ]; then
   echo "Error: GROQ_API_KEY environment variable is not set"
   exit 1
 fi
 
-echo "Deploying Container App with Telegram integration for @$BOT_USERNAME..."
+echo "Updating Container App with Telegram integration for @$BOT_USERNAME..."
 
-# Update the container app with the Telegram bot token
+# Update the existing container app with the environment variables
 az containerapp update \
   --name $APP_NAME \
   --resource-group $RESOURCE_GROUP \
   --set-env-vars \
-    "TELEGRAM_BOT_TOKEN_CAR_ASSESSOR=$TELEGRAM_BOT_TOKEN_CAR_ASSESSOR" \
+    "TELEGRAM_BOT_TOKEN_CAR_ASSESSOR=$TELEGRAM_BOT_TOKEN" \
     "GROQ_API_KEY=$GROQ_API_KEY"
 
 echo "Container App updated successfully!"

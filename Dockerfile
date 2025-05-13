@@ -10,9 +10,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 # Install SSL certificates and curl for healthchecks
+# Simplify package installation to avoid cross-platform issues
 RUN apt-get update && \
-    apt-get install -y ca-certificates curl && \
-    update-ca-certificates && \
+    apt-get install -y --no-install-recommends ca-certificates curl && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

@@ -2,11 +2,11 @@
 set -e
 
 # Variables - customize these
-RESOURCE_GROUP="insurance-claims"
-LOCATION="eastus"
-ENVIRONMENT_NAME="insurance-claims-env"
+RESOURCE_GROUP="insurance-claims-api"
+LOCATION="centralindia"
+ENVIRONMENT_NAME="fxagent-env-new"
 APP_NAME="insurance-claims-api"
-ACR_NAME="insuuranceclaimspoc"
+ACR_NAME="fxagentsdk"
 IMAGE_TAG="v1.0.0"
 IMAGE_NAME="${ACR_NAME}.azurecr.io/car-insurance-claims-ai-agent:${IMAGE_TAG}"
 

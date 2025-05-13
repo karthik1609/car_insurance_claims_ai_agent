@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   api:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: car_insurance_claims_api
@@ -14,19 +14,22 @@ services:
       # Only mount necessary directories to avoid overwriting node_modules, etc.
       - ./src:/app/src
       - ./test_images:/app/test_images
+      - ./app.log:/app/app.log  # Mount log file
     environment:
       - API_HOST=0.0.0.0
       - API_PORT=8000
       - DEBUG_MODE=true
       - REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
       - SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+      - GROQ_API_KEY=${GROQ_API_KEY:-your_groq_api_key_here}  # Use env var or default value
+      - GROQ_MODEL=meta-llama/llama-4-maverick-17b-128e-instruct
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "/app/healthcheck.sh"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 5s
+      start_period: 10s
     deploy:
       resources:
         limits:

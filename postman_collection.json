@@ -1,0 +1,149 @@
+{
+  "info": {
+    "name": "Car Insurance Claims AI Agent",
+    "description": "API for assessing car damage and estimating repair costs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Root",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}",
+          "host": [
+            "{{baseUrl}}"
+          ]
+        },
+        "description": "Root endpoint returning API information"
+      },
+      "response": []
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Health check endpoint"
+      },
+      "response": []
+    },
+    {
+      "name": "Assess Damage (File Upload)",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/assess-damage?skip_fraud_check={{skipFraudCheck}}&process_anyway={{processAnyway}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "assess-damage"
+          ],
+          "query": [
+            {
+              "key": "skip_fraud_check",
+              "value": "{{skipFraudCheck}}",
+              "description": "Skip fraud detection entirely (not recommended for production)"
+            },
+            {
+              "key": "process_anyway",
+              "value": "{{processAnyway}}",
+              "description": "Process the request even if potential fraud is detected"
+            }
+          ]
+        },
+        "description": "Upload an image of a damaged car to get make/model, damage assessment, and repair cost estimation",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "",
+              "description": "Image file of the damaged vehicle"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Assess Damage (Base64)",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/assess-damage-base64?skip_fraud_check={{skipFraudCheck}}&process_anyway={{processAnyway}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "assess-damage-base64"
+          ],
+          "query": [
+            {
+              "key": "skip_fraud_check",
+              "value": "{{skipFraudCheck}}",
+              "description": "Skip fraud detection entirely (not recommended for production)"
+            },
+            {
+              "key": "process_anyway",
+              "value": "{{processAnyway}}",
+              "description": "Process the request even if potential fraud is detected"
+            }
+          ]
+        },
+        "description": "Submit a base64-encoded image of a damaged car to get make/model, damage assessment, and repair cost estimation. Ideal for integrations where file upload is not feasible.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"image_base64\": \"{{imageBase64String}}\",\n  \"image_format\": \"jpg\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "{{baseUrl}}",
+      "type": "string"
+    }
+  ]
+} 

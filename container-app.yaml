@@ -1,0 +1,34 @@
+name: insurance-claims-api
+resourceGroup: insurance-claims-api
+environmentName: fxagent-env
+location: centralindia
+containers:
+  - image: fxagentsdk.azurecr.io/car-insurance-claims-ai-agent:v1.0.0
+    name: insurance-claims-api
+    env:
+      - name: REQUESTS_CA_BUNDLE
+        value: /etc/ssl/certs/ca-certificates.crt
+      - name: SSL_CERT_FILE
+        value: /etc/ssl/certs/ca-certificates.crt
+      - name: GROQ_API_KEY
+        value: ${GROQ_API_KEY}
+    probes:
+      - type: Liveness
+        httpGet:
+          path: "/health"
+          port: 8000
+        initialDelaySeconds: 10
+        periodSeconds: 30
+        timeoutSeconds: 10
+        successThreshold: 1
+        failureThreshold: 3
+ingress:
+  external: true
+  targetPort: 8000
+registry:
+  server: fxagentsdk.azurecr.io
+  username: fxagentsdk
+  passwordSecretRef: acr-password
+scale:
+  minReplicas: 1
+  maxReplicas: 3

@@ -6,228 +6,52 @@ import logging
 import json
 import traceback
 from typing import Dict, Any, List, Union
-from groq import AsyncGroq
+from groq import Groq
 
 from src.core.config import settings
 from src.schemas.damage_assessment_enhanced import EnhancedDamageAssessmentResponse, DamageAssessmentItem
+from src.logger import get_logger
 
 # Configure logging
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 class GroqService:
     """Service to interact with Groq API for car damage assessment using Llama 4 Maverick"""
     
     def __init__(self):
-        """Initialize Groq client with API key from settings"""
-        logger.info("Initializing Groq service with API key")
-        self.client = AsyncGroq(api_key=settings.GROQ_API_KEY)
-        self.model = "meta-llama/llama-4-maverick-17b-128e-instruct"
-        logger.info(f"Using model: {self.model}")
+        """Initialize the Groq client"""
+        api_key = settings.GROQ_API_KEY
+        if not api_key:
+            raise ValueError("GROQ_API_KEY environment variable is required")
+        
+        self.client = Groq(api_key=api_key)
+        self.model = settings.GROQ_MODEL
+        logger.debug(f"Groq client initialized with model: {self.model}")
     
     def validate_total_costs(self, assessment_data: Union[Dict[str, Any], List[Dict[str, Any]]]) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """
-        Validates and recalculates total costs to ensure mathematical consistency
+        Ensure the cost calculations are correct in the assessment data
         
         Args:
-            assessment_data: The assessment data from the model, either a dict or list of dicts
+            assessment_data: Either a single assessment object or a list of assessments
             
         Returns:
-            The assessment data with corrected total costs
+            The validated assessment data with corrected cost totals if needed
         """
-        logger.debug(f"Validating total costs for assessment data: {assessment_data}")
         try:
-            # Handle direct object response (json_object format)
-            if isinstance(assessment_data, dict) and "vehicle_info" in assessment_data and "damage_data" in assessment_data:
-                # Process the direct dictionary
-                if "cost_breakdown" not in assessment_data["damage_data"]:
-                    logger.warning(f"Missing cost_breakdown in assessment data")
-                    return assessment_data
-                    
-                cost_breakdown = assessment_data["damage_data"]["cost_breakdown"]
-                
-                # Add min/max costs to parts if not present (using fluctuation percentage)
-                for part in cost_breakdown["parts"]:
-                    if "min_cost" not in part:
-                        part["min_cost"] = round(part["cost"] * 0.9, 2)
-                    if "max_cost" not in part:
-                        part["max_cost"] = round(part["cost"] * 1.1, 2)
-                
-                # Add min/max costs to labor if not present
-                for labor in cost_breakdown["labor"]:
-                    if "min_cost" not in labor:
-                        labor["min_cost"] = round(labor["cost"] * 0.9, 2)
-                    if "max_cost" not in labor:
-                        labor["max_cost"] = round(labor["cost"] * 1.1, 2)
-                
-                # Add min/max costs to additional fees if not present
-                for fee in cost_breakdown["additional_fees"]:
-                    if "min_cost" not in fee:
-                        fee["min_cost"] = round(fee["cost"] * 0.9, 2)
-                    if "max_cost" not in fee:
-                        fee["max_cost"] = round(fee["cost"] * 1.1, 2)
-                
-                # Calculate category totals
-                parts_min_total = sum(part["min_cost"] for part in cost_breakdown["parts"])
-                parts_max_total = sum(part["max_cost"] for part in cost_breakdown["parts"])
-                parts_expected_total = sum(part["cost"] for part in cost_breakdown["parts"])
-                
-                labor_min_total = sum(labor["min_cost"] for labor in cost_breakdown["labor"])
-                labor_max_total = sum(labor["max_cost"] for labor in cost_breakdown["labor"])
-                labor_expected_total = sum(labor["cost"] for labor in cost_breakdown["labor"])
-                
-                fees_min_total = sum(fee["min_cost"] for fee in cost_breakdown["additional_fees"])
-                fees_max_total = sum(fee["max_cost"] for fee in cost_breakdown["additional_fees"])
-                fees_expected_total = sum(fee["cost"] for fee in cost_breakdown["additional_fees"])
-                
-                # Add category totals
-                if "parts_total" not in cost_breakdown:
-                    cost_breakdown["parts_total"] = {
-                        "min": parts_min_total,
-                        "max": parts_max_total,
-                        "expected": parts_expected_total
-                    }
-                else:
-                    cost_breakdown["parts_total"]["min"] = parts_min_total
-                    cost_breakdown["parts_total"]["max"] = parts_max_total
-                    cost_breakdown["parts_total"]["expected"] = parts_expected_total
-                
-                if "labor_total" not in cost_breakdown:
-                    cost_breakdown["labor_total"] = {
-                        "min": labor_min_total,
-                        "max": labor_max_total,
-                        "expected": labor_expected_total
-                    }
-                else:
-                    cost_breakdown["labor_total"]["min"] = labor_min_total
-                    cost_breakdown["labor_total"]["max"] = labor_max_total
-                    cost_breakdown["labor_total"]["expected"] = labor_expected_total
-                
-                if "fees_total" not in cost_breakdown:
-                    cost_breakdown["fees_total"] = {
-                        "min": fees_min_total,
-                        "max": fees_max_total,
-                        "expected": fees_expected_total
-                    }
-                else:
-                    cost_breakdown["fees_total"]["min"] = fees_min_total
-                    cost_breakdown["fees_total"]["max"] = fees_max_total
-                    cost_breakdown["fees_total"]["expected"] = fees_expected_total
-                
-                # Calculate overall totals (sum of categories)
-                min_total = parts_min_total + labor_min_total + fees_min_total
-                max_total = parts_max_total + labor_max_total + fees_max_total
-                expected_total = parts_expected_total + labor_expected_total + fees_expected_total
-                
-                # Update the total estimate
-                cost_breakdown["total_estimate"]["min"] = min_total
-                cost_breakdown["total_estimate"]["max"] = max_total
-                cost_breakdown["total_estimate"]["expected"] = expected_total
-                
-                # Set default certainty values if not provided
-                if "make_certainty" not in assessment_data["vehicle_info"]:
-                    assessment_data["vehicle_info"]["make_certainty"] = 85.0
-                
-                if "model_certainty" not in assessment_data["vehicle_info"]:
-                    assessment_data["vehicle_info"]["model_certainty"] = 80.0
-                    
-                return assessment_data
-                
-            # Handle list response (legacy format)
-            elif isinstance(assessment_data, list):
-                # Process each item in the list
+            # Handle list of assessments
+            if isinstance(assessment_data, list):
+                logger.debug(f"Validating costs for {len(assessment_data)} assessments")
                 for item in assessment_data:
-                    if "damage_data" not in item or "cost_breakdown" not in item["damage_data"]:
-                        logger.warning(f"Missing expected keys in assessment data: {item}")
-                        continue
-                        
-                    cost_breakdown = item["damage_data"]["cost_breakdown"]
-                    
-                    # Add min/max costs to parts if not present (using fluctuation percentage)
-                    for part in cost_breakdown["parts"]:
-                        if "min_cost" not in part:
-                            part["min_cost"] = round(part["cost"] * 0.9, 2)
-                        if "max_cost" not in part:
-                            part["max_cost"] = round(part["cost"] * 1.1, 2)
-                    
-                    # Add min/max costs to labor if not present
-                    for labor in cost_breakdown["labor"]:
-                        if "min_cost" not in labor:
-                            labor["min_cost"] = round(labor["cost"] * 0.9, 2)
-                        if "max_cost" not in labor:
-                            labor["max_cost"] = round(labor["cost"] * 1.1, 2)
-                    
-                    # Add min/max costs to additional fees if not present
-                    for fee in cost_breakdown["additional_fees"]:
-                        if "min_cost" not in fee:
-                            fee["min_cost"] = round(fee["cost"] * 0.9, 2)
-                        if "max_cost" not in fee:
-                            fee["max_cost"] = round(fee["cost"] * 1.1, 2)
-                    
-                    # Calculate category totals
-                    parts_min_total = sum(part["min_cost"] for part in cost_breakdown["parts"])
-                    parts_max_total = sum(part["max_cost"] for part in cost_breakdown["parts"])
-                    parts_expected_total = sum(part["cost"] for part in cost_breakdown["parts"])
-                    
-                    labor_min_total = sum(labor["min_cost"] for labor in cost_breakdown["labor"])
-                    labor_max_total = sum(labor["max_cost"] for labor in cost_breakdown["labor"])
-                    labor_expected_total = sum(labor["cost"] for labor in cost_breakdown["labor"])
-                    
-                    fees_min_total = sum(fee["min_cost"] for fee in cost_breakdown["additional_fees"])
-                    fees_max_total = sum(fee["max_cost"] for fee in cost_breakdown["additional_fees"])
-                    fees_expected_total = sum(fee["cost"] for fee in cost_breakdown["additional_fees"])
-                    
-                    # Add category totals
-                    if "parts_total" not in cost_breakdown:
-                        cost_breakdown["parts_total"] = {
-                            "min": parts_min_total,
-                            "max": parts_max_total,
-                            "expected": parts_expected_total
-                        }
-                    else:
-                        cost_breakdown["parts_total"]["min"] = parts_min_total
-                        cost_breakdown["parts_total"]["max"] = parts_max_total
-                        cost_breakdown["parts_total"]["expected"] = parts_expected_total
-                    
-                    if "labor_total" not in cost_breakdown:
-                        cost_breakdown["labor_total"] = {
-                            "min": labor_min_total,
-                            "max": labor_max_total,
-                            "expected": labor_expected_total
-                        }
-                    else:
-                        cost_breakdown["labor_total"]["min"] = labor_min_total
-                        cost_breakdown["labor_total"]["max"] = labor_max_total
-                        cost_breakdown["labor_total"]["expected"] = labor_expected_total
-                    
-                    if "fees_total" not in cost_breakdown:
-                        cost_breakdown["fees_total"] = {
-                            "min": fees_min_total,
-                            "max": fees_max_total,
-                            "expected": fees_expected_total
-                        }
-                    else:
-                        cost_breakdown["fees_total"]["min"] = fees_min_total
-                        cost_breakdown["fees_total"]["max"] = fees_max_total
-                        cost_breakdown["fees_total"]["expected"] = fees_expected_total
-                    
-                    # Calculate overall totals (sum of categories)
-                    min_total = parts_min_total + labor_min_total + fees_min_total
-                    max_total = parts_max_total + labor_max_total + fees_max_total
-                    expected_total = parts_expected_total + labor_expected_total + fees_expected_total
-                    
-                    # Update the total estimate
-                    cost_breakdown["total_estimate"]["min"] = min_total
-                    cost_breakdown["total_estimate"]["max"] = max_total
-                    cost_breakdown["total_estimate"]["expected"] = expected_total
-                    
-                    # Set default certainty values if not provided
-                    if "make_certainty" not in item["vehicle_info"]:
-                        item["vehicle_info"]["make_certainty"] = 85.0
-                    
-                    if "model_certainty" not in item["vehicle_info"]:
-                        item["vehicle_info"]["model_certainty"] = 80.0
-                
+                    self._validate_single_assessment(item)
                 return assessment_data
+            
+            # Handle single assessment
+            elif isinstance(assessment_data, dict) and "vehicle_info" in assessment_data and "damage_data" in assessment_data:
+                logger.debug("Validating costs for single assessment")
+                self._validate_single_assessment(assessment_data)
+                return assessment_data
+            
             else:
                 logger.warning(f"Unexpected assessment_data structure: {type(assessment_data)}")
                 return assessment_data
@@ -236,6 +60,118 @@ class GroqService:
             logger.error(f"Error in validate_total_costs: {str(e)}")
             logger.error(traceback.format_exc())
             raise
+    
+    def _validate_single_assessment(self, item: Dict[str, Any]) -> None:
+        """
+        Validate and correct the cost calculations for a single assessment
+        
+        Args:
+            item: A single assessment dictionary
+        """
+        try:
+            if "damage_data" in item and "cost_breakdown" in item["damage_data"]:
+                cost_breakdown = item["damage_data"]["cost_breakdown"]
+                
+                # Validate parts total
+                if "parts" in cost_breakdown and "parts_total" in cost_breakdown:
+                    parts = cost_breakdown["parts"]
+                    
+                    expected_sum = sum(part.get("cost", 0) for part in parts)
+                    expected_min = sum(part.get("min_cost", 0) for part in parts)
+                    expected_max = sum(part.get("max_cost", 0) for part in parts)
+                    
+                    if abs(cost_breakdown["parts_total"].get("expected", 0) - expected_sum) > 1:
+                        logger.warning(f"Correcting parts total: {cost_breakdown['parts_total'].get('expected', 0)} → {expected_sum}")
+                        cost_breakdown["parts_total"]["expected"] = expected_sum
+                    
+                    if abs(cost_breakdown["parts_total"].get("min", 0) - expected_min) > 1:
+                        logger.warning(f"Correcting parts min: {cost_breakdown['parts_total'].get('min', 0)} → {expected_min}")
+                        cost_breakdown["parts_total"]["min"] = expected_min
+                    
+                    if abs(cost_breakdown["parts_total"].get("max", 0) - expected_max) > 1:
+                        logger.warning(f"Correcting parts max: {cost_breakdown['parts_total'].get('max', 0)} → {expected_max}")
+                        cost_breakdown["parts_total"]["max"] = expected_max
+                
+                # Validate labor total
+                if "labor" in cost_breakdown and "labor_total" in cost_breakdown:
+                    labor = cost_breakdown["labor"]
+                    
+                    expected_sum = sum(labor_item.get("cost", 0) for labor_item in labor)
+                    expected_min = sum(labor_item.get("min_cost", 0) for labor_item in labor)
+                    expected_max = sum(labor_item.get("max_cost", 0) for labor_item in labor)
+                    
+                    if abs(cost_breakdown["labor_total"].get("expected", 0) - expected_sum) > 1:
+                        logger.warning(f"Correcting labor total: {cost_breakdown['labor_total'].get('expected', 0)} → {expected_sum}")
+                        cost_breakdown["labor_total"]["expected"] = expected_sum
+                    
+                    if abs(cost_breakdown["labor_total"].get("min", 0) - expected_min) > 1:
+                        logger.warning(f"Correcting labor min: {cost_breakdown['labor_total'].get('min', 0)} → {expected_min}")
+                        cost_breakdown["labor_total"]["min"] = expected_min
+                    
+                    if abs(cost_breakdown["labor_total"].get("max", 0) - expected_max) > 1:
+                        logger.warning(f"Correcting labor max: {cost_breakdown['labor_total'].get('max', 0)} → {expected_max}")
+                        cost_breakdown["labor_total"]["max"] = expected_max
+                
+                # Validate fees total
+                if "additional_fees" in cost_breakdown and "fees_total" in cost_breakdown:
+                    fees = cost_breakdown["additional_fees"]
+                    
+                    expected_sum = sum(fee.get("cost", 0) for fee in fees)
+                    expected_min = sum(fee.get("min_cost", 0) for fee in fees)
+                    expected_max = sum(fee.get("max_cost", 0) for fee in fees)
+                    
+                    if abs(cost_breakdown["fees_total"].get("expected", 0) - expected_sum) > 1:
+                        logger.warning(f"Correcting fees total: {cost_breakdown['fees_total'].get('expected', 0)} → {expected_sum}")
+                        cost_breakdown["fees_total"]["expected"] = expected_sum
+                    
+                    if abs(cost_breakdown["fees_total"].get("min", 0) - expected_min) > 1:
+                        logger.warning(f"Correcting fees min: {cost_breakdown['fees_total'].get('min', 0)} → {expected_min}")
+                        cost_breakdown["fees_total"]["min"] = expected_min
+                    
+                    if abs(cost_breakdown["fees_total"].get("max", 0) - expected_max) > 1:
+                        logger.warning(f"Correcting fees max: {cost_breakdown['fees_total'].get('max', 0)} → {expected_max}")
+                        cost_breakdown["fees_total"]["max"] = expected_max
+                
+                # Validate total estimate
+                if "parts_total" in cost_breakdown and "labor_total" in cost_breakdown and "fees_total" in cost_breakdown and "total_estimate" in cost_breakdown:
+                    expected_sum = (
+                        cost_breakdown["parts_total"].get("expected", 0) +
+                        cost_breakdown["labor_total"].get("expected", 0) +
+                        cost_breakdown["fees_total"].get("expected", 0)
+                    )
+                    expected_min = (
+                        cost_breakdown["parts_total"].get("min", 0) +
+                        cost_breakdown["labor_total"].get("min", 0) +
+                        cost_breakdown["fees_total"].get("min", 0)
+                    )
+                    expected_max = (
+                        cost_breakdown["parts_total"].get("max", 0) +
+                        cost_breakdown["labor_total"].get("max", 0) +
+                        cost_breakdown["fees_total"].get("max", 0)
+                    )
+                    
+                    if abs(cost_breakdown["total_estimate"].get("expected", 0) - expected_sum) > 1:
+                        logger.warning(f"Correcting total: {cost_breakdown['total_estimate'].get('expected', 0)} → {expected_sum}")
+                        cost_breakdown["total_estimate"]["expected"] = expected_sum
+                    
+                    if abs(cost_breakdown["total_estimate"].get("min", 0) - expected_min) > 1:
+                        logger.warning(f"Correcting total min: {cost_breakdown['total_estimate'].get('min', 0)} → {expected_min}")
+                        cost_breakdown["total_estimate"]["min"] = expected_min
+                    
+                    if abs(cost_breakdown["total_estimate"].get("max", 0) - expected_max) > 1:
+                        logger.warning(f"Correcting total max: {cost_breakdown['total_estimate'].get('max', 0)} → {expected_max}")
+                        cost_breakdown["total_estimate"]["max"] = expected_max
+                
+                # Ensure make_certainty is present
+                if "vehicle_info" in item and "make_certainty" not in item["vehicle_info"]:
+                    item["vehicle_info"]["make_certainty"] = 85.0
+                
+                # Ensure model_certainty is present
+                if "vehicle_info" in item and "model_certainty" not in item["vehicle_info"]:
+                    item["vehicle_info"]["model_certainty"] = 80.0
+            
+        except Exception as e:
+            logger.error(f"Error validating single assessment: {str(e)}")
     
     async def analyze_car_damage(self, image_bytes: bytes) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """
@@ -391,57 +327,83 @@ class GroqService:
         Lower these certainty values if the image is unclear, partially visible, or if there are multiple similar models that could match.
         """
         
+        # User prompt just includes the instruction to analyze the image
+        user_prompt = "Analyze this car image for damage assessment and repair cost estimation."
+        
         try:
-            logger.info("Calling Groq API")
-            # Call Groq API
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                # Allow flexible response format to handle both single object and list of objects
-                response_format={"type": "json_object"},
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {
-                        "role": "user", 
-                        "content": [
-                            {"type": "text", "text": "Analyze this car image and provide a detailed damage assessment with cost breakdown. If multiple cars are visible, analyze each one separately:"},
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:image/jpeg;base64,{base64_image}"
-                                }
+            # Create message with image
+            messages = [
+                {
+                    "role": "system",
+                    "content": system_prompt
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": user_prompt
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{base64_image}"
                             }
-                        ]
-                    }
-                ],
-                max_tokens=4000,
-                temperature=0.2,  # Lower temperature for more deterministic outputs
+                        }
+                    ]
+                }
+            ]
+            
+            # Make the API call
+            logger.info("Sending request to Groq API")
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                response_format={"type": "json_object"},
+                temperature=0.2,
+                max_tokens=4096
             )
             
-            # Extract the content from the response
-            content = response.choices[0].message.content
-            logger.info("Received response from Groq API")
-            logger.debug(f"Raw API response content: {content}")
+            # Extract the response content
+            result_text = response.choices[0].message.content
+            logger.debug(f"Raw response from Groq: {result_text}")
             
-            # Parse JSON content
             try:
-                assessment_data = json.loads(content)
-                logger.info("Successfully parsed JSON response")
+                # Parse the JSON response
+                result_json = json.loads(result_text)
+                
+                # Some models might return the array directly, others might wrap it in another object
+                if isinstance(result_json, list):
+                    # It's already an array of assessments
+                    result = result_json
+                elif isinstance(result_json, dict):
+                    if "assessments" in result_json:
+                        # It's wrapped in an object with an "assessments" key
+                        result = result_json["assessments"]
+                    elif "vehicle_info" in result_json and "damage_data" in result_json:
+                        # It's a single assessment
+                        result = result_json
+                    else:
+                        # It's some other structure, but we'll try to use it anyway
+                        logger.warning(f"Unexpected JSON structure: {list(result_json.keys())}")
+                        result = result_json
+                else:
+                    logger.warning(f"Unexpected result type: {type(result_json)}")
+                    raise ValueError(f"Unexpected response format: {type(result_json)}")
+                
+                # Validate and correct cost calculations
+                validated_result = self.validate_total_costs(result)
+                
+                logger.info("Successfully analyzed car damage")
+                return validated_result
+                
             except json.JSONDecodeError as e:
-                logger.error(f"JSON parsing error: {str(e)}")
-                logger.error(f"Raw content that failed to parse: {content}")
-                raise Exception(f"Failed to parse Groq API response as JSON: {str(e)}")
-            
-            # Validate and ensure total costs are mathematically consistent
-            assessment_data = self.validate_total_costs(assessment_data)
-            logger.info("Validated total costs")
-            
-            # Return the validated JSON data
-            return assessment_data
+                logger.error(f"Failed to parse JSON from Groq response: {str(e)}")
+                raise ValueError(f"Failed to parse AI response: {str(e)}")
             
         except Exception as e:
-            logger.error(f"Groq API error: {str(e)}")
-            logger.error(traceback.format_exc())
-            raise Exception(f"Error communicating with Groq: {str(e)}")
+            logger.error(f"Error analyzing car damage: {str(e)}", exc_info=True)
+            raise ValueError(f"Error analyzing image with AI: {str(e)}")
     
     def analyze_car_damage_sync(self, image_bytes: bytes) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """
