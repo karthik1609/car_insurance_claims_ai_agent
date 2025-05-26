@@ -323,3 +323,1164 @@ fastapi.exceptions.ResponseValidationError: 1 validation errors:
 2025-05-02 14:11:15 - uvicorn.access - INFO - 127.0.0.1:50215 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
 2025-05-02 14:59:09 - uvicorn.error - INFO - Shutting down
 2025-05-02 14:59:10 - uvicorn.error - INFO - Finished server process [25486]
+2025-05-13 06:48:44 - __main__ - INFO - Starting server at 0.0.0.0:8000
+2025-05-13 06:48:45 - uvicorn.error - INFO - Started server process [8]
+2025-05-13 06:48:45 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-13 06:48:45 - uvicorn.error - INFO - Application startup complete.
+2025-05-13 06:48:49 - uvicorn.access - INFO - 127.0.0.1:46304 - "GET /health HTTP/1.1" 200
+2025-05-13 06:48:51 - uvicorn.access - INFO - 172.21.0.1:62160 - "GET /docs HTTP/1.1" 200
+2025-05-13 06:48:51 - uvicorn.access - INFO - 172.21.0.1:62170 - "GET /openapi.json HTTP/1.1" 200
+2025-05-13 06:49:19 - uvicorn.access - INFO - 127.0.0.1:34618 - "GET /health HTTP/1.1" 200
+2025-05-13 06:49:49 - uvicorn.access - INFO - 127.0.0.1:46954 - "GET /health HTTP/1.1" 200
+2025-05-13 06:50:19 - uvicorn.access - INFO - 127.0.0.1:45252 - "GET /health HTTP/1.1" 200
+2025-05-13 06:50:49 - uvicorn.access - INFO - 127.0.0.1:34534 - "GET /health HTTP/1.1" 200
+2025-05-13 06:50:51 - src.api.routes - INFO - Processing base64-encoded image
+2025-05-13 06:50:51 - src.api.routes - INFO - Validating image
+2025-05-13 06:50:51 - src.api.routes - WARNING - Image validation failed: The file is not a valid image
+2025-05-13 06:50:51 - src.api.routes - WARNING - HTTP Exception: The file is not a valid image
+2025-05-13 06:50:51 - uvicorn.access - INFO - 172.21.0.1:64330 - "POST /assess-damage-base64?skip_fraud_check=false&process_anyway=true HTTP/1.1" 400
+2025-05-13 06:51:20 - uvicorn.access - INFO - 127.0.0.1:41448 - "GET /health HTTP/1.1" 200
+2025-05-13 06:51:50 - uvicorn.access - INFO - 127.0.0.1:34146 - "GET /health HTTP/1.1" 200
+2025-05-13 06:52:20 - uvicorn.access - INFO - 127.0.0.1:34480 - "GET /health HTTP/1.1" 200
+2025-05-13 06:52:50 - uvicorn.access - INFO - 127.0.0.1:39634 - "GET /health HTTP/1.1" 200
+2025-05-13 06:53:20 - uvicorn.access - INFO - 127.0.0.1:48272 - "GET /health HTTP/1.1" 200
+2025-05-13 06:53:50 - uvicorn.access - INFO - 127.0.0.1:60622 - "GET /health HTTP/1.1" 200
+2025-05-13 06:54:20 - uvicorn.access - INFO - 127.0.0.1:55238 - "GET /health HTTP/1.1" 200
+2025-05-13 06:54:50 - uvicorn.access - INFO - 127.0.0.1:41680 - "GET /health HTTP/1.1" 200
+2025-05-13 06:54:55 - src.api.routes - INFO - Processing uploaded image: luxury-car.jpg
+2025-05-13 06:54:55 - src.api.routes - INFO - Validating image
+2025-05-13 06:54:55 - src.api.routes - INFO - Running fraud detection
+2025-05-13 06:54:55 - src.api.routes - INFO - Resizing image if needed
+2025-05-13 06:54:55 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-13 06:54:55 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-13 06:54:55 - src.services.groq_service - INFO - Sending request to Groq API
+2025-05-13 06:54:58 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-13 06:54:58 - src.services.groq_service - WARNING - Correcting labor total: 500 → 550
+2025-05-13 06:54:58 - src.services.groq_service - WARNING - Correcting labor min: 410 → 480
+2025-05-13 06:54:58 - src.services.groq_service - WARNING - Correcting labor max: 570 → 620
+2025-05-13 06:54:58 - src.services.groq_service - WARNING - Correcting total: 1950 → 2000
+2025-05-13 06:54:58 - src.services.groq_service - WARNING - Correcting total min: 1620 → 1690
+2025-05-13 06:54:58 - src.services.groq_service - WARNING - Correcting total max: 2260 → 2310
+2025-05-13 06:54:58 - src.services.groq_service - INFO - Successfully analyzed car damage
+2025-05-13 06:54:58 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-13 06:54:58 - uvicorn.access - INFO - 172.21.0.1:55850 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 200
+2025-05-13 06:55:16 - src.api.routes - INFO - Processing uploaded image: luxury-car.jpg
+2025-05-13 06:55:16 - src.api.routes - INFO - Validating image
+2025-05-13 06:55:16 - src.api.routes - INFO - Running fraud detection
+2025-05-13 06:55:16 - src.api.routes - INFO - Resizing image if needed
+2025-05-13 06:55:16 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-13 06:55:16 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-13 06:55:16 - src.services.groq_service - INFO - Sending request to Groq API
+2025-05-13 06:55:19 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-13 06:55:19 - src.services.groq_service - WARNING - Correcting parts max: 1570 → 1670
+2025-05-13 06:55:19 - src.services.groq_service - WARNING - Correcting total max: 2850 → 2950
+2025-05-13 06:55:19 - src.services.groq_service - INFO - Successfully analyzed car damage
+2025-05-13 06:55:19 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-13 06:55:19 - uvicorn.access - INFO - 172.21.0.1:64180 - "POST /assess-damage?skip_fraud_check=false&process_anyway=true HTTP/1.1" 200
+2025-05-13 06:55:20 - uvicorn.access - INFO - 127.0.0.1:33044 - "GET /health HTTP/1.1" 200
+2025-05-13 06:55:50 - uvicorn.access - INFO - 127.0.0.1:59484 - "GET /health HTTP/1.1" 200
+2025-05-13 06:56:20 - uvicorn.access - INFO - 127.0.0.1:42184 - "GET /health HTTP/1.1" 200
+2025-05-13 06:56:50 - uvicorn.access - INFO - 127.0.0.1:45166 - "GET /health HTTP/1.1" 200
+2025-05-13 06:57:21 - uvicorn.access - INFO - 127.0.0.1:53196 - "GET /health HTTP/1.1" 200
+2025-05-13 06:57:51 - uvicorn.access - INFO - 127.0.0.1:42606 - "GET /health HTTP/1.1" 200
+2025-05-13 06:58:21 - uvicorn.access - INFO - 127.0.0.1:39820 - "GET /health HTTP/1.1" 200
+2025-05-13 06:58:51 - uvicorn.access - INFO - 127.0.0.1:56110 - "GET /health HTTP/1.1" 200
+2025-05-13 06:59:21 - uvicorn.access - INFO - 127.0.0.1:49712 - "GET /health HTTP/1.1" 200
+2025-05-13 06:59:51 - uvicorn.access - INFO - 127.0.0.1:51310 - "GET /health HTTP/1.1" 200
+2025-05-13 07:00:21 - uvicorn.access - INFO - 127.0.0.1:51372 - "GET /health HTTP/1.1" 200
+2025-05-13 07:00:51 - uvicorn.access - INFO - 127.0.0.1:36330 - "GET /health HTTP/1.1" 200
+2025-05-13 07:01:21 - uvicorn.access - INFO - 127.0.0.1:41294 - "GET /health HTTP/1.1" 200
+2025-05-13 07:01:51 - uvicorn.access - INFO - 127.0.0.1:36244 - "GET /health HTTP/1.1" 200
+2025-05-13 07:02:22 - uvicorn.access - INFO - 127.0.0.1:42944 - "GET /health HTTP/1.1" 200
+2025-05-13 07:02:52 - uvicorn.access - INFO - 127.0.0.1:51652 - "GET /health HTTP/1.1" 200
+2025-05-13 07:03:22 - uvicorn.access - INFO - 127.0.0.1:53346 - "GET /health HTTP/1.1" 200
+2025-05-13 07:03:52 - uvicorn.access - INFO - 127.0.0.1:47766 - "GET /health HTTP/1.1" 200
+2025-05-13 07:04:22 - uvicorn.access - INFO - 127.0.0.1:49828 - "GET /health HTTP/1.1" 200
+2025-05-13 07:04:52 - uvicorn.access - INFO - 127.0.0.1:49550 - "GET /health HTTP/1.1" 200
+2025-05-13 07:05:22 - uvicorn.access - INFO - 127.0.0.1:38690 - "GET /health HTTP/1.1" 200
+2025-05-13 07:05:52 - uvicorn.access - INFO - 127.0.0.1:52612 - "GET /health HTTP/1.1" 200
+2025-05-13 07:06:22 - uvicorn.access - INFO - 127.0.0.1:58226 - "GET /health HTTP/1.1" 200
+2025-05-13 07:06:52 - uvicorn.access - INFO - 127.0.0.1:38024 - "GET /health HTTP/1.1" 200
+2025-05-13 07:07:23 - uvicorn.access - INFO - 127.0.0.1:44656 - "GET /health HTTP/1.1" 200
+2025-05-13 07:07:53 - uvicorn.access - INFO - 127.0.0.1:40564 - "GET /health HTTP/1.1" 200
+2025-05-13 07:08:05 - uvicorn.access - INFO - 172.21.0.1:56544 - "GET /docs HTTP/1.1" 200
+2025-05-13 07:08:06 - uvicorn.access - INFO - 172.21.0.1:56544 - "GET /openapi.json HTTP/1.1" 200
+2025-05-13 07:08:23 - uvicorn.access - INFO - 127.0.0.1:39012 - "GET /health HTTP/1.1" 200
+2025-05-13 07:08:30 - src.api.routes - INFO - Processing base64-encoded image
+2025-05-13 07:08:30 - src.api.routes - INFO - Validating image
+2025-05-13 07:08:30 - src.api.routes - INFO - Running fraud detection
+2025-05-13 07:08:30 - src.api.routes - INFO - Resizing image if needed
+2025-05-13 07:08:30 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-13 07:08:30 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-13 07:08:30 - src.services.groq_service - INFO - Sending request to Groq API
+2025-05-13 07:08:33 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-13 07:08:33 - src.services.groq_service - WARNING - Correcting parts max: 1570 → 1670
+2025-05-13 07:08:33 - src.services.groq_service - WARNING - Correcting total max: 2850 → 2950
+2025-05-13 07:08:33 - src.services.groq_service - INFO - Successfully analyzed car damage
+2025-05-13 07:08:33 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-13 07:08:33 - uvicorn.access - INFO - 172.21.0.1:56212 - "POST /assess-damage-base64?skip_fraud_check=false&process_anyway=false HTTP/1.1" 200
+2025-05-13 07:08:43 - src.api.routes - INFO - Processing base64-encoded image
+2025-05-13 07:08:43 - src.api.routes - INFO - Validating image
+2025-05-13 07:08:43 - src.api.routes - INFO - Running fraud detection
+2025-05-13 07:08:43 - src.api.routes - INFO - Resizing image if needed
+2025-05-13 07:08:43 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-13 07:08:43 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-13 07:08:43 - src.services.groq_service - INFO - Sending request to Groq API
+2025-05-13 07:08:46 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-13 07:08:46 - src.services.groq_service - WARNING - Correcting labor total: 430 → 530
+2025-05-13 07:08:46 - src.services.groq_service - WARNING - Correcting labor min: 360 → 390
+2025-05-13 07:08:46 - src.services.groq_service - WARNING - Correcting labor max: 520 → 670
+2025-05-13 07:08:46 - src.services.groq_service - WARNING - Correcting total: 730 → 830
+2025-05-13 07:08:46 - src.services.groq_service - WARNING - Correcting total min: 570 → 600
+2025-05-13 07:08:46 - src.services.groq_service - WARNING - Correcting total max: 910 → 1060
+2025-05-13 07:08:46 - src.services.groq_service - INFO - Successfully analyzed car damage
+2025-05-13 07:08:46 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-13 07:08:46 - uvicorn.access - INFO - 172.21.0.1:59466 - "POST /assess-damage-base64?skip_fraud_check=false&process_anyway=true HTTP/1.1" 200
+2025-05-13 07:08:53 - uvicorn.access - INFO - 127.0.0.1:40368 - "GET /health HTTP/1.1" 200
+2025-05-13 07:09:23 - uvicorn.access - INFO - 127.0.0.1:36902 - "GET /health HTTP/1.1" 200
+2025-05-13 07:09:53 - uvicorn.access - INFO - 127.0.0.1:33098 - "GET /health HTTP/1.1" 200
+2025-05-13 07:10:23 - uvicorn.access - INFO - 127.0.0.1:52970 - "GET /health HTTP/1.1" 200
+2025-05-13 07:10:53 - uvicorn.access - INFO - 127.0.0.1:48436 - "GET /health HTTP/1.1" 200
+2025-05-13 07:11:23 - uvicorn.access - INFO - 127.0.0.1:55176 - "GET /health HTTP/1.1" 200
+2025-05-13 07:11:53 - uvicorn.access - INFO - 127.0.0.1:47694 - "GET /health HTTP/1.1" 200
+2025-05-13 07:12:24 - uvicorn.access - INFO - 127.0.0.1:36460 - "GET /health HTTP/1.1" 200
+2025-05-13 07:12:54 - uvicorn.access - INFO - 127.0.0.1:40360 - "GET /health HTTP/1.1" 200
+2025-05-13 07:13:18 - uvicorn.access - INFO - 172.21.0.1:64520 - "GET /docs HTTP/1.1" 200
+2025-05-13 07:13:18 - uvicorn.access - INFO - 172.21.0.1:64520 - "GET /openapi.json HTTP/1.1" 200
+2025-05-13 07:13:24 - uvicorn.access - INFO - 127.0.0.1:46908 - "GET /health HTTP/1.1" 200
+2025-05-13 07:13:54 - uvicorn.access - INFO - 127.0.0.1:47796 - "GET /health HTTP/1.1" 200
+2025-05-13 07:14:24 - uvicorn.access - INFO - 127.0.0.1:43770 - "GET /health HTTP/1.1" 200
+2025-05-13 07:14:48 - src.api.routes - INFO - Processing base64-encoded image
+2025-05-13 07:14:48 - src.api.routes - INFO - Validating image
+2025-05-13 07:14:48 - src.api.routes - INFO - Running fraud detection
+2025-05-13 07:14:49 - src.api.routes - WARNING - Potential fraud detected: Image appears to be a screenshot, not an original photo
+2025-05-13 07:14:49 - src.api.routes - INFO - Returning fraud warning without assessment
+2025-05-13 07:14:49 - uvicorn.access - INFO - 172.21.0.1:63922 - "POST /assess-damage-base64?skip_fraud_check=false&process_anyway=false HTTP/1.1" 202
+2025-05-13 07:14:54 - uvicorn.access - INFO - 127.0.0.1:47160 - "GET /health HTTP/1.1" 200
+2025-05-13 07:15:04 - src.api.routes - INFO - Processing base64-encoded image
+2025-05-13 07:15:04 - src.api.routes - INFO - Validating image
+2025-05-13 07:15:04 - src.api.routes - INFO - Running fraud detection
+2025-05-13 07:15:04 - src.api.routes - WARNING - Potential fraud detected: Image appears to be a screenshot, not an original photo
+2025-05-13 07:15:04 - src.api.routes - INFO - Processing despite fraud detection (process_anyway=true)
+2025-05-13 07:15:04 - src.api.routes - INFO - Resizing image if needed
+2025-05-13 07:15:07 - src.api.routes - INFO - Sending image to Groq service for damage assessment
+2025-05-13 07:15:07 - src.services.groq_service - INFO - Image encoded to base64
+2025-05-13 07:15:07 - src.services.groq_service - INFO - Sending request to Groq API
+2025-05-13 07:15:10 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-13 07:15:10 - src.services.groq_service - INFO - Successfully analyzed car damage
+2025-05-13 07:15:10 - src.api.routes - INFO - Damage assessment completed successfully
+2025-05-13 07:15:10 - uvicorn.access - INFO - 172.21.0.1:55476 - "POST /assess-damage-base64?skip_fraud_check=false&process_anyway=true HTTP/1.1" 202
+2025-05-13 07:15:26 - uvicorn.access - INFO - 127.0.0.1:43694 - "GET /health HTTP/1.1" 200
+2025-05-13 07:15:57 - uvicorn.access - INFO - 127.0.0.1:56996 - "GET /health HTTP/1.1" 200
+2025-05-13 07:16:27 - uvicorn.access - INFO - 127.0.0.1:43204 - "GET /health HTTP/1.1" 200
+2025-05-13 07:16:57 - uvicorn.access - INFO - 127.0.0.1:43362 - "GET /health HTTP/1.1" 200
+2025-05-13 07:17:27 - uvicorn.access - INFO - 127.0.0.1:49408 - "GET /health HTTP/1.1" 200
+2025-05-13 07:17:57 - uvicorn.access - INFO - 127.0.0.1:40904 - "GET /health HTTP/1.1" 200
+2025-05-13 07:18:27 - uvicorn.access - INFO - 127.0.0.1:59754 - "GET /health HTTP/1.1" 200
+2025-05-13 07:18:57 - uvicorn.access - INFO - 127.0.0.1:55726 - "GET /health HTTP/1.1" 200
+2025-05-13 07:19:27 - uvicorn.access - INFO - 127.0.0.1:35892 - "GET /health HTTP/1.1" 200
+2025-05-13 07:19:57 - uvicorn.access - INFO - 127.0.0.1:57132 - "GET /health HTTP/1.1" 200
+2025-05-13 07:20:28 - uvicorn.access - INFO - 127.0.0.1:45512 - "GET /health HTTP/1.1" 200
+2025-05-13 07:20:58 - uvicorn.access - INFO - 127.0.0.1:53484 - "GET /health HTTP/1.1" 200
+2025-05-13 07:21:28 - uvicorn.access - INFO - 127.0.0.1:41560 - "GET /health HTTP/1.1" 200
+2025-05-13 07:21:58 - uvicorn.access - INFO - 127.0.0.1:41886 - "GET /health HTTP/1.1" 200
+2025-05-13 07:22:28 - uvicorn.access - INFO - 127.0.0.1:44510 - "GET /health HTTP/1.1" 200
+2025-05-13 07:22:58 - uvicorn.access - INFO - 127.0.0.1:48320 - "GET /health HTTP/1.1" 200
+2025-05-13 07:23:28 - uvicorn.access - INFO - 127.0.0.1:41992 - "GET /health HTTP/1.1" 200
+2025-05-13 07:23:58 - uvicorn.access - INFO - 127.0.0.1:42318 - "GET /health HTTP/1.1" 200
+2025-05-13 07:24:28 - uvicorn.access - INFO - 127.0.0.1:38368 - "GET /health HTTP/1.1" 200
+2025-05-13 07:24:58 - uvicorn.access - INFO - 127.0.0.1:50772 - "GET /health HTTP/1.1" 200
+2025-05-13 07:25:28 - uvicorn.access - INFO - 127.0.0.1:58226 - "GET /health HTTP/1.1" 200
+2025-05-13 07:25:58 - uvicorn.access - INFO - 127.0.0.1:39560 - "GET /health HTTP/1.1" 200
+2025-05-13 07:26:29 - uvicorn.access - INFO - 127.0.0.1:55828 - "GET /health HTTP/1.1" 200
+2025-05-13 07:26:59 - uvicorn.access - INFO - 127.0.0.1:42562 - "GET /health HTTP/1.1" 200
+2025-05-13 07:27:29 - uvicorn.access - INFO - 127.0.0.1:44444 - "GET /health HTTP/1.1" 200
+2025-05-13 07:27:59 - uvicorn.access - INFO - 127.0.0.1:41914 - "GET /health HTTP/1.1" 200
+2025-05-13 07:28:29 - uvicorn.access - INFO - 127.0.0.1:52112 - "GET /health HTTP/1.1" 200
+2025-05-13 07:28:59 - uvicorn.access - INFO - 127.0.0.1:38248 - "GET /health HTTP/1.1" 200
+2025-05-13 07:29:29 - uvicorn.access - INFO - 127.0.0.1:52378 - "GET /health HTTP/1.1" 200
+2025-05-13 07:29:59 - uvicorn.access - INFO - 127.0.0.1:54672 - "GET /health HTTP/1.1" 200
+2025-05-13 07:30:29 - uvicorn.access - INFO - 127.0.0.1:48134 - "GET /health HTTP/1.1" 200
+2025-05-13 07:30:59 - uvicorn.access - INFO - 127.0.0.1:39414 - "GET /health HTTP/1.1" 200
+2025-05-13 07:31:30 - uvicorn.access - INFO - 127.0.0.1:53920 - "GET /health HTTP/1.1" 200
+2025-05-13 07:32:00 - uvicorn.access - INFO - 127.0.0.1:42456 - "GET /health HTTP/1.1" 200
+2025-05-13 07:32:30 - uvicorn.access - INFO - 127.0.0.1:58044 - "GET /health HTTP/1.1" 200
+2025-05-13 07:33:00 - uvicorn.access - INFO - 127.0.0.1:55004 - "GET /health HTTP/1.1" 200
+2025-05-13 07:33:30 - uvicorn.access - INFO - 127.0.0.1:32880 - "GET /health HTTP/1.1" 200
+2025-05-13 07:34:00 - uvicorn.access - INFO - 127.0.0.1:33318 - "GET /health HTTP/1.1" 200
+2025-05-13 07:34:30 - uvicorn.access - INFO - 127.0.0.1:32828 - "GET /health HTTP/1.1" 200
+2025-05-13 07:35:00 - uvicorn.access - INFO - 127.0.0.1:60568 - "GET /health HTTP/1.1" 200
+2025-05-13 07:35:31 - uvicorn.access - INFO - 127.0.0.1:37470 - "GET /health HTTP/1.1" 200
+2025-05-13 07:36:01 - uvicorn.access - INFO - 127.0.0.1:53960 - "GET /health HTTP/1.1" 200
+2025-05-13 07:36:31 - uvicorn.access - INFO - 127.0.0.1:35192 - "GET /health HTTP/1.1" 200
+2025-05-13 07:37:01 - uvicorn.access - INFO - 127.0.0.1:40572 - "GET /health HTTP/1.1" 200
+2025-05-13 07:37:31 - uvicorn.access - INFO - 127.0.0.1:47924 - "GET /health HTTP/1.1" 200
+2025-05-13 07:38:01 - uvicorn.access - INFO - 127.0.0.1:53916 - "GET /health HTTP/1.1" 200
+2025-05-13 07:38:31 - uvicorn.access - INFO - 127.0.0.1:58520 - "GET /health HTTP/1.1" 200
+2025-05-13 07:39:01 - uvicorn.access - INFO - 127.0.0.1:55456 - "GET /health HTTP/1.1" 200
+2025-05-13 07:39:31 - uvicorn.access - INFO - 127.0.0.1:35448 - "GET /health HTTP/1.1" 200
+2025-05-13 07:40:02 - uvicorn.access - INFO - 127.0.0.1:46232 - "GET /health HTTP/1.1" 200
+2025-05-13 07:40:32 - uvicorn.access - INFO - 127.0.0.1:60286 - "GET /health HTTP/1.1" 200
+2025-05-13 07:41:02 - uvicorn.access - INFO - 127.0.0.1:54288 - "GET /health HTTP/1.1" 200
+2025-05-13 07:41:32 - uvicorn.access - INFO - 127.0.0.1:44294 - "GET /health HTTP/1.1" 200
+2025-05-13 07:42:02 - uvicorn.access - INFO - 127.0.0.1:52026 - "GET /health HTTP/1.1" 200
+2025-05-13 07:42:32 - uvicorn.access - INFO - 127.0.0.1:36404 - "GET /health HTTP/1.1" 200
+2025-05-13 07:43:02 - uvicorn.access - INFO - 127.0.0.1:49992 - "GET /health HTTP/1.1" 200
+2025-05-13 07:43:32 - uvicorn.access - INFO - 127.0.0.1:56028 - "GET /health HTTP/1.1" 200
+2025-05-13 07:44:02 - uvicorn.access - INFO - 127.0.0.1:49038 - "GET /health HTTP/1.1" 200
+2025-05-13 07:44:32 - uvicorn.access - INFO - 127.0.0.1:44194 - "GET /health HTTP/1.1" 200
+2025-05-13 07:45:03 - uvicorn.access - INFO - 127.0.0.1:47388 - "GET /health HTTP/1.1" 200
+2025-05-13 07:45:33 - uvicorn.access - INFO - 127.0.0.1:37590 - "GET /health HTTP/1.1" 200
+2025-05-13 07:46:03 - uvicorn.access - INFO - 127.0.0.1:54458 - "GET /health HTTP/1.1" 200
+2025-05-13 07:46:33 - uvicorn.access - INFO - 127.0.0.1:41606 - "GET /health HTTP/1.1" 200
+2025-05-13 07:47:03 - uvicorn.access - INFO - 127.0.0.1:47152 - "GET /health HTTP/1.1" 200
+2025-05-13 07:47:33 - uvicorn.access - INFO - 127.0.0.1:51952 - "GET /health HTTP/1.1" 200
+2025-05-13 07:48:03 - uvicorn.access - INFO - 127.0.0.1:46866 - "GET /health HTTP/1.1" 200
+2025-05-13 07:48:33 - uvicorn.access - INFO - 127.0.0.1:48328 - "GET /health HTTP/1.1" 200
+2025-05-13 07:49:03 - uvicorn.access - INFO - 127.0.0.1:48868 - "GET /health HTTP/1.1" 200
+2025-05-13 07:49:33 - uvicorn.access - INFO - 127.0.0.1:48382 - "GET /health HTTP/1.1" 200
+2025-05-13 07:50:03 - uvicorn.access - INFO - 127.0.0.1:53728 - "GET /health HTTP/1.1" 200
+2025-05-13 07:50:34 - uvicorn.access - INFO - 127.0.0.1:37138 - "GET /health HTTP/1.1" 200
+2025-05-13 07:51:04 - uvicorn.access - INFO - 127.0.0.1:37494 - "GET /health HTTP/1.1" 200
+2025-05-13 07:51:34 - uvicorn.access - INFO - 127.0.0.1:41570 - "GET /health HTTP/1.1" 200
+2025-05-13 07:52:04 - uvicorn.access - INFO - 127.0.0.1:52524 - "GET /health HTTP/1.1" 200
+2025-05-13 07:52:34 - uvicorn.access - INFO - 127.0.0.1:57102 - "GET /health HTTP/1.1" 200
+2025-05-13 07:53:04 - uvicorn.access - INFO - 127.0.0.1:49060 - "GET /health HTTP/1.1" 200
+2025-05-13 07:53:34 - uvicorn.access - INFO - 127.0.0.1:41790 - "GET /health HTTP/1.1" 200
+2025-05-13 07:54:04 - uvicorn.access - INFO - 127.0.0.1:60430 - "GET /health HTTP/1.1" 200
+2025-05-13 07:54:34 - uvicorn.access - INFO - 127.0.0.1:58646 - "GET /health HTTP/1.1" 200
+2025-05-13 07:55:04 - uvicorn.access - INFO - 127.0.0.1:53268 - "GET /health HTTP/1.1" 200
+2025-05-13 07:55:35 - uvicorn.access - INFO - 127.0.0.1:52286 - "GET /health HTTP/1.1" 200
+2025-05-13 07:56:05 - uvicorn.access - INFO - 127.0.0.1:49086 - "GET /health HTTP/1.1" 200
+2025-05-13 07:56:35 - uvicorn.access - INFO - 127.0.0.1:36750 - "GET /health HTTP/1.1" 200
+2025-05-13 07:57:05 - uvicorn.access - INFO - 127.0.0.1:46096 - "GET /health HTTP/1.1" 200
+2025-05-13 07:57:35 - uvicorn.access - INFO - 127.0.0.1:48982 - "GET /health HTTP/1.1" 200
+2025-05-13 07:58:05 - uvicorn.access - INFO - 127.0.0.1:53106 - "GET /health HTTP/1.1" 200
+2025-05-13 07:58:35 - uvicorn.access - INFO - 127.0.0.1:50434 - "GET /health HTTP/1.1" 200
+2025-05-13 07:59:05 - uvicorn.access - INFO - 127.0.0.1:37410 - "GET /health HTTP/1.1" 200
+2025-05-13 07:59:35 - uvicorn.access - INFO - 127.0.0.1:37636 - "GET /health HTTP/1.1" 200
+2025-05-13 08:00:05 - uvicorn.access - INFO - 127.0.0.1:44108 - "GET /health HTTP/1.1" 200
+2025-05-13 08:00:35 - uvicorn.access - INFO - 127.0.0.1:49438 - "GET /health HTTP/1.1" 200
+2025-05-13 08:01:05 - uvicorn.access - INFO - 127.0.0.1:36658 - "GET /health HTTP/1.1" 200
+2025-05-13 08:01:36 - uvicorn.access - INFO - 127.0.0.1:38868 - "GET /health HTTP/1.1" 200
+2025-05-13 08:02:06 - uvicorn.access - INFO - 127.0.0.1:46940 - "GET /health HTTP/1.1" 200
+2025-05-13 08:02:36 - uvicorn.access - INFO - 127.0.0.1:51544 - "GET /health HTTP/1.1" 200
+2025-05-13 08:03:06 - uvicorn.access - INFO - 127.0.0.1:56226 - "GET /health HTTP/1.1" 200
+2025-05-13 08:03:36 - uvicorn.access - INFO - 127.0.0.1:37502 - "GET /health HTTP/1.1" 200
+2025-05-13 08:04:06 - uvicorn.access - INFO - 127.0.0.1:34596 - "GET /health HTTP/1.1" 200
+2025-05-13 08:04:36 - uvicorn.access - INFO - 127.0.0.1:50206 - "GET /health HTTP/1.1" 200
+2025-05-13 08:05:06 - uvicorn.access - INFO - 127.0.0.1:46270 - "GET /health HTTP/1.1" 200
+2025-05-13 08:05:36 - uvicorn.access - INFO - 127.0.0.1:53934 - "GET /health HTTP/1.1" 200
+2025-05-13 08:06:06 - uvicorn.access - INFO - 127.0.0.1:56432 - "GET /health HTTP/1.1" 200
+2025-05-13 08:06:36 - uvicorn.access - INFO - 127.0.0.1:47372 - "GET /health HTTP/1.1" 200
+2025-05-13 08:07:06 - uvicorn.access - INFO - 127.0.0.1:40902 - "GET /health HTTP/1.1" 200
+2025-05-13 08:07:37 - uvicorn.access - INFO - 127.0.0.1:46062 - "GET /health HTTP/1.1" 200
+2025-05-13 08:08:07 - uvicorn.access - INFO - 127.0.0.1:33780 - "GET /health HTTP/1.1" 200
+2025-05-13 08:08:37 - uvicorn.access - INFO - 127.0.0.1:37904 - "GET /health HTTP/1.1" 200
+2025-05-13 08:09:07 - uvicorn.access - INFO - 127.0.0.1:40584 - "GET /health HTTP/1.1" 200
+2025-05-13 08:09:37 - uvicorn.access - INFO - 127.0.0.1:34116 - "GET /health HTTP/1.1" 200
+2025-05-13 08:10:07 - uvicorn.access - INFO - 127.0.0.1:36676 - "GET /health HTTP/1.1" 200
+2025-05-13 08:10:37 - uvicorn.access - INFO - 127.0.0.1:48822 - "GET /health HTTP/1.1" 200
+2025-05-13 08:11:07 - uvicorn.access - INFO - 127.0.0.1:43738 - "GET /health HTTP/1.1" 200
+2025-05-13 08:11:37 - uvicorn.access - INFO - 127.0.0.1:54906 - "GET /health HTTP/1.1" 200
+2025-05-13 08:12:07 - uvicorn.access - INFO - 127.0.0.1:33080 - "GET /health HTTP/1.1" 200
+2025-05-13 08:12:37 - uvicorn.access - INFO - 127.0.0.1:38740 - "GET /health HTTP/1.1" 200
+2025-05-13 08:13:08 - uvicorn.access - INFO - 127.0.0.1:47062 - "GET /health HTTP/1.1" 200
+2025-05-13 08:13:38 - uvicorn.access - INFO - 127.0.0.1:60754 - "GET /health HTTP/1.1" 200
+2025-05-13 08:14:08 - uvicorn.access - INFO - 127.0.0.1:49632 - "GET /health HTTP/1.1" 200
+2025-05-13 08:14:38 - uvicorn.access - INFO - 127.0.0.1:54906 - "GET /health HTTP/1.1" 200
+2025-05-13 08:15:08 - uvicorn.access - INFO - 127.0.0.1:40188 - "GET /health HTTP/1.1" 200
+2025-05-13 08:15:38 - uvicorn.access - INFO - 127.0.0.1:43954 - "GET /health HTTP/1.1" 200
+2025-05-13 08:16:08 - uvicorn.access - INFO - 127.0.0.1:60554 - "GET /health HTTP/1.1" 200
+2025-05-13 08:16:38 - uvicorn.access - INFO - 127.0.0.1:41184 - "GET /health HTTP/1.1" 200
+2025-05-13 08:17:08 - uvicorn.access - INFO - 127.0.0.1:54168 - "GET /health HTTP/1.1" 200
+2025-05-13 08:17:38 - uvicorn.access - INFO - 127.0.0.1:45384 - "GET /health HTTP/1.1" 200
+2025-05-13 08:18:08 - uvicorn.access - INFO - 127.0.0.1:45492 - "GET /health HTTP/1.1" 200
+2025-05-13 08:18:39 - uvicorn.access - INFO - 127.0.0.1:35846 - "GET /health HTTP/1.1" 200
+2025-05-13 08:19:09 - uvicorn.access - INFO - 127.0.0.1:38224 - "GET /health HTTP/1.1" 200
+2025-05-13 08:19:39 - uvicorn.access - INFO - 127.0.0.1:43300 - "GET /health HTTP/1.1" 200
+2025-05-13 08:20:09 - uvicorn.access - INFO - 127.0.0.1:39860 - "GET /health HTTP/1.1" 200
+2025-05-13 08:20:39 - uvicorn.access - INFO - 127.0.0.1:44060 - "GET /health HTTP/1.1" 200
+2025-05-13 08:21:09 - uvicorn.access - INFO - 127.0.0.1:54244 - "GET /health HTTP/1.1" 200
+2025-05-13 08:21:39 - uvicorn.access - INFO - 127.0.0.1:36688 - "GET /health HTTP/1.1" 200
+2025-05-13 08:22:09 - uvicorn.access - INFO - 127.0.0.1:39310 - "GET /health HTTP/1.1" 200
+2025-05-13 08:22:39 - uvicorn.access - INFO - 127.0.0.1:54010 - "GET /health HTTP/1.1" 200
+2025-05-13 08:23:09 - uvicorn.access - INFO - 127.0.0.1:47816 - "GET /health HTTP/1.1" 200
+2025-05-13 08:23:39 - uvicorn.access - INFO - 127.0.0.1:34328 - "GET /health HTTP/1.1" 200
+2025-05-13 08:24:10 - uvicorn.access - INFO - 127.0.0.1:56372 - "GET /health HTTP/1.1" 200
+2025-05-13 08:24:40 - uvicorn.access - INFO - 127.0.0.1:56218 - "GET /health HTTP/1.1" 200
+2025-05-13 08:25:10 - uvicorn.access - INFO - 127.0.0.1:45768 - "GET /health HTTP/1.1" 200
+2025-05-13 08:25:40 - uvicorn.access - INFO - 127.0.0.1:42900 - "GET /health HTTP/1.1" 200
+2025-05-13 08:26:10 - uvicorn.access - INFO - 127.0.0.1:34230 - "GET /health HTTP/1.1" 200
+2025-05-13 08:26:40 - uvicorn.access - INFO - 127.0.0.1:39712 - "GET /health HTTP/1.1" 200
+2025-05-13 08:27:10 - uvicorn.access - INFO - 127.0.0.1:38654 - "GET /health HTTP/1.1" 200
+2025-05-13 08:27:40 - uvicorn.access - INFO - 127.0.0.1:49766 - "GET /health HTTP/1.1" 200
+2025-05-13 08:28:10 - uvicorn.access - INFO - 127.0.0.1:42246 - "GET /health HTTP/1.1" 200
+2025-05-13 08:28:40 - uvicorn.access - INFO - 127.0.0.1:35620 - "GET /health HTTP/1.1" 200
+2025-05-13 08:29:10 - uvicorn.access - INFO - 127.0.0.1:33926 - "GET /health HTTP/1.1" 200
+2025-05-13 08:29:41 - uvicorn.access - INFO - 127.0.0.1:42560 - "GET /health HTTP/1.1" 200
+2025-05-13 08:30:11 - uvicorn.access - INFO - 127.0.0.1:41364 - "GET /health HTTP/1.1" 200
+2025-05-13 08:30:41 - uvicorn.access - INFO - 127.0.0.1:49782 - "GET /health HTTP/1.1" 200
+2025-05-13 08:31:11 - uvicorn.access - INFO - 127.0.0.1:57544 - "GET /health HTTP/1.1" 200
+2025-05-13 08:31:41 - uvicorn.access - INFO - 127.0.0.1:59748 - "GET /health HTTP/1.1" 200
+2025-05-13 08:32:11 - uvicorn.access - INFO - 127.0.0.1:54522 - "GET /health HTTP/1.1" 200
+2025-05-13 08:32:41 - uvicorn.access - INFO - 127.0.0.1:37974 - "GET /health HTTP/1.1" 200
+2025-05-13 08:33:11 - uvicorn.access - INFO - 127.0.0.1:39670 - "GET /health HTTP/1.1" 200
+2025-05-13 08:33:41 - uvicorn.access - INFO - 127.0.0.1:50036 - "GET /health HTTP/1.1" 200
+2025-05-13 08:34:11 - uvicorn.access - INFO - 127.0.0.1:60146 - "GET /health HTTP/1.1" 200
+2025-05-13 08:34:42 - uvicorn.access - INFO - 127.0.0.1:39938 - "GET /health HTTP/1.1" 200
+2025-05-13 08:35:12 - uvicorn.access - INFO - 127.0.0.1:51672 - "GET /health HTTP/1.1" 200
+2025-05-13 08:35:42 - uvicorn.access - INFO - 127.0.0.1:49578 - "GET /health HTTP/1.1" 200
+2025-05-13 08:36:12 - uvicorn.access - INFO - 127.0.0.1:40410 - "GET /health HTTP/1.1" 200
+2025-05-13 08:36:42 - uvicorn.access - INFO - 127.0.0.1:37506 - "GET /health HTTP/1.1" 200
+2025-05-13 08:37:12 - uvicorn.access - INFO - 127.0.0.1:46868 - "GET /health HTTP/1.1" 200
+2025-05-13 08:37:42 - uvicorn.access - INFO - 127.0.0.1:49318 - "GET /health HTTP/1.1" 200
+2025-05-13 08:38:12 - uvicorn.access - INFO - 127.0.0.1:42724 - "GET /health HTTP/1.1" 200
+2025-05-13 08:38:42 - uvicorn.access - INFO - 127.0.0.1:42296 - "GET /health HTTP/1.1" 200
+2025-05-13 08:39:12 - uvicorn.access - INFO - 127.0.0.1:38702 - "GET /health HTTP/1.1" 200
+2025-05-13 08:39:42 - uvicorn.access - INFO - 127.0.0.1:33658 - "GET /health HTTP/1.1" 200
+2025-05-13 08:40:13 - uvicorn.access - INFO - 127.0.0.1:58060 - "GET /health HTTP/1.1" 200
+2025-05-13 08:40:43 - uvicorn.access - INFO - 127.0.0.1:55556 - "GET /health HTTP/1.1" 200
+2025-05-13 08:41:13 - uvicorn.access - INFO - 127.0.0.1:43626 - "GET /health HTTP/1.1" 200
+2025-05-13 08:41:43 - uvicorn.access - INFO - 127.0.0.1:33010 - "GET /health HTTP/1.1" 200
+2025-05-13 08:42:13 - uvicorn.access - INFO - 127.0.0.1:60496 - "GET /health HTTP/1.1" 200
+2025-05-13 08:42:43 - uvicorn.access - INFO - 127.0.0.1:41764 - "GET /health HTTP/1.1" 200
+2025-05-13 08:43:13 - uvicorn.access - INFO - 127.0.0.1:49862 - "GET /health HTTP/1.1" 200
+2025-05-13 08:43:43 - uvicorn.access - INFO - 127.0.0.1:41996 - "GET /health HTTP/1.1" 200
+2025-05-13 08:44:13 - uvicorn.access - INFO - 127.0.0.1:48828 - "GET /health HTTP/1.1" 200
+2025-05-13 08:44:43 - uvicorn.access - INFO - 127.0.0.1:57038 - "GET /health HTTP/1.1" 200
+2025-05-13 08:45:13 - uvicorn.access - INFO - 127.0.0.1:45966 - "GET /health HTTP/1.1" 200
+2025-05-13 08:45:43 - uvicorn.access - INFO - 127.0.0.1:59398 - "GET /health HTTP/1.1" 200
+2025-05-13 08:46:13 - uvicorn.access - INFO - 127.0.0.1:44582 - "GET /health HTTP/1.1" 200
+2025-05-13 08:46:44 - uvicorn.access - INFO - 127.0.0.1:48530 - "GET /health HTTP/1.1" 200
+2025-05-13 08:47:14 - uvicorn.access - INFO - 127.0.0.1:55878 - "GET /health HTTP/1.1" 200
+2025-05-13 08:47:44 - uvicorn.access - INFO - 127.0.0.1:56106 - "GET /health HTTP/1.1" 200
+2025-05-13 08:48:14 - uvicorn.access - INFO - 127.0.0.1:56762 - "GET /health HTTP/1.1" 200
+2025-05-13 08:48:44 - uvicorn.access - INFO - 127.0.0.1:36040 - "GET /health HTTP/1.1" 200
+2025-05-13 08:49:14 - uvicorn.access - INFO - 127.0.0.1:34442 - "GET /health HTTP/1.1" 200
+2025-05-13 08:49:44 - uvicorn.access - INFO - 127.0.0.1:60440 - "GET /health HTTP/1.1" 200
+2025-05-13 08:50:14 - uvicorn.access - INFO - 127.0.0.1:44450 - "GET /health HTTP/1.1" 200
+2025-05-13 08:50:44 - uvicorn.access - INFO - 127.0.0.1:39278 - "GET /health HTTP/1.1" 200
+2025-05-13 08:51:14 - uvicorn.access - INFO - 127.0.0.1:58966 - "GET /health HTTP/1.1" 200
+2025-05-13 08:51:44 - uvicorn.access - INFO - 127.0.0.1:60308 - "GET /health HTTP/1.1" 200
+2025-05-13 08:52:14 - uvicorn.access - INFO - 127.0.0.1:43568 - "GET /health HTTP/1.1" 200
+2025-05-13 08:52:44 - uvicorn.access - INFO - 127.0.0.1:56122 - "GET /health HTTP/1.1" 200
+2025-05-13 08:53:14 - uvicorn.access - INFO - 127.0.0.1:36608 - "GET /health HTTP/1.1" 200
+2025-05-13 08:53:44 - uvicorn.access - INFO - 127.0.0.1:37088 - "GET /health HTTP/1.1" 200
+2025-05-13 08:54:15 - uvicorn.access - INFO - 127.0.0.1:34008 - "GET /health HTTP/1.1" 200
+2025-05-13 08:54:45 - uvicorn.access - INFO - 127.0.0.1:60244 - "GET /health HTTP/1.1" 200
+2025-05-13 08:55:15 - uvicorn.access - INFO - 127.0.0.1:42318 - "GET /health HTTP/1.1" 200
+2025-05-13 08:55:45 - uvicorn.access - INFO - 127.0.0.1:41648 - "GET /health HTTP/1.1" 200
+2025-05-13 08:56:15 - uvicorn.access - INFO - 127.0.0.1:50200 - "GET /health HTTP/1.1" 200
+2025-05-13 08:56:45 - uvicorn.access - INFO - 127.0.0.1:46284 - "GET /health HTTP/1.1" 200
+2025-05-13 08:57:15 - uvicorn.access - INFO - 127.0.0.1:59702 - "GET /health HTTP/1.1" 200
+2025-05-13 08:57:45 - uvicorn.access - INFO - 127.0.0.1:33936 - "GET /health HTTP/1.1" 200
+2025-05-13 08:58:15 - uvicorn.access - INFO - 127.0.0.1:51032 - "GET /health HTTP/1.1" 200
+2025-05-13 08:58:45 - uvicorn.access - INFO - 127.0.0.1:41832 - "GET /health HTTP/1.1" 200
+2025-05-13 08:59:15 - uvicorn.access - INFO - 127.0.0.1:41354 - "GET /health HTTP/1.1" 200
+2025-05-13 08:59:45 - uvicorn.access - INFO - 127.0.0.1:51948 - "GET /health HTTP/1.1" 200
+2025-05-13 09:00:16 - uvicorn.access - INFO - 127.0.0.1:45904 - "GET /health HTTP/1.1" 200
+2025-05-13 09:00:46 - uvicorn.access - INFO - 127.0.0.1:50966 - "GET /health HTTP/1.1" 200
+2025-05-13 09:01:16 - uvicorn.access - INFO - 127.0.0.1:59358 - "GET /health HTTP/1.1" 200
+2025-05-13 09:01:46 - uvicorn.access - INFO - 127.0.0.1:49922 - "GET /health HTTP/1.1" 200
+2025-05-13 09:02:16 - uvicorn.access - INFO - 127.0.0.1:55568 - "GET /health HTTP/1.1" 200
+2025-05-13 09:02:46 - uvicorn.access - INFO - 127.0.0.1:60260 - "GET /health HTTP/1.1" 200
+2025-05-13 09:03:16 - uvicorn.access - INFO - 127.0.0.1:58830 - "GET /health HTTP/1.1" 200
+2025-05-13 09:03:46 - uvicorn.access - INFO - 127.0.0.1:50748 - "GET /health HTTP/1.1" 200
+2025-05-13 09:04:16 - uvicorn.access - INFO - 127.0.0.1:46756 - "GET /health HTTP/1.1" 200
+2025-05-13 09:04:46 - uvicorn.access - INFO - 127.0.0.1:58914 - "GET /health HTTP/1.1" 200
+2025-05-13 09:05:17 - uvicorn.access - INFO - 127.0.0.1:56126 - "GET /health HTTP/1.1" 200
+2025-05-13 09:05:47 - uvicorn.access - INFO - 127.0.0.1:48020 - "GET /health HTTP/1.1" 200
+2025-05-13 09:06:17 - uvicorn.access - INFO - 127.0.0.1:50154 - "GET /health HTTP/1.1" 200
+2025-05-13 09:06:47 - uvicorn.access - INFO - 127.0.0.1:59640 - "GET /health HTTP/1.1" 200
+2025-05-13 09:07:17 - uvicorn.access - INFO - 127.0.0.1:52266 - "GET /health HTTP/1.1" 200
+2025-05-13 09:07:47 - uvicorn.access - INFO - 127.0.0.1:33260 - "GET /health HTTP/1.1" 200
+2025-05-13 09:08:17 - uvicorn.access - INFO - 127.0.0.1:48000 - "GET /health HTTP/1.1" 200
+2025-05-13 09:08:47 - uvicorn.access - INFO - 127.0.0.1:58796 - "GET /health HTTP/1.1" 200
+2025-05-13 09:09:17 - uvicorn.access - INFO - 127.0.0.1:42576 - "GET /health HTTP/1.1" 200
+2025-05-13 09:09:47 - uvicorn.access - INFO - 127.0.0.1:58466 - "GET /health HTTP/1.1" 200
+2025-05-13 09:10:17 - uvicorn.access - INFO - 127.0.0.1:49000 - "GET /health HTTP/1.1" 200
+2025-05-13 09:10:47 - uvicorn.access - INFO - 127.0.0.1:49674 - "GET /health HTTP/1.1" 200
+2025-05-13 09:11:17 - uvicorn.access - INFO - 127.0.0.1:39492 - "GET /health HTTP/1.1" 200
+2025-05-13 09:11:48 - uvicorn.access - INFO - 127.0.0.1:42540 - "GET /health HTTP/1.1" 200
+2025-05-13 09:12:18 - uvicorn.access - INFO - 127.0.0.1:46564 - "GET /health HTTP/1.1" 200
+2025-05-13 09:12:48 - uvicorn.access - INFO - 127.0.0.1:32778 - "GET /health HTTP/1.1" 200
+2025-05-13 09:13:18 - uvicorn.access - INFO - 127.0.0.1:39768 - "GET /health HTTP/1.1" 200
+2025-05-13 09:13:48 - uvicorn.access - INFO - 127.0.0.1:34760 - "GET /health HTTP/1.1" 200
+2025-05-13 09:14:18 - uvicorn.access - INFO - 127.0.0.1:56418 - "GET /health HTTP/1.1" 200
+2025-05-13 09:14:48 - uvicorn.access - INFO - 127.0.0.1:40930 - "GET /health HTTP/1.1" 200
+2025-05-13 09:15:18 - uvicorn.access - INFO - 127.0.0.1:33744 - "GET /health HTTP/1.1" 200
+2025-05-13 09:15:48 - uvicorn.access - INFO - 127.0.0.1:52480 - "GET /health HTTP/1.1" 200
+2025-05-13 09:16:18 - uvicorn.access - INFO - 127.0.0.1:42012 - "GET /health HTTP/1.1" 200
+2025-05-13 09:16:48 - uvicorn.access - INFO - 127.0.0.1:60548 - "GET /health HTTP/1.1" 200
+2025-05-13 09:17:18 - uvicorn.access - INFO - 127.0.0.1:37850 - "GET /health HTTP/1.1" 200
+2025-05-13 09:17:49 - uvicorn.access - INFO - 127.0.0.1:54998 - "GET /health HTTP/1.1" 200
+2025-05-13 09:18:19 - uvicorn.access - INFO - 127.0.0.1:59996 - "GET /health HTTP/1.1" 200
+2025-05-13 09:18:49 - uvicorn.access - INFO - 127.0.0.1:44664 - "GET /health HTTP/1.1" 200
+2025-05-13 09:19:19 - uvicorn.access - INFO - 127.0.0.1:39450 - "GET /health HTTP/1.1" 200
+2025-05-13 09:19:49 - uvicorn.access - INFO - 127.0.0.1:38086 - "GET /health HTTP/1.1" 200
+2025-05-13 09:20:19 - uvicorn.access - INFO - 127.0.0.1:57328 - "GET /health HTTP/1.1" 200
+2025-05-13 09:20:49 - uvicorn.access - INFO - 127.0.0.1:39722 - "GET /health HTTP/1.1" 200
+2025-05-13 09:21:19 - uvicorn.access - INFO - 127.0.0.1:44338 - "GET /health HTTP/1.1" 200
+2025-05-13 09:21:50 - uvicorn.access - INFO - 127.0.0.1:48340 - "GET /health HTTP/1.1" 200
+2025-05-13 09:22:20 - uvicorn.access - INFO - 127.0.0.1:58710 - "GET /health HTTP/1.1" 200
+2025-05-13 09:22:50 - uvicorn.access - INFO - 127.0.0.1:36850 - "GET /health HTTP/1.1" 200
+2025-05-13 09:23:20 - uvicorn.access - INFO - 127.0.0.1:56556 - "GET /health HTTP/1.1" 200
+2025-05-13 09:23:50 - uvicorn.access - INFO - 127.0.0.1:46276 - "GET /health HTTP/1.1" 200
+2025-05-13 09:24:20 - uvicorn.access - INFO - 127.0.0.1:41966 - "GET /health HTTP/1.1" 200
+2025-05-13 09:24:50 - uvicorn.access - INFO - 127.0.0.1:54922 - "GET /health HTTP/1.1" 200
+2025-05-13 09:25:20 - uvicorn.access - INFO - 127.0.0.1:42118 - "GET /health HTTP/1.1" 200
+2025-05-13 09:25:50 - uvicorn.access - INFO - 127.0.0.1:46652 - "GET /health HTTP/1.1" 200
+2025-05-13 09:26:21 - uvicorn.access - INFO - 127.0.0.1:36890 - "GET /health HTTP/1.1" 200
+2025-05-13 09:26:51 - uvicorn.access - INFO - 127.0.0.1:52822 - "GET /health HTTP/1.1" 200
+2025-05-13 09:27:21 - uvicorn.access - INFO - 127.0.0.1:49856 - "GET /health HTTP/1.1" 200
+2025-05-13 09:27:51 - uvicorn.access - INFO - 127.0.0.1:58774 - "GET /health HTTP/1.1" 200
+2025-05-13 09:28:21 - uvicorn.access - INFO - 127.0.0.1:43742 - "GET /health HTTP/1.1" 200
+2025-05-13 09:28:51 - uvicorn.access - INFO - 127.0.0.1:40786 - "GET /health HTTP/1.1" 200
+2025-05-13 09:29:21 - uvicorn.access - INFO - 127.0.0.1:42466 - "GET /health HTTP/1.1" 200
+2025-05-13 09:29:51 - uvicorn.access - INFO - 127.0.0.1:49020 - "GET /health HTTP/1.1" 200
+2025-05-13 09:30:22 - uvicorn.access - INFO - 127.0.0.1:46494 - "GET /health HTTP/1.1" 200
+2025-05-13 09:30:52 - uvicorn.access - INFO - 127.0.0.1:44964 - "GET /health HTTP/1.1" 200
+2025-05-13 09:31:22 - uvicorn.access - INFO - 127.0.0.1:56668 - "GET /health HTTP/1.1" 200
+2025-05-13 09:31:52 - uvicorn.access - INFO - 127.0.0.1:39636 - "GET /health HTTP/1.1" 200
+2025-05-13 09:32:22 - uvicorn.access - INFO - 127.0.0.1:43678 - "GET /health HTTP/1.1" 200
+2025-05-13 09:32:52 - uvicorn.access - INFO - 127.0.0.1:42656 - "GET /health HTTP/1.1" 200
+2025-05-13 09:33:22 - uvicorn.access - INFO - 127.0.0.1:49970 - "GET /health HTTP/1.1" 200
+2025-05-13 09:33:52 - uvicorn.access - INFO - 127.0.0.1:49626 - "GET /health HTTP/1.1" 200
+2025-05-13 09:34:23 - uvicorn.access - INFO - 127.0.0.1:38132 - "GET /health HTTP/1.1" 200
+2025-05-13 09:34:53 - uvicorn.access - INFO - 127.0.0.1:45724 - "GET /health HTTP/1.1" 200
+2025-05-13 09:35:23 - uvicorn.access - INFO - 127.0.0.1:57338 - "GET /health HTTP/1.1" 200
+2025-05-13 09:35:53 - uvicorn.access - INFO - 127.0.0.1:50758 - "GET /health HTTP/1.1" 200
+2025-05-13 09:36:23 - uvicorn.access - INFO - 127.0.0.1:45784 - "GET /health HTTP/1.1" 200
+2025-05-13 09:36:53 - uvicorn.access - INFO - 127.0.0.1:59076 - "GET /health HTTP/1.1" 200
+2025-05-13 09:37:23 - uvicorn.access - INFO - 127.0.0.1:50218 - "GET /health HTTP/1.1" 200
+2025-05-13 09:37:53 - uvicorn.access - INFO - 127.0.0.1:39264 - "GET /health HTTP/1.1" 200
+2025-05-13 09:38:23 - uvicorn.access - INFO - 127.0.0.1:55338 - "GET /health HTTP/1.1" 200
+2025-05-13 09:38:54 - uvicorn.access - INFO - 127.0.0.1:44498 - "GET /health HTTP/1.1" 200
+2025-05-13 09:39:24 - uvicorn.access - INFO - 127.0.0.1:60192 - "GET /health HTTP/1.1" 200
+2025-05-13 09:39:54 - uvicorn.access - INFO - 127.0.0.1:45346 - "GET /health HTTP/1.1" 200
+2025-05-13 09:40:24 - uvicorn.access - INFO - 127.0.0.1:50856 - "GET /health HTTP/1.1" 200
+2025-05-13 09:40:54 - uvicorn.access - INFO - 127.0.0.1:45642 - "GET /health HTTP/1.1" 200
+2025-05-13 09:41:24 - uvicorn.access - INFO - 127.0.0.1:42174 - "GET /health HTTP/1.1" 200
+2025-05-13 09:41:54 - uvicorn.access - INFO - 127.0.0.1:41470 - "GET /health HTTP/1.1" 200
+2025-05-13 09:42:24 - uvicorn.access - INFO - 127.0.0.1:53896 - "GET /health HTTP/1.1" 200
+2025-05-13 09:42:54 - uvicorn.access - INFO - 127.0.0.1:60180 - "GET /health HTTP/1.1" 200
+2025-05-13 09:43:25 - uvicorn.access - INFO - 127.0.0.1:60258 - "GET /health HTTP/1.1" 200
+2025-05-13 09:43:55 - uvicorn.access - INFO - 127.0.0.1:56358 - "GET /health HTTP/1.1" 200
+2025-05-13 09:44:25 - uvicorn.access - INFO - 127.0.0.1:56954 - "GET /health HTTP/1.1" 200
+2025-05-13 09:44:55 - uvicorn.access - INFO - 127.0.0.1:36130 - "GET /health HTTP/1.1" 200
+2025-05-13 09:45:25 - uvicorn.access - INFO - 127.0.0.1:45738 - "GET /health HTTP/1.1" 200
+2025-05-13 09:45:55 - uvicorn.access - INFO - 127.0.0.1:36012 - "GET /health HTTP/1.1" 200
+2025-05-13 09:46:25 - uvicorn.access - INFO - 127.0.0.1:59976 - "GET /health HTTP/1.1" 200
+2025-05-13 09:46:55 - uvicorn.access - INFO - 127.0.0.1:60978 - "GET /health HTTP/1.1" 200
+2025-05-13 09:47:25 - uvicorn.access - INFO - 127.0.0.1:60452 - "GET /health HTTP/1.1" 200
+2025-05-13 09:47:56 - uvicorn.access - INFO - 127.0.0.1:57354 - "GET /health HTTP/1.1" 200
+2025-05-13 09:48:26 - uvicorn.access - INFO - 127.0.0.1:37136 - "GET /health HTTP/1.1" 200
+2025-05-13 09:48:56 - uvicorn.access - INFO - 127.0.0.1:44862 - "GET /health HTTP/1.1" 200
+2025-05-13 09:49:26 - uvicorn.access - INFO - 127.0.0.1:47568 - "GET /health HTTP/1.1" 200
+2025-05-13 09:49:56 - uvicorn.access - INFO - 127.0.0.1:33778 - "GET /health HTTP/1.1" 200
+2025-05-13 09:50:26 - uvicorn.access - INFO - 127.0.0.1:57352 - "GET /health HTTP/1.1" 200
+2025-05-13 09:50:56 - uvicorn.access - INFO - 127.0.0.1:40140 - "GET /health HTTP/1.1" 200
+2025-05-13 09:51:26 - uvicorn.access - INFO - 127.0.0.1:56920 - "GET /health HTTP/1.1" 200
+2025-05-13 09:51:56 - uvicorn.access - INFO - 127.0.0.1:57262 - "GET /health HTTP/1.1" 200
+2025-05-13 09:52:26 - uvicorn.access - INFO - 127.0.0.1:45934 - "GET /health HTTP/1.1" 200
+2025-05-13 09:52:56 - uvicorn.access - INFO - 127.0.0.1:44650 - "GET /health HTTP/1.1" 200
+2025-05-13 09:53:27 - uvicorn.access - INFO - 127.0.0.1:43458 - "GET /health HTTP/1.1" 200
+2025-05-13 09:53:57 - uvicorn.access - INFO - 127.0.0.1:55120 - "GET /health HTTP/1.1" 200
+2025-05-13 09:54:27 - uvicorn.access - INFO - 127.0.0.1:58262 - "GET /health HTTP/1.1" 200
+2025-05-13 09:54:57 - uvicorn.access - INFO - 127.0.0.1:33430 - "GET /health HTTP/1.1" 200
+2025-05-13 09:55:27 - uvicorn.access - INFO - 127.0.0.1:54884 - "GET /health HTTP/1.1" 200
+2025-05-13 09:55:57 - uvicorn.access - INFO - 127.0.0.1:45360 - "GET /health HTTP/1.1" 200
+2025-05-13 09:56:27 - uvicorn.access - INFO - 127.0.0.1:53164 - "GET /health HTTP/1.1" 200
+2025-05-13 09:56:57 - uvicorn.access - INFO - 127.0.0.1:53328 - "GET /health HTTP/1.1" 200
+2025-05-13 09:57:27 - uvicorn.access - INFO - 127.0.0.1:51248 - "GET /health HTTP/1.1" 200
+2025-05-13 09:57:57 - uvicorn.access - INFO - 127.0.0.1:57856 - "GET /health HTTP/1.1" 200
+2025-05-13 09:58:27 - uvicorn.access - INFO - 127.0.0.1:55782 - "GET /health HTTP/1.1" 200
+2025-05-13 09:58:58 - uvicorn.access - INFO - 127.0.0.1:46178 - "GET /health HTTP/1.1" 200
+2025-05-13 09:59:28 - uvicorn.access - INFO - 127.0.0.1:49948 - "GET /health HTTP/1.1" 200
+2025-05-13 09:59:58 - uvicorn.access - INFO - 127.0.0.1:35686 - "GET /health HTTP/1.1" 200
+2025-05-13 10:00:28 - uvicorn.access - INFO - 127.0.0.1:48192 - "GET /health HTTP/1.1" 200
+2025-05-13 10:00:58 - uvicorn.access - INFO - 127.0.0.1:35564 - "GET /health HTTP/1.1" 200
+2025-05-13 10:01:28 - uvicorn.access - INFO - 127.0.0.1:53506 - "GET /health HTTP/1.1" 200
+2025-05-13 10:01:58 - uvicorn.access - INFO - 127.0.0.1:58252 - "GET /health HTTP/1.1" 200
+2025-05-13 10:02:28 - uvicorn.access - INFO - 127.0.0.1:45436 - "GET /health HTTP/1.1" 200
+2025-05-13 10:02:58 - uvicorn.access - INFO - 127.0.0.1:43168 - "GET /health HTTP/1.1" 200
+2025-05-13 10:03:28 - uvicorn.access - INFO - 127.0.0.1:37344 - "GET /health HTTP/1.1" 200
+2025-05-13 10:03:59 - uvicorn.access - INFO - 127.0.0.1:44590 - "GET /health HTTP/1.1" 200
+2025-05-13 10:04:29 - uvicorn.access - INFO - 127.0.0.1:37902 - "GET /health HTTP/1.1" 200
+2025-05-13 10:04:59 - uvicorn.access - INFO - 127.0.0.1:47658 - "GET /health HTTP/1.1" 200
+2025-05-13 10:05:29 - uvicorn.access - INFO - 127.0.0.1:43604 - "GET /health HTTP/1.1" 200
+2025-05-13 10:05:59 - uvicorn.access - INFO - 127.0.0.1:53760 - "GET /health HTTP/1.1" 200
+2025-05-13 10:06:29 - uvicorn.access - INFO - 127.0.0.1:58824 - "GET /health HTTP/1.1" 200
+2025-05-13 10:06:59 - uvicorn.access - INFO - 127.0.0.1:54454 - "GET /health HTTP/1.1" 200
+2025-05-13 10:07:29 - uvicorn.access - INFO - 127.0.0.1:56052 - "GET /health HTTP/1.1" 200
+2025-05-13 10:07:59 - uvicorn.access - INFO - 127.0.0.1:60674 - "GET /health HTTP/1.1" 200
+2025-05-13 10:08:29 - uvicorn.access - INFO - 127.0.0.1:35048 - "GET /health HTTP/1.1" 200
+2025-05-13 10:08:59 - uvicorn.access - INFO - 127.0.0.1:59368 - "GET /health HTTP/1.1" 200
+2025-05-13 10:09:30 - uvicorn.access - INFO - 127.0.0.1:36020 - "GET /health HTTP/1.1" 200
+2025-05-13 10:10:00 - uvicorn.access - INFO - 127.0.0.1:39456 - "GET /health HTTP/1.1" 200
+2025-05-13 10:10:30 - uvicorn.access - INFO - 127.0.0.1:38754 - "GET /health HTTP/1.1" 200
+2025-05-13 10:11:00 - uvicorn.access - INFO - 127.0.0.1:45594 - "GET /health HTTP/1.1" 200
+2025-05-13 10:11:30 - uvicorn.access - INFO - 127.0.0.1:53994 - "GET /health HTTP/1.1" 200
+2025-05-13 10:12:00 - uvicorn.access - INFO - 127.0.0.1:38286 - "GET /health HTTP/1.1" 200
+2025-05-13 10:12:30 - uvicorn.access - INFO - 127.0.0.1:59430 - "GET /health HTTP/1.1" 200
+2025-05-13 10:13:00 - uvicorn.access - INFO - 127.0.0.1:33900 - "GET /health HTTP/1.1" 200
+2025-05-13 10:13:30 - uvicorn.access - INFO - 127.0.0.1:51898 - "GET /health HTTP/1.1" 200
+2025-05-13 10:14:00 - uvicorn.access - INFO - 127.0.0.1:42946 - "GET /health HTTP/1.1" 200
+2025-05-13 10:14:30 - uvicorn.access - INFO - 127.0.0.1:52958 - "GET /health HTTP/1.1" 200
+2025-05-13 10:15:00 - uvicorn.access - INFO - 127.0.0.1:35554 - "GET /health HTTP/1.1" 200
+2025-05-13 10:15:30 - uvicorn.access - INFO - 127.0.0.1:45268 - "GET /health HTTP/1.1" 200
+2025-05-13 10:16:01 - uvicorn.access - INFO - 127.0.0.1:36984 - "GET /health HTTP/1.1" 200
+2025-05-13 10:16:31 - uvicorn.access - INFO - 127.0.0.1:49092 - "GET /health HTTP/1.1" 200
+2025-05-13 10:17:01 - uvicorn.access - INFO - 127.0.0.1:43224 - "GET /health HTTP/1.1" 200
+2025-05-13 10:17:31 - uvicorn.access - INFO - 127.0.0.1:53992 - "GET /health HTTP/1.1" 200
+2025-05-13 10:18:01 - uvicorn.access - INFO - 127.0.0.1:56394 - "GET /health HTTP/1.1" 200
+2025-05-13 10:18:31 - uvicorn.access - INFO - 127.0.0.1:34078 - "GET /health HTTP/1.1" 200
+2025-05-13 10:19:01 - uvicorn.access - INFO - 127.0.0.1:37838 - "GET /health HTTP/1.1" 200
+2025-05-13 10:19:31 - uvicorn.access - INFO - 127.0.0.1:57634 - "GET /health HTTP/1.1" 200
+2025-05-13 10:20:01 - uvicorn.access - INFO - 127.0.0.1:39816 - "GET /health HTTP/1.1" 200
+2025-05-13 10:20:31 - uvicorn.access - INFO - 127.0.0.1:53290 - "GET /health HTTP/1.1" 200
+2025-05-13 10:21:02 - uvicorn.access - INFO - 127.0.0.1:47082 - "GET /health HTTP/1.1" 200
+2025-05-13 10:21:32 - uvicorn.access - INFO - 127.0.0.1:40796 - "GET /health HTTP/1.1" 200
+2025-05-13 10:22:02 - uvicorn.access - INFO - 127.0.0.1:33076 - "GET /health HTTP/1.1" 200
+2025-05-13 10:22:32 - uvicorn.access - INFO - 127.0.0.1:39532 - "GET /health HTTP/1.1" 200
+2025-05-13 10:23:02 - uvicorn.access - INFO - 127.0.0.1:33480 - "GET /health HTTP/1.1" 200
+2025-05-13 10:23:32 - uvicorn.access - INFO - 127.0.0.1:49250 - "GET /health HTTP/1.1" 200
+2025-05-13 10:24:02 - uvicorn.access - INFO - 127.0.0.1:59180 - "GET /health HTTP/1.1" 200
+2025-05-13 10:24:32 - uvicorn.access - INFO - 127.0.0.1:51744 - "GET /health HTTP/1.1" 200
+2025-05-13 10:25:02 - uvicorn.access - INFO - 127.0.0.1:34448 - "GET /health HTTP/1.1" 200
+2025-05-13 10:25:32 - uvicorn.access - INFO - 127.0.0.1:38572 - "GET /health HTTP/1.1" 200
+2025-05-13 10:26:02 - uvicorn.access - INFO - 127.0.0.1:59158 - "GET /health HTTP/1.1" 200
+2025-05-13 10:26:33 - uvicorn.access - INFO - 127.0.0.1:43118 - "GET /health HTTP/1.1" 200
+2025-05-13 10:27:03 - uvicorn.access - INFO - 127.0.0.1:51048 - "GET /health HTTP/1.1" 200
+2025-05-13 10:27:33 - uvicorn.access - INFO - 127.0.0.1:34906 - "GET /health HTTP/1.1" 200
+2025-05-13 10:28:03 - uvicorn.access - INFO - 127.0.0.1:35184 - "GET /health HTTP/1.1" 200
+2025-05-13 10:28:33 - uvicorn.access - INFO - 127.0.0.1:58668 - "GET /health HTTP/1.1" 200
+2025-05-13 10:29:03 - uvicorn.access - INFO - 127.0.0.1:46222 - "GET /health HTTP/1.1" 200
+2025-05-13 10:29:33 - uvicorn.access - INFO - 127.0.0.1:40816 - "GET /health HTTP/1.1" 200
+2025-05-13 10:30:03 - uvicorn.access - INFO - 127.0.0.1:42452 - "GET /health HTTP/1.1" 200
+2025-05-13 10:30:33 - uvicorn.access - INFO - 127.0.0.1:57600 - "GET /health HTTP/1.1" 200
+2025-05-13 10:31:03 - uvicorn.access - INFO - 127.0.0.1:46704 - "GET /health HTTP/1.1" 200
+2025-05-13 10:31:33 - uvicorn.access - INFO - 127.0.0.1:58104 - "GET /health HTTP/1.1" 200
+2025-05-13 10:32:04 - uvicorn.access - INFO - 127.0.0.1:45932 - "GET /health HTTP/1.1" 200
+2025-05-13 10:32:34 - uvicorn.access - INFO - 127.0.0.1:36454 - "GET /health HTTP/1.1" 200
+2025-05-13 10:33:04 - uvicorn.access - INFO - 127.0.0.1:40652 - "GET /health HTTP/1.1" 200
+2025-05-13 10:33:34 - uvicorn.access - INFO - 127.0.0.1:34962 - "GET /health HTTP/1.1" 200
+2025-05-13 10:34:04 - uvicorn.access - INFO - 127.0.0.1:55580 - "GET /health HTTP/1.1" 200
+2025-05-13 10:34:34 - uvicorn.access - INFO - 127.0.0.1:35470 - "GET /health HTTP/1.1" 200
+2025-05-13 10:35:04 - uvicorn.access - INFO - 127.0.0.1:41344 - "GET /health HTTP/1.1" 200
+2025-05-13 10:35:34 - uvicorn.access - INFO - 127.0.0.1:40186 - "GET /health HTTP/1.1" 200
+2025-05-13 10:36:04 - uvicorn.access - INFO - 127.0.0.1:33450 - "GET /health HTTP/1.1" 200
+2025-05-13 10:39:04 - uvicorn.access - INFO - 127.0.0.1:47342 - "GET /health HTTP/1.1" 200
+2025-05-13 11:47:07 - uvicorn.access - INFO - 127.0.0.1:33948 - "GET /health HTTP/1.1" 200
+2025-05-13 12:04:02 - uvicorn.access - INFO - 127.0.0.1:59370 - "GET /health HTTP/1.1" 200
+2025-05-13 12:04:33 - uvicorn.access - INFO - 127.0.0.1:41872 - "GET /health HTTP/1.1" 200
+2025-05-13 12:05:03 - uvicorn.access - INFO - 127.0.0.1:60786 - "GET /health HTTP/1.1" 200
+2025-05-13 12:05:33 - uvicorn.access - INFO - 127.0.0.1:51474 - "GET /health HTTP/1.1" 200
+2025-05-13 12:06:03 - uvicorn.access - INFO - 127.0.0.1:57078 - "GET /health HTTP/1.1" 200
+2025-05-13 12:06:34 - uvicorn.access - INFO - 127.0.0.1:55880 - "GET /health HTTP/1.1" 200
+2025-05-13 12:07:04 - uvicorn.access - INFO - 127.0.0.1:56084 - "GET /health HTTP/1.1" 200
+2025-05-13 12:07:34 - uvicorn.access - INFO - 127.0.0.1:48152 - "GET /health HTTP/1.1" 200
+2025-05-13 12:08:04 - uvicorn.access - INFO - 127.0.0.1:36548 - "GET /health HTTP/1.1" 200
+2025-05-13 12:08:34 - uvicorn.access - INFO - 127.0.0.1:42716 - "GET /health HTTP/1.1" 200
+2025-05-13 12:09:05 - uvicorn.access - INFO - 127.0.0.1:46086 - "GET /health HTTP/1.1" 200
+2025-05-13 12:10:05 - uvicorn.access - INFO - 127.0.0.1:35542 - "GET /health HTTP/1.1" 200
+2025-05-13 12:10:52 - uvicorn.access - INFO - 127.0.0.1:59604 - "GET /health HTTP/1.1" 200
+2025-05-13 12:11:22 - uvicorn.access - INFO - 127.0.0.1:53708 - "GET /health HTTP/1.1" 200
+2025-05-13 12:11:52 - uvicorn.access - INFO - 127.0.0.1:49076 - "GET /health HTTP/1.1" 200
+2025-05-13 12:12:23 - uvicorn.access - INFO - 127.0.0.1:56896 - "GET /health HTTP/1.1" 200
+2025-05-13 12:12:53 - uvicorn.access - INFO - 127.0.0.1:50514 - "GET /health HTTP/1.1" 200
+2025-05-13 12:13:23 - uvicorn.access - INFO - 127.0.0.1:42478 - "GET /health HTTP/1.1" 200
+2025-05-13 12:13:53 - uvicorn.access - INFO - 127.0.0.1:40514 - "GET /health HTTP/1.1" 200
+2025-05-13 12:14:23 - uvicorn.access - INFO - 127.0.0.1:60558 - "GET /health HTTP/1.1" 200
+2025-05-13 12:14:53 - uvicorn.access - INFO - 127.0.0.1:47946 - "GET /health HTTP/1.1" 200
+2025-05-13 12:15:23 - uvicorn.access - INFO - 127.0.0.1:36618 - "GET /health HTTP/1.1" 200
+2025-05-13 12:15:53 - uvicorn.access - INFO - 127.0.0.1:52378 - "GET /health HTTP/1.1" 200
+2025-05-13 12:16:23 - uvicorn.access - INFO - 127.0.0.1:56266 - "GET /health HTTP/1.1" 200
+2025-05-13 12:16:54 - uvicorn.access - INFO - 127.0.0.1:60250 - "GET /health HTTP/1.1" 200
+2025-05-13 12:17:24 - uvicorn.access - INFO - 127.0.0.1:58146 - "GET /health HTTP/1.1" 200
+2025-05-13 12:17:54 - uvicorn.access - INFO - 127.0.0.1:38850 - "GET /health HTTP/1.1" 200
+2025-05-13 12:18:24 - uvicorn.access - INFO - 127.0.0.1:51154 - "GET /health HTTP/1.1" 200
+2025-05-13 12:18:54 - uvicorn.access - INFO - 127.0.0.1:44204 - "GET /health HTTP/1.1" 200
+2025-05-13 12:19:24 - uvicorn.access - INFO - 127.0.0.1:51030 - "GET /health HTTP/1.1" 200
+2025-05-13 12:19:54 - uvicorn.access - INFO - 127.0.0.1:38534 - "GET /health HTTP/1.1" 200
+2025-05-13 12:20:24 - uvicorn.access - INFO - 127.0.0.1:36038 - "GET /health HTTP/1.1" 200
+2025-05-13 12:20:54 - uvicorn.access - INFO - 127.0.0.1:39376 - "GET /health HTTP/1.1" 200
+2025-05-13 12:21:24 - uvicorn.access - INFO - 127.0.0.1:39710 - "GET /health HTTP/1.1" 200
+2025-05-13 12:21:55 - uvicorn.access - INFO - 127.0.0.1:39912 - "GET /health HTTP/1.1" 200
+2025-05-13 12:22:25 - uvicorn.access - INFO - 127.0.0.1:48118 - "GET /health HTTP/1.1" 200
+2025-05-13 12:22:55 - uvicorn.access - INFO - 127.0.0.1:39688 - "GET /health HTTP/1.1" 200
+2025-05-13 12:23:25 - uvicorn.access - INFO - 127.0.0.1:45698 - "GET /health HTTP/1.1" 200
+2025-05-13 12:23:55 - uvicorn.access - INFO - 127.0.0.1:41190 - "GET /health HTTP/1.1" 200
+2025-05-13 12:24:25 - uvicorn.access - INFO - 127.0.0.1:33748 - "GET /health HTTP/1.1" 200
+2025-05-13 12:24:55 - uvicorn.access - INFO - 127.0.0.1:39224 - "GET /health HTTP/1.1" 200
+2025-05-13 12:25:25 - uvicorn.access - INFO - 127.0.0.1:35676 - "GET /health HTTP/1.1" 200
+2025-05-13 12:25:55 - uvicorn.access - INFO - 127.0.0.1:53446 - "GET /health HTTP/1.1" 200
+2025-05-13 12:26:26 - uvicorn.access - INFO - 127.0.0.1:42728 - "GET /health HTTP/1.1" 200
+2025-05-13 12:26:56 - uvicorn.access - INFO - 127.0.0.1:38220 - "GET /health HTTP/1.1" 200
+2025-05-13 12:27:26 - uvicorn.access - INFO - 127.0.0.1:34528 - "GET /health HTTP/1.1" 200
+2025-05-13 13:01:42 - uvicorn.access - INFO - 127.0.0.1:44198 - "GET /health HTTP/1.1" 200
+2025-05-13 14:23:24 - uvicorn.access - INFO - 127.0.0.1:53466 - "GET /health HTTP/1.1" 200
+2025-05-13 15:13:30 - uvicorn.access - INFO - 127.0.0.1:36786 - "GET /health HTTP/1.1" 200
+2025-05-13 15:14:00 - uvicorn.access - INFO - 127.0.0.1:44030 - "GET /health HTTP/1.1" 200
+2025-05-13 15:14:31 - uvicorn.access - INFO - 127.0.0.1:44856 - "GET /health HTTP/1.1" 200
+2025-05-13 15:15:01 - uvicorn.access - INFO - 127.0.0.1:44658 - "GET /health HTTP/1.1" 200
+2025-05-13 15:15:31 - uvicorn.access - INFO - 127.0.0.1:52304 - "GET /health HTTP/1.1" 200
+2025-05-13 15:16:01 - uvicorn.access - INFO - 127.0.0.1:39632 - "GET /health HTTP/1.1" 200
+2025-05-13 15:16:31 - uvicorn.access - INFO - 127.0.0.1:55836 - "GET /health HTTP/1.1" 200
+2025-05-13 15:17:01 - uvicorn.access - INFO - 127.0.0.1:58114 - "GET /health HTTP/1.1" 200
+2025-05-13 15:17:31 - uvicorn.access - INFO - 127.0.0.1:32936 - "GET /health HTTP/1.1" 200
+2025-05-13 15:18:01 - uvicorn.access - INFO - 127.0.0.1:35202 - "GET /health HTTP/1.1" 200
+2025-05-13 16:08:44 - uvicorn.access - INFO - 127.0.0.1:56226 - "GET /health HTTP/1.1" 200
+2025-05-13 17:19:17 - uvicorn.access - INFO - 127.0.0.1:42872 - "GET /health HTTP/1.1" 200
+2025-05-13 18:20:19 - uvicorn.access - INFO - 127.0.0.1:49526 - "GET /health HTTP/1.1" 200
+2025-05-13 19:21:17 - uvicorn.access - INFO - 127.0.0.1:39516 - "GET /health HTTP/1.1" 200
+2025-05-13 20:22:23 - uvicorn.access - INFO - 127.0.0.1:34318 - "GET /health HTTP/1.1" 200
+2025-05-13 20:59:22 - uvicorn.access - INFO - 127.0.0.1:34660 - "GET /health HTTP/1.1" 200
+2025-05-13 22:14:54 - uvicorn.access - INFO - 127.0.0.1:60536 - "GET /health HTTP/1.1" 200
+2025-05-13 23:23:42 - uvicorn.access - INFO - 127.0.0.1:42096 - "GET /health HTTP/1.1" 200
+2025-05-14 00:26:17 - uvicorn.access - INFO - 127.0.0.1:52834 - "GET /health HTTP/1.1" 200
+2025-05-14 01:44:31 - uvicorn.access - INFO - 127.0.0.1:41154 - "GET /health HTTP/1.1" 200
+2025-05-14 02:59:06 - uvicorn.access - INFO - 127.0.0.1:58634 - "GET /health HTTP/1.1" 200
+2025-05-14 03:24:47 - uvicorn.access - INFO - 127.0.0.1:60012 - "GET /health HTTP/1.1" 200
+2025-05-14 03:47:01 - uvicorn.access - INFO - 127.0.0.1:36526 - "GET /health HTTP/1.1" 200
+2025-05-14 04:30:32 - uvicorn.access - INFO - 127.0.0.1:41146 - "GET /health HTTP/1.1" 200
+2025-05-14 04:53:36 - uvicorn.access - INFO - 127.0.0.1:40492 - "GET /health HTTP/1.1" 200
+2025-05-14 05:49:27 - uvicorn.access - INFO - 127.0.0.1:56610 - "GET /health HTTP/1.1" 200
+2025-05-14 06:32:25 - uvicorn.access - INFO - 127.0.0.1:43424 - "GET /health HTTP/1.1" 200
+2025-05-14 06:44:09 - uvicorn.access - INFO - 127.0.0.1:55494 - "GET /health HTTP/1.1" 200
+2025-05-14 06:44:39 - uvicorn.access - INFO - 127.0.0.1:51116 - "GET /health HTTP/1.1" 200
+2025-05-14 06:45:11 - uvicorn.access - INFO - 127.0.0.1:54894 - "GET /health HTTP/1.1" 200
+2025-05-14 06:45:41 - uvicorn.access - INFO - 127.0.0.1:43872 - "GET /health HTTP/1.1" 200
+2025-05-14 06:46:12 - uvicorn.access - INFO - 127.0.0.1:57544 - "GET /health HTTP/1.1" 200
+2025-05-14 06:46:42 - uvicorn.access - INFO - 127.0.0.1:45178 - "GET /health HTTP/1.1" 200
+2025-05-14 06:47:12 - uvicorn.access - INFO - 127.0.0.1:45512 - "GET /health HTTP/1.1" 200
+2025-05-14 06:47:42 - uvicorn.access - INFO - 127.0.0.1:35598 - "GET /health HTTP/1.1" 200
+2025-05-14 06:48:12 - uvicorn.access - INFO - 127.0.0.1:40624 - "GET /health HTTP/1.1" 200
+2025-05-14 06:48:43 - uvicorn.access - INFO - 127.0.0.1:50748 - "GET /health HTTP/1.1" 200
+2025-05-14 06:49:13 - uvicorn.access - INFO - 127.0.0.1:54428 - "GET /health HTTP/1.1" 200
+2025-05-14 06:49:43 - uvicorn.access - INFO - 127.0.0.1:47216 - "GET /health HTTP/1.1" 200
+2025-05-14 06:50:13 - uvicorn.access - INFO - 127.0.0.1:48214 - "GET /health HTTP/1.1" 200
+2025-05-14 06:50:43 - uvicorn.access - INFO - 127.0.0.1:51002 - "GET /health HTTP/1.1" 200
+2025-05-14 06:51:13 - uvicorn.access - INFO - 127.0.0.1:34638 - "GET /health HTTP/1.1" 200
+2025-05-14 06:51:43 - uvicorn.access - INFO - 127.0.0.1:35306 - "GET /health HTTP/1.1" 200
+2025-05-14 06:52:14 - uvicorn.access - INFO - 127.0.0.1:59102 - "GET /health HTTP/1.1" 200
+2025-05-14 06:52:44 - uvicorn.access - INFO - 127.0.0.1:38268 - "GET /health HTTP/1.1" 200
+2025-05-14 06:53:14 - uvicorn.access - INFO - 127.0.0.1:38500 - "GET /health HTTP/1.1" 200
+2025-05-14 06:53:44 - uvicorn.access - INFO - 127.0.0.1:34092 - "GET /health HTTP/1.1" 200
+2025-05-14 06:54:14 - uvicorn.access - INFO - 127.0.0.1:37292 - "GET /health HTTP/1.1" 200
+2025-05-14 06:54:44 - uvicorn.access - INFO - 127.0.0.1:48270 - "GET /health HTTP/1.1" 200
+2025-05-14 06:55:14 - uvicorn.access - INFO - 127.0.0.1:59292 - "GET /health HTTP/1.1" 200
+2025-05-14 06:55:44 - uvicorn.access - INFO - 127.0.0.1:54478 - "GET /health HTTP/1.1" 200
+2025-05-14 06:56:14 - uvicorn.access - INFO - 127.0.0.1:39102 - "GET /health HTTP/1.1" 200
+2025-05-14 06:56:45 - uvicorn.access - INFO - 127.0.0.1:45802 - "GET /health HTTP/1.1" 200
+2025-05-14 06:57:15 - uvicorn.access - INFO - 127.0.0.1:46044 - "GET /health HTTP/1.1" 200
+2025-05-14 06:57:45 - uvicorn.access - INFO - 127.0.0.1:34988 - "GET /health HTTP/1.1" 200
+2025-05-14 06:58:15 - uvicorn.access - INFO - 127.0.0.1:47250 - "GET /health HTTP/1.1" 200
+2025-05-14 06:58:45 - uvicorn.access - INFO - 127.0.0.1:60566 - "GET /health HTTP/1.1" 200
+2025-05-14 06:59:15 - uvicorn.access - INFO - 127.0.0.1:52286 - "GET /health HTTP/1.1" 200
+2025-05-14 06:59:45 - uvicorn.access - INFO - 127.0.0.1:34496 - "GET /health HTTP/1.1" 200
+2025-05-14 07:00:15 - uvicorn.access - INFO - 127.0.0.1:41116 - "GET /health HTTP/1.1" 200
+2025-05-14 07:00:45 - uvicorn.access - INFO - 127.0.0.1:34270 - "GET /health HTTP/1.1" 200
+2025-05-14 07:01:15 - uvicorn.access - INFO - 127.0.0.1:45006 - "GET /health HTTP/1.1" 200
+2025-05-14 07:01:46 - uvicorn.access - INFO - 127.0.0.1:47764 - "GET /health HTTP/1.1" 200
+2025-05-14 07:02:16 - uvicorn.access - INFO - 127.0.0.1:46988 - "GET /health HTTP/1.1" 200
+2025-05-14 07:02:46 - uvicorn.access - INFO - 127.0.0.1:58538 - "GET /health HTTP/1.1" 200
+2025-05-14 07:03:16 - uvicorn.access - INFO - 127.0.0.1:49790 - "GET /health HTTP/1.1" 200
+2025-05-14 07:03:46 - uvicorn.access - INFO - 127.0.0.1:49086 - "GET /health HTTP/1.1" 200
+2025-05-14 07:04:16 - uvicorn.access - INFO - 127.0.0.1:54680 - "GET /health HTTP/1.1" 200
+2025-05-14 07:04:46 - uvicorn.access - INFO - 127.0.0.1:58528 - "GET /health HTTP/1.1" 200
+2025-05-14 07:05:16 - uvicorn.access - INFO - 127.0.0.1:42472 - "GET /health HTTP/1.1" 200
+2025-05-14 07:05:47 - uvicorn.access - INFO - 127.0.0.1:50852 - "GET /health HTTP/1.1" 200
+2025-05-14 07:06:17 - uvicorn.access - INFO - 127.0.0.1:39790 - "GET /health HTTP/1.1" 200
+2025-05-14 07:06:47 - uvicorn.access - INFO - 127.0.0.1:60314 - "GET /health HTTP/1.1" 200
+2025-05-14 07:07:17 - uvicorn.access - INFO - 127.0.0.1:50046 - "GET /health HTTP/1.1" 200
+2025-05-14 07:07:47 - uvicorn.access - INFO - 127.0.0.1:34102 - "GET /health HTTP/1.1" 200
+2025-05-14 07:08:17 - uvicorn.access - INFO - 127.0.0.1:36968 - "GET /health HTTP/1.1" 200
+2025-05-14 07:08:47 - uvicorn.access - INFO - 127.0.0.1:39028 - "GET /health HTTP/1.1" 200
+2025-05-14 07:09:17 - uvicorn.access - INFO - 127.0.0.1:54262 - "GET /health HTTP/1.1" 200
+2025-05-14 07:09:47 - uvicorn.access - INFO - 127.0.0.1:52072 - "GET /health HTTP/1.1" 200
+2025-05-14 07:10:18 - uvicorn.access - INFO - 127.0.0.1:35964 - "GET /health HTTP/1.1" 200
+2025-05-14 07:10:48 - uvicorn.access - INFO - 127.0.0.1:41380 - "GET /health HTTP/1.1" 200
+2025-05-14 07:11:18 - uvicorn.access - INFO - 127.0.0.1:60884 - "GET /health HTTP/1.1" 200
+2025-05-14 07:11:48 - uvicorn.access - INFO - 127.0.0.1:39976 - "GET /health HTTP/1.1" 200
+2025-05-14 07:12:18 - uvicorn.access - INFO - 127.0.0.1:43626 - "GET /health HTTP/1.1" 200
+2025-05-14 07:12:48 - uvicorn.access - INFO - 127.0.0.1:39730 - "GET /health HTTP/1.1" 200
+2025-05-14 07:13:18 - uvicorn.access - INFO - 127.0.0.1:34866 - "GET /health HTTP/1.1" 200
+2025-05-14 07:13:48 - uvicorn.access - INFO - 127.0.0.1:33474 - "GET /health HTTP/1.1" 200
+2025-05-14 07:14:18 - uvicorn.access - INFO - 127.0.0.1:36096 - "GET /health HTTP/1.1" 200
+2025-05-14 07:14:49 - uvicorn.access - INFO - 127.0.0.1:40294 - "GET /health HTTP/1.1" 200
+2025-05-14 07:15:19 - uvicorn.access - INFO - 127.0.0.1:44514 - "GET /health HTTP/1.1" 200
+2025-05-14 07:15:49 - uvicorn.access - INFO - 127.0.0.1:53196 - "GET /health HTTP/1.1" 200
+2025-05-14 07:16:19 - uvicorn.access - INFO - 127.0.0.1:60858 - "GET /health HTTP/1.1" 200
+2025-05-14 07:16:49 - uvicorn.access - INFO - 127.0.0.1:49450 - "GET /health HTTP/1.1" 200
+2025-05-14 07:17:19 - uvicorn.access - INFO - 127.0.0.1:46366 - "GET /health HTTP/1.1" 200
+2025-05-14 07:17:49 - uvicorn.access - INFO - 127.0.0.1:56408 - "GET /health HTTP/1.1" 200
+2025-05-14 07:18:20 - uvicorn.access - INFO - 127.0.0.1:57490 - "GET /health HTTP/1.1" 200
+2025-05-14 07:18:50 - uvicorn.access - INFO - 127.0.0.1:57264 - "GET /health HTTP/1.1" 200
+2025-05-14 07:19:20 - uvicorn.access - INFO - 127.0.0.1:42582 - "GET /health HTTP/1.1" 200
+2025-05-14 07:19:50 - uvicorn.access - INFO - 127.0.0.1:57704 - "GET /health HTTP/1.1" 200
+2025-05-14 07:20:20 - uvicorn.access - INFO - 127.0.0.1:50174 - "GET /health HTTP/1.1" 200
+2025-05-14 07:20:51 - uvicorn.access - INFO - 127.0.0.1:34932 - "GET /health HTTP/1.1" 200
+2025-05-14 07:21:21 - uvicorn.access - INFO - 127.0.0.1:50488 - "GET /health HTTP/1.1" 200
+2025-05-14 07:21:51 - uvicorn.access - INFO - 127.0.0.1:44336 - "GET /health HTTP/1.1" 200
+2025-05-14 07:22:21 - uvicorn.access - INFO - 127.0.0.1:42444 - "GET /health HTTP/1.1" 200
+2025-05-14 07:22:51 - uvicorn.access - INFO - 127.0.0.1:39596 - "GET /health HTTP/1.1" 200
+2025-05-14 07:23:21 - uvicorn.access - INFO - 127.0.0.1:39558 - "GET /health HTTP/1.1" 200
+2025-05-14 07:23:51 - uvicorn.access - INFO - 127.0.0.1:44686 - "GET /health HTTP/1.1" 200
+2025-05-14 07:24:21 - uvicorn.access - INFO - 127.0.0.1:36870 - "GET /health HTTP/1.1" 200
+2025-05-14 07:24:52 - uvicorn.access - INFO - 127.0.0.1:35016 - "GET /health HTTP/1.1" 200
+2025-05-14 07:25:22 - uvicorn.access - INFO - 127.0.0.1:58054 - "GET /health HTTP/1.1" 200
+2025-05-14 07:25:52 - uvicorn.access - INFO - 127.0.0.1:33774 - "GET /health HTTP/1.1" 200
+2025-05-14 07:26:22 - uvicorn.access - INFO - 127.0.0.1:45548 - "GET /health HTTP/1.1" 200
+2025-05-14 07:26:52 - uvicorn.access - INFO - 127.0.0.1:36028 - "GET /health HTTP/1.1" 200
+2025-05-14 07:27:22 - uvicorn.access - INFO - 127.0.0.1:56440 - "GET /health HTTP/1.1" 200
+2025-05-14 07:27:52 - uvicorn.access - INFO - 127.0.0.1:34900 - "GET /health HTTP/1.1" 200
+2025-05-14 07:28:22 - uvicorn.access - INFO - 127.0.0.1:56328 - "GET /health HTTP/1.1" 200
+2025-05-14 07:28:53 - uvicorn.access - INFO - 127.0.0.1:53442 - "GET /health HTTP/1.1" 200
+2025-05-14 07:29:23 - uvicorn.access - INFO - 127.0.0.1:33384 - "GET /health HTTP/1.1" 200
+2025-05-14 07:29:53 - uvicorn.access - INFO - 127.0.0.1:47560 - "GET /health HTTP/1.1" 200
+2025-05-14 07:30:23 - uvicorn.access - INFO - 127.0.0.1:57710 - "GET /health HTTP/1.1" 200
+2025-05-14 07:30:53 - uvicorn.access - INFO - 127.0.0.1:60328 - "GET /health HTTP/1.1" 200
+2025-05-14 07:31:23 - uvicorn.access - INFO - 127.0.0.1:38622 - "GET /health HTTP/1.1" 200
+2025-05-14 07:31:53 - uvicorn.access - INFO - 127.0.0.1:56574 - "GET /health HTTP/1.1" 200
+2025-05-14 07:32:23 - uvicorn.access - INFO - 127.0.0.1:48796 - "GET /health HTTP/1.1" 200
+2025-05-14 07:32:54 - uvicorn.access - INFO - 127.0.0.1:41194 - "GET /health HTTP/1.1" 200
+2025-05-14 07:33:24 - uvicorn.access - INFO - 127.0.0.1:39138 - "GET /health HTTP/1.1" 200
+2025-05-14 07:33:54 - uvicorn.access - INFO - 127.0.0.1:56090 - "GET /health HTTP/1.1" 200
+2025-05-14 07:34:24 - uvicorn.access - INFO - 127.0.0.1:53404 - "GET /health HTTP/1.1" 200
+2025-05-14 07:34:54 - uvicorn.access - INFO - 127.0.0.1:33446 - "GET /health HTTP/1.1" 200
+2025-05-14 07:35:24 - uvicorn.access - INFO - 127.0.0.1:59898 - "GET /health HTTP/1.1" 200
+2025-05-14 07:35:54 - uvicorn.access - INFO - 127.0.0.1:34808 - "GET /health HTTP/1.1" 200
+2025-05-14 07:36:24 - uvicorn.access - INFO - 127.0.0.1:44264 - "GET /health HTTP/1.1" 200
+2025-05-14 07:36:55 - uvicorn.access - INFO - 127.0.0.1:33566 - "GET /health HTTP/1.1" 200
+2025-05-14 07:37:25 - uvicorn.access - INFO - 127.0.0.1:60786 - "GET /health HTTP/1.1" 200
+2025-05-14 07:37:55 - uvicorn.access - INFO - 127.0.0.1:46164 - "GET /health HTTP/1.1" 200
+2025-05-14 07:38:25 - uvicorn.access - INFO - 127.0.0.1:36574 - "GET /health HTTP/1.1" 200
+2025-05-14 07:38:55 - uvicorn.access - INFO - 127.0.0.1:59526 - "GET /health HTTP/1.1" 200
+2025-05-14 07:39:25 - uvicorn.access - INFO - 127.0.0.1:42524 - "GET /health HTTP/1.1" 200
+2025-05-14 07:39:55 - uvicorn.access - INFO - 127.0.0.1:38742 - "GET /health HTTP/1.1" 200
+2025-05-14 07:40:25 - uvicorn.access - INFO - 127.0.0.1:33424 - "GET /health HTTP/1.1" 200
+2025-05-14 07:40:55 - uvicorn.access - INFO - 127.0.0.1:40758 - "GET /health HTTP/1.1" 200
+2025-05-14 07:41:26 - uvicorn.access - INFO - 127.0.0.1:56404 - "GET /health HTTP/1.1" 200
+2025-05-14 07:41:56 - uvicorn.access - INFO - 127.0.0.1:49144 - "GET /health HTTP/1.1" 200
+2025-05-14 07:42:26 - uvicorn.access - INFO - 127.0.0.1:58350 - "GET /health HTTP/1.1" 200
+2025-05-14 07:42:56 - uvicorn.access - INFO - 127.0.0.1:55976 - "GET /health HTTP/1.1" 200
+2025-05-14 07:43:26 - uvicorn.access - INFO - 127.0.0.1:58908 - "GET /health HTTP/1.1" 200
+2025-05-14 07:43:56 - uvicorn.access - INFO - 127.0.0.1:58404 - "GET /health HTTP/1.1" 200
+2025-05-14 07:44:26 - uvicorn.access - INFO - 127.0.0.1:59818 - "GET /health HTTP/1.1" 200
+2025-05-14 07:44:56 - uvicorn.access - INFO - 127.0.0.1:57252 - "GET /health HTTP/1.1" 200
+2025-05-14 07:45:16 - uvicorn.access - INFO - 172.21.0.1:58338 - "GET /docs HTTP/1.1" 200
+2025-05-14 07:45:16 - uvicorn.access - INFO - 172.21.0.1:58338 - "GET /openapi.json HTTP/1.1" 200
+2025-05-14 07:45:27 - uvicorn.access - INFO - 127.0.0.1:49668 - "GET /health HTTP/1.1" 200
+2025-05-14 07:45:57 - uvicorn.access - INFO - 127.0.0.1:40740 - "GET /health HTTP/1.1" 200
+2025-05-14 07:46:27 - uvicorn.access - INFO - 127.0.0.1:35476 - "GET /health HTTP/1.1" 200
+2025-05-14 07:46:57 - uvicorn.access - INFO - 127.0.0.1:48622 - "GET /health HTTP/1.1" 200
+2025-05-14 07:47:27 - uvicorn.access - INFO - 127.0.0.1:48092 - "GET /health HTTP/1.1" 200
+2025-05-14 07:47:57 - uvicorn.access - INFO - 127.0.0.1:38998 - "GET /health HTTP/1.1" 200
+2025-05-14 07:48:27 - uvicorn.access - INFO - 127.0.0.1:58634 - "GET /health HTTP/1.1" 200
+2025-05-14 07:48:57 - uvicorn.access - INFO - 127.0.0.1:45114 - "GET /health HTTP/1.1" 200
+2025-05-14 07:49:27 - uvicorn.access - INFO - 127.0.0.1:50660 - "GET /health HTTP/1.1" 200
+2025-05-14 07:49:58 - uvicorn.access - INFO - 127.0.0.1:56240 - "GET /health HTTP/1.1" 200
+2025-05-14 07:50:28 - uvicorn.access - INFO - 127.0.0.1:57706 - "GET /health HTTP/1.1" 200
+2025-05-14 07:50:58 - uvicorn.access - INFO - 127.0.0.1:35404 - "GET /health HTTP/1.1" 200
+2025-05-14 07:51:28 - uvicorn.access - INFO - 127.0.0.1:33432 - "GET /health HTTP/1.1" 200
+2025-05-14 07:51:58 - uvicorn.access - INFO - 127.0.0.1:53266 - "GET /health HTTP/1.1" 200
+2025-05-14 07:52:28 - uvicorn.access - INFO - 127.0.0.1:54848 - "GET /health HTTP/1.1" 200
+2025-05-14 07:52:58 - uvicorn.access - INFO - 127.0.0.1:38648 - "GET /health HTTP/1.1" 200
+2025-05-14 07:53:28 - uvicorn.access - INFO - 127.0.0.1:41978 - "GET /health HTTP/1.1" 200
+2025-05-14 07:53:58 - uvicorn.access - INFO - 127.0.0.1:38312 - "GET /health HTTP/1.1" 200
+2025-05-14 07:54:29 - uvicorn.access - INFO - 127.0.0.1:41940 - "GET /health HTTP/1.1" 200
+2025-05-14 07:54:59 - uvicorn.access - INFO - 127.0.0.1:39708 - "GET /health HTTP/1.1" 200
+2025-05-14 07:55:29 - uvicorn.access - INFO - 127.0.0.1:47940 - "GET /health HTTP/1.1" 200
+2025-05-14 07:55:59 - uvicorn.access - INFO - 127.0.0.1:49812 - "GET /health HTTP/1.1" 200
+2025-05-14 07:56:29 - uvicorn.access - INFO - 127.0.0.1:37292 - "GET /health HTTP/1.1" 200
+2025-05-14 07:56:59 - uvicorn.access - INFO - 127.0.0.1:33938 - "GET /health HTTP/1.1" 200
+2025-05-14 07:57:29 - uvicorn.access - INFO - 127.0.0.1:37706 - "GET /health HTTP/1.1" 200
+2025-05-14 07:57:59 - uvicorn.access - INFO - 127.0.0.1:54536 - "GET /health HTTP/1.1" 200
+2025-05-14 07:58:29 - uvicorn.access - INFO - 127.0.0.1:53288 - "GET /health HTTP/1.1" 200
+2025-05-14 07:59:00 - uvicorn.access - INFO - 127.0.0.1:40812 - "GET /health HTTP/1.1" 200
+2025-05-14 07:59:30 - uvicorn.access - INFO - 127.0.0.1:53258 - "GET /health HTTP/1.1" 200
+2025-05-14 08:00:00 - uvicorn.access - INFO - 127.0.0.1:58380 - "GET /health HTTP/1.1" 200
+2025-05-14 08:00:30 - uvicorn.access - INFO - 127.0.0.1:38796 - "GET /health HTTP/1.1" 200
+2025-05-14 08:01:00 - uvicorn.access - INFO - 127.0.0.1:37720 - "GET /health HTTP/1.1" 200
+2025-05-14 08:01:30 - uvicorn.access - INFO - 127.0.0.1:35620 - "GET /health HTTP/1.1" 200
+2025-05-14 08:02:00 - uvicorn.access - INFO - 127.0.0.1:40958 - "GET /health HTTP/1.1" 200
+2025-05-14 08:02:30 - uvicorn.access - INFO - 127.0.0.1:56890 - "GET /health HTTP/1.1" 200
+2025-05-14 08:03:01 - uvicorn.access - INFO - 127.0.0.1:45798 - "GET /health HTTP/1.1" 200
+2025-05-14 08:03:31 - uvicorn.access - INFO - 127.0.0.1:60806 - "GET /health HTTP/1.1" 200
+2025-05-14 08:04:01 - uvicorn.access - INFO - 127.0.0.1:41056 - "GET /health HTTP/1.1" 200
+2025-05-14 08:04:31 - uvicorn.access - INFO - 127.0.0.1:36192 - "GET /health HTTP/1.1" 200
+2025-05-14 08:05:01 - uvicorn.access - INFO - 127.0.0.1:38324 - "GET /health HTTP/1.1" 200
+2025-05-14 08:05:31 - uvicorn.access - INFO - 127.0.0.1:36404 - "GET /health HTTP/1.1" 200
+2025-05-14 08:06:01 - uvicorn.access - INFO - 127.0.0.1:44778 - "GET /health HTTP/1.1" 200
+2025-05-14 08:06:32 - uvicorn.access - INFO - 127.0.0.1:57612 - "GET /health HTTP/1.1" 200
+2025-05-14 08:07:02 - uvicorn.access - INFO - 127.0.0.1:39570 - "GET /health HTTP/1.1" 200
+2025-05-14 08:07:32 - uvicorn.access - INFO - 127.0.0.1:50348 - "GET /health HTTP/1.1" 200
+2025-05-14 08:08:02 - uvicorn.access - INFO - 127.0.0.1:60448 - "GET /health HTTP/1.1" 200
+2025-05-14 08:08:32 - uvicorn.access - INFO - 127.0.0.1:54020 - "GET /health HTTP/1.1" 200
+2025-05-14 08:09:02 - uvicorn.access - INFO - 127.0.0.1:33284 - "GET /health HTTP/1.1" 200
+2025-05-14 08:09:32 - uvicorn.access - INFO - 127.0.0.1:46030 - "GET /health HTTP/1.1" 200
+2025-05-14 08:09:51 - uvicorn.error - INFO - Shutting down
+2025-05-14 08:09:51 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-14 08:09:51 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-14 08:09:51 - uvicorn.error - INFO - Finished server process [8]
+2025-05-16 16:49:12 - __main__ - INFO - Starting server at 0.0.0.0:8000
+2025-05-16 16:49:50 - __main__ - INFO - Starting server at 0.0.0.0:8000
+2025-05-16 16:49:51 - uvicorn.error - INFO - Started server process [73094]
+2025-05-16 16:49:51 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-16 16:49:51 - uvicorn.error - INFO - Application startup complete.
+2025-05-16 16:49:54 - uvicorn.access - INFO - 127.0.0.1:60852 - "GET /health HTTP/1.1" 200
+2025-05-16 16:50:11 - uvicorn.access - INFO - 127.0.0.1:60872 - "GET /docs HTTP/1.1" 200
+2025-05-16 16:50:11 - uvicorn.access - INFO - 127.0.0.1:60872 - "GET /openapi.json HTTP/1.1" 200
+2025-05-16 16:52:17 - uvicorn.access - INFO - 127.0.0.1:60933 - "GET /health HTTP/1.1" 200
+2025-05-16 16:53:01 - src.api.routes - INFO - Processing uploaded accident image: European Accident Statement (1).jpg in language: Language.EN
+2025-05-16 16:53:01 - src.api.routes - INFO - Validating image
+2025-05-16 16:53:01 - src.api.routes - INFO - Extracting image metadata
+2025-05-16 16:53:01 - src.api.routes - INFO - Running fraud detection
+2025-05-16 16:53:01 - src.api.routes - INFO - Resizing image if needed
+2025-05-16 16:53:01 - src.api.routes - INFO - Sending image to generate accident report in Language.EN
+2025-05-16 16:53:01 - src.services.accident_report_service - INFO - Image encoded to base64
+2025-05-16 16:53:01 - src.services.accident_report_service - INFO - Sending request to Groq API for accident report in Language.EN
+2025-05-16 16:53:05 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-16 16:53:05 - src.services.accident_report_service - INFO - Creating English accident report model
+2025-05-16 16:53:05 - src.services.accident_report_service - ERROR - Error creating accident report: 13 validation errors for AccidentReport
+other_damage.Material damage to other vehicles A and B
+  Field required [type=missing, input_value={'vehicles': False, 'obje...se, 'description': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+other_damage.Damage to other objects A and B
+  Field required [type=missing, input_value={'vehicles': False, 'obje...se, 'description': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.Last name
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.First name
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.Address
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Insurance information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Vehicle information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Driver information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Insurance information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Vehicle information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Driver information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+circumstances.Checked accident circumstances
+  Field required [type=missing, input_value={'selected_items': [1, 2,...': 3, 'free_text': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+circumstances.Number of checked boxes
+  Field required [type=missing, input_value={'selected_items': [1, 2,...': 3, 'free_text': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2025-05-16 16:53:05 - src.api.routes - ERROR - Error generating accident report: 13 validation errors for AccidentReport
+other_damage.Material damage to other vehicles A and B
+  Field required [type=missing, input_value={'vehicles': False, 'obje...se, 'description': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+other_damage.Damage to other objects A and B
+  Field required [type=missing, input_value={'vehicles': False, 'obje...se, 'description': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.Last name
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.First name
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.Address
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Insurance information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Vehicle information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Driver information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Insurance information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Vehicle information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Driver information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+circumstances.Checked accident circumstances
+  Field required [type=missing, input_value={'selected_items': [1, 2,...': 3, 'free_text': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+circumstances.Number of checked boxes
+  Field required [type=missing, input_value={'selected_items': [1, 2,...': 3, 'free_text': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+Traceback (most recent call last):
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/src/api/routes.py", line 379, in generate_accident_report
+    report = await accident_report_service.generate_accident_report(image_content, language, metadata)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/src/services/accident_report_service.py", line 100, in generate_accident_report
+    report = AccidentReportEN(**result_json)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/pydantic/main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 13 validation errors for AccidentReport
+other_damage.Material damage to other vehicles A and B
+  Field required [type=missing, input_value={'vehicles': False, 'obje...se, 'description': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+other_damage.Damage to other objects A and B
+  Field required [type=missing, input_value={'vehicles': False, 'obje...se, 'description': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.Last name
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.First name
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+witnesses.0.Address
+  Field required [type=missing, input_value={'last_name': 'Gottinger'...one, 'birth_date': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Insurance information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Vehicle information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_a.Driver information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Insurance information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Vehicle information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+party_b.Driver information
+  Field required [type=missing, input_value={'insurance': {'company':..., 'damages_notes': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+circumstances.Checked accident circumstances
+  Field required [type=missing, input_value={'selected_items': [1, 2,...': 3, 'free_text': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+circumstances.Number of checked boxes
+  Field required [type=missing, input_value={'selected_items': [1, 2,...': 3, 'free_text': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+2025-05-16 16:53:05 - uvicorn.access - INFO - 127.0.0.1:60993 - "POST /generate-accident-report?language=en&skip_fraud_check=false&process_anyway=true HTTP/1.1" 500
+2025-05-16 16:55:08 - uvicorn.error - INFO - Shutting down
+2025-05-16 16:55:09 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-16 16:55:09 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-16 16:55:09 - uvicorn.error - INFO - Finished server process [73094]
+2025-05-16 16:55:09 - uvicorn.error - INFO - Started server process [74002]
+2025-05-16 16:55:09 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-16 16:55:09 - uvicorn.error - INFO - Application startup complete.
+2025-05-16 16:55:26 - uvicorn.error - INFO - Shutting down
+2025-05-16 16:55:26 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-16 16:55:26 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-16 16:55:26 - uvicorn.error - INFO - Finished server process [74002]
+2025-05-16 16:55:27 - uvicorn.error - INFO - Started server process [74055]
+2025-05-16 16:55:27 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-16 16:55:27 - uvicorn.error - INFO - Application startup complete.
+2025-05-16 16:56:38 - uvicorn.error - INFO - Shutting down
+2025-05-16 16:56:38 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-16 16:56:38 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-16 16:56:38 - uvicorn.error - INFO - Finished server process [74055]
+2025-05-16 16:56:38 - uvicorn.error - INFO - Started server process [74235]
+2025-05-16 16:56:38 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-16 16:56:38 - uvicorn.error - INFO - Application startup complete.
+2025-05-16 16:56:52 - uvicorn.error - INFO - Shutting down
+2025-05-16 16:56:53 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-16 16:56:53 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-16 16:56:53 - uvicorn.error - INFO - Finished server process [74235]
+2025-05-16 16:56:53 - uvicorn.error - INFO - Started server process [74279]
+2025-05-16 16:56:53 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-16 16:56:53 - uvicorn.error - INFO - Application startup complete.
+2025-05-16 16:57:45 - uvicorn.error - INFO - Shutting down
+2025-05-16 16:57:45 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-16 16:57:45 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-16 16:57:45 - uvicorn.error - INFO - Finished server process [74279]
+2025-05-16 16:57:45 - uvicorn.error - INFO - Started server process [74406]
+2025-05-16 16:57:45 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-16 16:57:45 - uvicorn.error - INFO - Application startup complete.
+2025-05-16 16:57:58 - uvicorn.error - INFO - Shutting down
+2025-05-16 16:57:58 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-16 16:57:58 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-16 16:57:58 - uvicorn.error - INFO - Finished server process [74406]
+2025-05-16 16:58:03 - __main__ - INFO - Starting server at 0.0.0.0:8000
+2025-05-16 16:58:04 - uvicorn.error - INFO - Started server process [74494]
+2025-05-16 16:58:04 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-16 16:58:04 - uvicorn.error - INFO - Application startup complete.
+2025-05-16 16:58:09 - uvicorn.access - INFO - 127.0.0.1:61224 - "GET /docs HTTP/1.1" 200
+2025-05-16 16:58:10 - uvicorn.access - INFO - 127.0.0.1:61224 - "GET /openapi.json HTTP/1.1" 200
+2025-05-16 16:58:23 - src.api.routes - INFO - Processing uploaded accident image: European Accident Statement (1).jpg in language: Language.EN
+2025-05-16 16:58:23 - src.api.routes - INFO - Validating image
+2025-05-16 16:58:23 - src.api.routes - INFO - Extracting image metadata
+2025-05-16 16:58:23 - src.api.routes - INFO - Running fraud detection
+2025-05-16 16:58:23 - src.api.routes - INFO - Resizing image if needed
+2025-05-16 16:58:23 - src.api.routes - INFO - Sending image to generate accident report in Language.EN
+2025-05-16 16:58:23 - src.services.accident_report_service - INFO - Image encoded to base64
+2025-05-16 16:58:23 - src.services.accident_report_service - INFO - Sending request to Groq API for accident report in Language.EN
+2025-05-16 16:59:23 - groq._base_client - INFO - Retrying request to /openai/v1/chat/completions in 0.435632 seconds
+2025-05-16 16:59:28 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-16 16:59:28 - src.services.accident_report_service - INFO - Creating English accident report model
+2025-05-16 16:59:28 - src.api.routes - INFO - Accident report generation completed successfully
+2025-05-16 16:59:28 - uvicorn.access - INFO - 127.0.0.1:61230 - "POST /generate-accident-report?language=en&skip_fraud_check=false&process_anyway=true HTTP/1.1" 200
+2025-05-16 17:04:03 - uvicorn.error - INFO - Shutting down
+2025-05-16 17:04:03 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-16 17:04:03 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-16 17:04:03 - uvicorn.error - INFO - Finished server process [74494]
+2025-05-19 21:07:37 - __main__ - INFO - Starting server at 0.0.0.0:8000
+2025-05-19 21:07:38 - uvicorn.error - INFO - Started server process [96209]
+2025-05-19 21:07:38 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-19 21:07:38 - uvicorn.error - INFO - Application startup complete.
+2025-05-19 21:07:44 - uvicorn.access - INFO - 127.0.0.1:58841 - "GET /docs HTTP/1.1" 200
+2025-05-19 21:07:44 - uvicorn.access - INFO - 127.0.0.1:58841 - "GET /openapi.json HTTP/1.1" 200
+2025-05-19 21:08:03 - src.api.routes - INFO - Processing uploaded accident image: European Accident Statement (1).jpg in language: Language.EN
+2025-05-19 21:08:03 - src.api.routes - INFO - Validating image
+2025-05-19 21:08:03 - src.api.routes - INFO - Extracting image metadata
+2025-05-19 21:08:03 - src.api.routes - INFO - Running fraud detection
+2025-05-19 21:08:03 - src.api.routes - INFO - Resizing image if needed
+2025-05-19 21:08:03 - src.api.routes - INFO - Sending image to generate accident report in Language.EN
+2025-05-19 21:08:03 - src.services.accident_report_service - INFO - Image preprocessed for improved text recognition
+2025-05-19 21:08:07 - src.services.accident_report_service - INFO - OCR preprocessing completed to aid LLM analysis
+2025-05-19 21:08:07 - src.services.accident_report_service - INFO - Preprocessed image encoded to base64
+2025-05-19 21:08:07 - src.services.accident_report_service - INFO - Sending request to Groq API for accident report in Language.EN
+2025-05-19 21:08:09 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 403 Forbidden"
+2025-05-19 21:08:09 - src.api.routes - ERROR - Error generating accident report: Error code: 403 - {'error': {'message': 'Access denied. Please check your network settings.'}}
+Traceback (most recent call last):
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/src/api/routes.py", line 379, in generate_accident_report
+    report = await accident_report_service.generate_accident_report(image_content, language, metadata)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/src/services/accident_report_service.py", line 102, in generate_accident_report
+    response = self.groq_service.client.chat.completions.create(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/groq/resources/chat/completions.py", line 341, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/groq/_base_client.py", line 1222, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apple/Documents/car_insurance_claims_ai_agent/venv/lib/python3.11/site-packages/groq/_base_client.py", line 1031, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.PermissionDeniedError: Error code: 403 - {'error': {'message': 'Access denied. Please check your network settings.'}}
+2025-05-19 21:08:09 - uvicorn.access - INFO - 127.0.0.1:58866 - "POST /generate-accident-report?language=en&skip_fraud_check=false&process_anyway=true HTTP/1.1" 500
+2025-05-19 21:11:30 - src.api.routes - INFO - Processing uploaded accident image: European Accident Statement (1).jpg in language: Language.EN
+2025-05-19 21:11:30 - src.api.routes - INFO - Validating image
+2025-05-19 21:11:30 - src.api.routes - INFO - Extracting image metadata
+2025-05-19 21:11:30 - src.api.routes - INFO - Running fraud detection
+2025-05-19 21:11:30 - src.api.routes - INFO - Resizing image if needed
+2025-05-19 21:11:30 - src.api.routes - INFO - Sending image to generate accident report in Language.EN
+2025-05-19 21:11:30 - src.services.accident_report_service - INFO - Image preprocessed for improved text recognition
+2025-05-19 21:11:32 - src.services.accident_report_service - INFO - OCR preprocessing completed to aid LLM analysis
+2025-05-19 21:11:32 - src.services.accident_report_service - INFO - Preprocessed image encoded to base64
+2025-05-19 21:11:32 - src.services.accident_report_service - INFO - Sending request to Groq API for accident report in Language.EN
+2025-05-19 21:11:41 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-19 21:11:41 - src.services.accident_report_service - INFO - Creating English accident report model
+2025-05-19 21:11:41 - src.api.routes - INFO - Accident report generation completed successfully
+2025-05-19 21:11:41 - uvicorn.access - INFO - 127.0.0.1:59129 - "POST /generate-accident-report?language=en&skip_fraud_check=false&process_anyway=true HTTP/1.1" 200
+2025-05-19 21:13:23 - uvicorn.error - INFO - Shutting down
+2025-05-19 21:13:23 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-19 21:13:23 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-19 21:13:23 - uvicorn.error - INFO - Finished server process [96209]
+2025-05-20 13:12:15 - __main__ - INFO - Starting server at 0.0.0.0:8000
+2025-05-20 13:12:16 - uvicorn.error - INFO - Started server process [8985]
+2025-05-20 13:12:16 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:12:16 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:12:28 - src.utils.image_utils - ERROR - Image validation error: a bytes-like object is required, not '_io.BytesIO'
+2025-05-20 13:12:28 - uvicorn.access - INFO - 127.0.0.1:64866 - "POST /testing/enhance-image?output_type=file HTTP/1.1" 500
+2025-05-20 13:12:58 - src.utils.image_utils - ERROR - Image validation error: a bytes-like object is required, not '_io.BytesIO'
+2025-05-20 13:12:58 - uvicorn.access - INFO - 127.0.0.1:64914 - "POST /testing/enhance-image?output_type=base64 HTTP/1.1" 500
+2025-05-20 13:13:47 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:13:47 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:13:47 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:13:47 - uvicorn.error - INFO - Finished server process [8985]
+2025-05-20 13:13:47 - uvicorn.error - INFO - Started server process [9180]
+2025-05-20 13:13:47 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:13:47 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:14:08 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:14:08 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:14:08 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:14:08 - uvicorn.error - INFO - Finished server process [9180]
+2025-05-20 13:14:09 - uvicorn.error - INFO - Started server process [9221]
+2025-05-20 13:14:09 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:14:09 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:14:14 - src.utils.image_utils - ERROR - Image validation error: a bytes-like object is required, not '_io.BytesIO'
+2025-05-20 13:14:14 - uvicorn.access - INFO - 127.0.0.1:65025 - "POST /testing/enhance-image?output_type=base64 HTTP/1.1" 400
+2025-05-20 13:14:35 - src.utils.image_utils - ERROR - Image validation error: a bytes-like object is required, not '_io.BytesIO'
+2025-05-20 13:14:35 - uvicorn.access - INFO - 127.0.0.1:65038 - "POST /testing/enhance-image?output_type=file HTTP/1.1" 400
+2025-05-20 13:15:11 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:15:11 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:15:11 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:15:11 - uvicorn.error - INFO - Finished server process [9221]
+2025-05-20 13:15:12 - uvicorn.error - INFO - Started server process [9388]
+2025-05-20 13:15:12 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:15:12 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:15:23 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:15:23 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:15:23 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:15:23 - uvicorn.error - INFO - Finished server process [9388]
+2025-05-20 13:15:24 - uvicorn.error - INFO - Started server process [9415]
+2025-05-20 13:15:24 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:15:24 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:15:32 - uvicorn.access - INFO - 127.0.0.1:65105 - "POST /testing/enhance-image?output_type=file HTTP/1.1" 500
+2025-05-20 13:15:37 - uvicorn.access - INFO - 127.0.0.1:65107 - "POST /testing/enhance-image?output_type=base64 HTTP/1.1" 500
+2025-05-20 13:16:35 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:16:35 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:16:35 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:16:35 - uvicorn.error - INFO - Finished server process [9415]
+2025-05-20 13:16:35 - uvicorn.error - INFO - Started server process [9574]
+2025-05-20 13:16:35 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:16:35 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:17:00 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:17:00 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:17:00 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:17:00 - uvicorn.error - INFO - Finished server process [9574]
+2025-05-20 13:17:01 - uvicorn.error - INFO - Started server process [9615]
+2025-05-20 13:17:01 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:17:01 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:17:39 - uvicorn.access - INFO - 127.0.0.1:65245 - "POST /testing/enhance-image?output_type=base64 HTTP/1.1" 200
+2025-05-20 13:17:47 - uvicorn.access - INFO - 127.0.0.1:65247 - "POST /testing/enhance-image?output_type=file HTTP/1.1" 200
+2025-05-20 13:22:15 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:22:15 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:22:15 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:22:15 - uvicorn.error - INFO - Finished server process [9615]
+2025-05-20 13:22:16 - uvicorn.error - INFO - Started server process [10280]
+2025-05-20 13:22:16 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:22:16 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:22:32 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:22:33 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:22:33 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:22:33 - uvicorn.error - INFO - Finished server process [10280]
+2025-05-20 13:22:33 - uvicorn.error - INFO - Started server process [10316]
+2025-05-20 13:22:33 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:22:33 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:23:12 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:23:12 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:23:12 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:23:12 - uvicorn.error - INFO - Finished server process [10316]
+2025-05-20 13:23:12 - uvicorn.error - INFO - Started server process [10423]
+2025-05-20 13:23:12 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:23:12 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:23:34 - uvicorn.error - INFO - Shutting down
+2025-05-20 13:23:34 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 13:23:34 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 13:23:34 - uvicorn.error - INFO - Finished server process [10423]
+2025-05-20 13:23:35 - uvicorn.error - INFO - Started server process [10472]
+2025-05-20 13:23:35 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 13:23:35 - uvicorn.error - INFO - Application startup complete.
+2025-05-20 13:27:42 - uvicorn.access - INFO - 127.0.0.1:49587 - "POST /testing/enhance-image?output_type=file HTTP/1.1" 200
+2025-05-20 16:10:13 - uvicorn.error - INFO - Shutting down
+2025-05-20 16:10:13 - uvicorn.error - INFO - Waiting for application shutdown.
+2025-05-20 16:10:13 - uvicorn.error - INFO - Application shutdown complete.
+2025-05-20 16:10:13 - uvicorn.error - INFO - Finished server process [10472]
+2025-05-20 16:10:14 - uvicorn.error - INFO - Started server process [21106]
+2025-05-20 16:10:14 - uvicorn.error - INFO - Waiting for application startup.
+2025-05-20 16:10:14 - uvicorn.error - INFO - Application startup complete.

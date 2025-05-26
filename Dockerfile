@@ -9,10 +9,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
     SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
-# Install SSL certificates and curl for healthchecks
-# Simplify package installation to avoid cross-platform issues
+# Install SSL certificates, curl for healthchecks, and system dependencies for OpenCV and its dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates curl && \
+    apt-get install -y --no-install-recommends ca-certificates curl libavif-dev libgl1-mesa-glx libglib2.0-0 tesseract-ocr && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

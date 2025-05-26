@@ -23,7 +23,8 @@ def extract_image_metadata(image_bytes: bytes) -> Dict[str, Any]:
     metadata = {
         "has_exif": False,
         "exif_data": {},
-        "image_properties": {}
+        "image_properties": {},
+        "fraud_indicators": []  # Add a specific list for fraud indicators
     }
     
     try:
@@ -56,9 +57,20 @@ def extract_image_metadata(image_bytes: bytes) -> Dict[str, Any]:
             
             metadata["exif_data"] = filtered_exif
             
+            # Check for editing software in EXIF
+            if "Software" in filtered_exif:
+                software = filtered_exif["Software"]
+                if any(editor in str(software) for editor in 
+                      ("Photoshop", "GIMP", "Lightroom", "Affinity")):
+                    metadata["fraud_indicators"].append(f"Image edited with {software}")
+            
             # Extract GPS data if available
             if 'GPSInfo' in exif_data:
                 metadata["has_gps"] = True
+        else:
+            # If no EXIF data is present
+            if img.format == "PNG":
+                metadata["fraud_indicators"].append("Image is a PNG without EXIF data (possible screenshot)")
     
     except Exception as e:
         logger.warning(f"Error extracting image metadata: {str(e)}")
@@ -78,6 +90,10 @@ def detect_potential_fraud(image_bytes: bytes) -> Tuple[bool, Optional[str]]:
     try:
         # Extract metadata
         metadata = extract_image_metadata(image_bytes)
+        
+        # Check for fraud indicators already detected during metadata extraction
+        if metadata["fraud_indicators"]:
+            return True, metadata["fraud_indicators"][0]  # Return the first indicator
         
         # Check 1: Is this a screenshot? (common in fraud cases)
         # Screenshots typically lack EXIF data

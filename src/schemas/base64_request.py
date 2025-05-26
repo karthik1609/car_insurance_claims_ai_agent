@@ -8,7 +8,7 @@ import binascii
 
 class Base64ImageRequest(BaseModel):
     """Request model for submitting base64-encoded image data"""
-    image_base64: str = Field(
+    image: str = Field(
         ..., 
         description="Base64-encoded image data (should not include data:image prefix)"
     )
@@ -17,7 +17,7 @@ class Base64ImageRequest(BaseModel):
         description="Format of the image (jpg, png, etc.) if known"
     )
     
-    @validator('image_base64')
+    @validator('image')
     def validate_base64(cls, v):
         """Validate that the string is valid base64"""
         try:

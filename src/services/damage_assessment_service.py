@@ -6,7 +6,7 @@ import logging
 from typing import List, Tuple, Dict, Any, Union, BinaryIO
 
 from src.services.groq_service import GroqService
-from src.utils.fraud_detection import detect_potential_fraud
+from src.utils.fraud_detection import detect_potential_fraud, extract_image_metadata
 from src.utils.image_utils import validate_image, resize_image_if_needed
 from src.logger import get_logger
 
@@ -44,6 +44,10 @@ def assess_damage_from_image(image_file):
             logger.warning(f"Invalid image: {error_msg}")
             raise ValueError(error_msg or "Invalid image")
         
+        # Extract metadata for fraud detection and LLM analysis
+        metadata = extract_image_metadata(image_content)
+        logger.info(f"Extracted metadata: has_exif={metadata.get('has_exif', False)}")
+        
         # Check for potential fraud
         is_fraud, fraud_reason = detect_potential_fraud(image_content)
         if is_fraud:
@@ -54,9 +58,9 @@ def assess_damage_from_image(image_file):
         logger.info("Resizing image if needed")
         image_content = resize_image_if_needed(image_content)
         
-        # Process with Groq service (synchronous version)
+        # Process with Groq service (synchronous version), passing metadata
         logger.info("Processing with Groq service")
-        assessment_result = groq_service.analyze_car_damage_sync(image_content)
+        assessment_result = groq_service.analyze_car_damage_sync(image_content, metadata)
         
         logger.info("Damage assessment completed successfully")
         

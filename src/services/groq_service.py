@@ -5,12 +5,13 @@ import base64
 import logging
 import json
 import traceback
-from typing import Dict, Any, List, Union
+from typing import Dict, Any, List, Union, Optional
 from groq import Groq
 
 from src.core.config import settings
 from src.schemas.damage_assessment_enhanced import EnhancedDamageAssessmentResponse, DamageAssessmentItem
 from src.logger import get_logger
+from src.utils.fraud_detection import extract_image_metadata
 
 # Configure logging
 logger = get_logger(__name__)
@@ -173,12 +174,13 @@ class GroqService:
         except Exception as e:
             logger.error(f"Error validating single assessment: {str(e)}")
     
-    async def analyze_car_damage(self, image_bytes: bytes) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    async def analyze_car_damage(self, image_bytes: bytes, metadata: Optional[Dict[str, Any]] = None) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """
         Analyze car image using Llama 4 Maverick model to detect damage and estimate repair costs
         
         Args:
             image_bytes: The raw bytes of the uploaded image
+            metadata: Optional metadata extracted from the image
             
         Returns:
             Union[Dict[str, Any], List[Dict[str, Any]]]: Single damage assessment or list of assessments if multiple cars detected
@@ -187,148 +189,126 @@ class GroqService:
         base64_image = base64.b64encode(image_bytes).decode('utf-8')
         logger.info("Image encoded to base64")
         
+        # If metadata not provided, extract it
+        if metadata is None:
+            logger.info("Extracting image metadata")
+            metadata = extract_image_metadata(image_bytes)
+        
+        # Prepare metadata for prompt
+        metadata_prompt = self._format_metadata_for_prompt(metadata)
+        
         # Define the system prompt with enhanced JSON structure
-        system_prompt = """
-        You are an expert car damage assessor specialized in insurance claims.
-        Analyze this car image in detail to identify:
-        
-        1. Vehicle details (make, model, year, color, type, trim if visible)
-        2. Comprehensive damage assessment (location, type, severity, repair approach)
-        3. Detailed repair cost breakdown with itemized services and parts
-        
-        IMPORTANT: If you see multiple cars in the image, you MUST return a list of objects, one for each car, following the format below.
-        If there is only one car, you may return either a single object or a list with one object.
-        
-        Your response MUST be structured with the following keys for each car:
-        1. "vehicle_info": Contains all vehicle identification details
-        2. "damage_data": Contains complete damage assessment and cost breakdown
-        
-        For every cost value throughout your assessment (parts, labor, fees), you MUST provide three values:
-        1. "cost": The expected/most likely cost
-        2. "min_cost": The minimum estimated cost
-        3. "max_cost": The maximum estimated cost
-        
-        Example of the expected JSON structure for multiple cars:
-        
-        [
-          {
-            "vehicle_info": {
-              "make": "Toyota",
-              "model": "Corolla",
-              "year": "2019",
-              "color": "Blue",
-              "type": "Sedan",
-              "trim": "LE",
-              "make_certainty": 95.5,
-              "model_certainty": 87.3
-            },
-            "damage_data": {
-              "damaged_parts": [
-                {
-                  "part": "Front Bumper",
-                  "damage_type": "Scratch",
-                  "severity": "Moderate",
-                  "repair_action": "Repaint"
-                },
-                {
-                  "part": "Hood",
-                  "damage_type": "Dent",
-                  "severity": "Minor",
-                  "repair_action": "Repair and Repaint"
-                }
-              ],
-              "cost_breakdown": {
-                "parts": [
-                  {"name": "Paint supplies", "cost": 150, "min_cost": 130, "max_cost": 170},
-                  {"name": "Primer", "cost": 50, "min_cost": 45, "max_cost": 55}
-                ],
-                "labor": [
-                  {"service": "Bumper removal and reinstallation", "hours": 1.5, "rate": 85, "cost": 127.5, "min_cost": 110, "max_cost": 145},
-                  {"service": "Dent repair", "hours": 2, "rate": 90, "cost": 180, "min_cost": 160, "max_cost": 200},
-                  {"service": "Paint preparation", "hours": 1, "rate": 80, "cost": 80, "min_cost": 70, "max_cost": 90},
-                  {"service": "Painting and finishing", "hours": 2.5, "rate": 85, "cost": 212.5, "min_cost": 190, "max_cost": 235}
-                ],
-                "additional_fees": [
-                  {"description": "Disposal fees", "cost": 25, "min_cost": 20, "max_cost": 30},
-                  {"description": "Shop supplies", "cost": 35, "min_cost": 30, "max_cost": 40}
-                ],
-                "parts_total": {
-                  "min": 175,
-                  "max": 225,
-                  "expected": 200
-                },
-                "labor_total": {
-                  "min": 530,
-                  "max": 670,
-                  "expected": 600
-                },
-                "fees_total": {
-                  "min": 50,
-                  "max": 70,
-                  "expected": 60
-                },
-                "total_estimate": {
-                  "min": 755,
-                  "max": 965,
-                  "expected": 860,
-                  "currency": "EUR"
-                }
-              }
-            }
-          },
-          {
-            "vehicle_info": {
-              "make": "Honda",
-              "model": "Civic",
-              "year": "2020",
-              "color": "Red",
-              "type": "Sedan",
-              "trim": "Sport",
-              "make_certainty": 92.0,
-              "model_certainty": 85.0
-            },
-            "damage_data": {
-              // Similar structure as above
-            }
-          }
-        ]
-        
-        Example of the expected JSON structure for a single car:
-        
-        {
-          "vehicle_info": {
-            "make": "Toyota",
-            "model": "Corolla",
-            "year": "2019",
-            "color": "Blue",
-            "type": "Sedan",
-            "trim": "LE",
-            "make_certainty": 95.5,
-            "model_certainty": 87.3
-          },
-          "damage_data": {
-            // Same structure as in the list example
-          }
-        }
-        
-        Ensure your analysis is detailed and structured exactly as shown. The format must be consistent to work with the insurance system. Use "Minor", "Moderate", or "Severe" for damage severity.
-        
-        IMPORTANT RULES FOR COST CALCULATIONS:
-        1. For each individual item (parts, labor, fees), provide a reasonable min_cost and max_cost around the expected cost.
-        2. Calculate category totals as the sum of individual items: parts_total.expected = sum(part.cost) for all parts.
-        3. Calculate min and max for each category the same way: parts_total.min = sum(part.min_cost).
-        4. The overall total_estimate values MUST follow the rule: total_estimate.min = sum of all category mins
-        5. Similarly: total_estimate.max = sum of all category maxes, and total_estimate.expected = sum of all category expected values.
-        
-        For vehicle identification, provide certainty percentages for make and model:
-        1. "make_certainty" - confidence level (0-100) that the make is correctly identified
-        2. "model_certainty" - confidence level (0-100) that the model is correctly identified
-        
-        Lower these certainty values if the image is unclear, partially visible, or if there are multiple similar models that could match.
-        """
+        system_prompt = f"""You are a car insurance damage assessment AI. Your task is to analyze images of damaged vehicles, identify make/model/year, assess damage severity, estimate repair costs, and evaluate fraud risk.
+
+{metadata_prompt}
+
+IMPORTANT: If there are any potential fraud indicators in the metadata (editing software, lack of EXIF data, etc.), you MUST incorporate these into your fraud_analysis section and adjust the fraud_risk_level accordingly.
+
+Please provide an analysis in this JSON structure:
+
+// For a single vehicle
+{{
+  "vehicle_info": {{
+    "make": "Toyota", // Brand of the car
+    "model": "Camry", // Model of the car
+    "year": "2019", // Estimated year (as string)
+    "color": "Silver", // Main color
+    "type": "Sedan", // Body type: Sedan, SUV, Truck, etc.
+    "trim": "SE", // If identifiable
+    "make_certainty": 95.0, // Confidence level (0-100) that make is correctly identified
+    "model_certainty": 90.0 // Confidence level (0-100) that model is correctly identified
+  }},
+  "damage_data": {{
+    "damaged_parts": [
+      {{
+        "part": "Front Bumper", // Name of damaged part
+        "damage_type": "Dented", // Type of damage: Dented, Scratched, Broken, Crushed, etc.
+        "severity": "Moderate", // Severity: Minor, Moderate, Severe
+        "repair_action": "Replace" // Repair, Replace, Paint, etc.
+      }},
+      // Additional damaged parts...
+    ],
+    "cost_breakdown": {{
+      "parts": [
+        {{
+          "name": "Front Bumper",
+          "cost": 350, // Expected cost in currency units
+          "min_cost": 300, // Minimum possible cost
+          "max_cost": 400 // Maximum possible cost
+        }},
+        // Additional parts...
+      ],
+      "labor": [
+        {{
+          "service": "Bumper removal and replacement",
+          "hours": 2, // Estimated hours
+          "rate": 85, // Hourly rate
+          "cost": 170, // Expected cost (hours × rate)
+          "min_cost": 150, // Minimum possible cost
+          "max_cost": 190 // Maximum possible cost
+        }},
+        // Additional labor items...
+      ],
+      "additional_fees": [
+        {{
+          "description": "Hazardous material disposal",
+          "cost": 50, // Expected cost
+          "min_cost": 40, // Minimum possible cost
+          "max_cost": 60 // Maximum possible cost
+        }},
+        // Additional fees...
+      ],
+      "parts_total": {{
+        "min": 300, // Sum of all parts min_cost values
+        "max": 400, // Sum of all parts max_cost values
+        "expected": 350 // Sum of all parts cost values
+      }},
+      "labor_total": {{
+        "min": 150, // Sum of all labor min_cost values
+        "max": 190, // Sum of all labor max_cost values
+        "expected": 170 // Sum of all labor cost values
+      }},
+      "fees_total": {{
+        "min": 40, // Sum of all fees min_cost values
+        "max": 60, // Sum of all fees max_cost values
+        "expected": 50 // Sum of all fees cost values
+      }},
+      "total_estimate": {{
+        "min": 490, // Sum of all category min values
+        "max": 650, // Sum of all category max values
+        "expected": 570, // Sum of all category expected values
+        "currency": "USD" // Currency code
+      }}
+    }}
+  }},
+  "fraud_analysis": {{
+    "fraud_commentary": "The image shows consistent lighting and shadow patterns with damage consistent with impact. EXIF data shows original camera metadata. No signs of digital manipulation detected.",
+    "fraud_risk_level": "very low" // MUST be: very low, low, medium, high, or very high
+  }}
+}}
+
+IMPORTANT RULES FOR COST CALCULATIONS:
+1. For each individual item (parts, labor, fees), provide a reasonable min_cost and max_cost around the expected cost.
+2. Calculate category totals as the sum of individual items: parts_total.expected = sum(part.cost) for all parts.
+3. Calculate min and max for each category the same way: parts_total.min = sum(part.min_cost).
+4. The overall total_estimate values MUST follow the rule: total_estimate.min = sum of all category mins
+5. Similarly: total_estimate.max = sum of all category maxes, and total_estimate.expected = sum of all category expected values.
+
+For vehicle identification, provide certainty percentages for make and model:
+1. "make_certainty" - confidence level (0-100) that the make is correctly identified
+2. "model_certainty" - confidence level (0-100) that the model is correctly identified
+
+Lower these certainty values if the image is unclear, partially visible, or if there are multiple similar models that could match.
+
+FRAUD DETECTION RULES:
+1. The fraud_risk_level MUST be one of: "very low", "low", "medium", "high", "very high".
+2. Base your fraud risk assessment on image quality, consistency, damage patterns, and any anomalies.
+3. Consider the available metadata and if there are any red flags like editing software signatures.
+4. Provide specific reasons in the fraud_commentary field explaining your assessment.
+"""
         
         # User prompt just includes the instruction to analyze the image
-        user_prompt = "Analyze this car image for damage assessment and repair cost estimation."
+        user_prompt = "Analyze this car image for damage assessment, repair cost estimation, and fraud risk analysis."
         
         try:
             # Create message with image
@@ -360,7 +340,7 @@ class GroqService:
                 model=self.model,
                 messages=messages,
                 response_format={"type": "json_object"},
-                temperature=0.2,
+                temperature=0.05,
                 max_tokens=4096
             )
             
@@ -377,51 +357,138 @@ class GroqService:
                     # It's already an array of assessments
                     result = result_json
                 elif isinstance(result_json, dict):
-                    if "assessments" in result_json:
-                        # It's wrapped in an object with an "assessments" key
-                        result = result_json["assessments"]
-                    elif "vehicle_info" in result_json and "damage_data" in result_json:
-                        # It's a single assessment
+                    # It's a single assessment
+                    if "vehicle_info" in result_json and "damage_data" in result_json:
                         result = result_json
                     else:
-                        # It's some other structure, but we'll try to use it anyway
-                        logger.warning(f"Unexpected JSON structure: {list(result_json.keys())}")
-                        result = result_json
+                        # It might be wrapped in another object, try to find the assessment
+                        keys = list(result_json.keys())
+                        if len(keys) == 1 and isinstance(result_json[keys[0]], (list, dict)):
+                            result = result_json[keys[0]]
+                        else:
+                            logger.warning(f"Unexpected JSON structure: {result_json.keys()}")
+                            result = result_json
                 else:
                     logger.warning(f"Unexpected result type: {type(result_json)}")
-                    raise ValueError(f"Unexpected response format: {type(result_json)}")
+                    result = result_json
                 
-                # Validate and correct cost calculations
-                validated_result = self.validate_total_costs(result)
+                # Add fraud_analysis if not present
+                result = self._ensure_fraud_analysis_present(result)
                 
-                logger.info("Successfully analyzed car damage")
-                return validated_result
+                # Validate cost calculations
+                result = self.validate_total_costs(result)
                 
-            except json.JSONDecodeError as e:
-                logger.error(f"Failed to parse JSON from Groq response: {str(e)}")
-                raise ValueError(f"Failed to parse AI response: {str(e)}")
+                return result
             
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to parse JSON from model response: {str(e)}")
+                logger.error(f"Response text: {result_text}")
+                raise ValueError(f"Invalid JSON in model response: {str(e)}")
+        
         except Exception as e:
-            logger.error(f"Error analyzing car damage: {str(e)}", exc_info=True)
-            raise ValueError(f"Error analyzing image with AI: {str(e)}")
+            logger.error(f"Error in analyze_car_damage: {str(e)}")
+            logger.error(traceback.format_exc())
+            raise
     
-    def analyze_car_damage_sync(self, image_bytes: bytes) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    def _format_metadata_for_prompt(self, metadata: Dict[str, Any]) -> str:
+        """Format metadata into a string for inclusion in the prompt"""
+        if not metadata:
+            return "METADATA: No image metadata available."
+        
+        metadata_text = ["METADATA INFORMATION (IMPORTANT FOR FRAUD ASSESSMENT):"]
+        
+        # Add image properties
+        if "image_properties" in metadata and metadata["image_properties"]:
+            props = metadata["image_properties"]
+            metadata_text.append(f"- Image format: {props.get('format', 'Unknown')}")
+            metadata_text.append(f"- Image dimensions: {props.get('width', 'Unknown')}x{props.get('height', 'Unknown')}")
+            metadata_text.append(f"- Image size: {props.get('size_bytes', 'Unknown')} bytes")
+        
+        # Add EXIF information
+        if "has_exif" in metadata:
+            if metadata["has_exif"]:
+                metadata_text.append("- EXIF data: Present")
+                exif = metadata.get("exif_data", {})
+                if "DateTime" in exif:
+                    metadata_text.append(f"- Date taken: {exif['DateTime']}")
+                if "Make" in exif:
+                    metadata_text.append(f"- Camera make: {exif['Make']}")
+                if "Model" in exif:
+                    metadata_text.append(f"- Camera model: {exif['Model']}")
+                if "Software" in exif:
+                    metadata_text.append(f"- Software used: {exif['Software']} <-- FRAUD RISK INDICATOR if editing software")
+            else:
+                metadata_text.append("- EXIF data: Not present (may indicate screenshot or edited image) <-- POTENTIAL FRAUD RISK INDICATOR")
+        
+        # Add GPS information
+        if "has_gps" in metadata and metadata["has_gps"]:
+            metadata_text.append("- GPS data: Present")
+        
+        # Add a fraud risk section based on metadata analysis
+        fraud_indicators = []
+        
+        if "exif_data" in metadata and metadata.get("exif_data", {}).get("Software"):
+            software = metadata["exif_data"]["Software"]
+            if any(editor in str(software) for editor in ("Photoshop", "GIMP", "Lightroom", "Affinity")):
+                fraud_indicators.append(f"Image was edited with {software}")
+        
+        if not metadata.get("has_exif", True) and metadata.get("image_properties", {}).get("format") == "PNG":
+            fraud_indicators.append("Image lacks EXIF data and is PNG format (potential screenshot)")
+        
+        if fraud_indicators:
+            metadata_text.append("\nPOTENTIAL FRAUD INDICATORS:")
+            for indicator in fraud_indicators:
+                metadata_text.append(f"- {indicator}")
+            metadata_text.append("\nYOU MUST REFLECT THESE INDICATORS IN YOUR FRAUD ANALYSIS SECTION!")
+        
+        return "\n".join(metadata_text)
+    
+    def _ensure_fraud_analysis_present(self, result: Union[Dict[str, Any], List[Dict[str, Any]]]) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+        """Ensure fraud_analysis is present in all assessment items"""
+        default_fraud_analysis = {
+            "fraud_commentary": "No specific fraud indicators identified in the assessment.",
+            "fraud_risk_level": "low"
+        }
+        
+        if isinstance(result, list):
+            for item in result:
+                if "fraud_analysis" not in item:
+                    logger.warning("Adding missing fraud_analysis to assessment item")
+                    item["fraud_analysis"] = default_fraud_analysis
+        elif isinstance(result, dict) and "vehicle_info" in result and "damage_data" in result:
+            if "fraud_analysis" not in result:
+                logger.warning("Adding missing fraud_analysis to assessment")
+                result["fraud_analysis"] = default_fraud_analysis
+        
+        return result
+    
+    def analyze_car_damage_sync(self, image_bytes: bytes, metadata: Optional[Dict[str, Any]] = None) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         """
-        Synchronous version of analyze_car_damage for use in non-async contexts (like WhatsApp webhook)
+        Synchronous version of analyze_car_damage
         
         Args:
             image_bytes: The raw bytes of the uploaded image
+            metadata: Optional metadata extracted from the image
             
         Returns:
             Union[Dict[str, Any], List[Dict[str, Any]]]: Single damage assessment or list of assessments if multiple cars detected
         """
-        import asyncio
-        
-        # Create a new event loop to run the async function
-        loop = asyncio.new_event_loop()
         try:
-            asyncio.set_event_loop(loop)
-            result = loop.run_until_complete(self.analyze_car_damage(image_bytes))
+            import asyncio
+            
+            # Get the event loop
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                # Create a new event loop if there isn't one
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            
+            # Run the async function and return the result
+            result = loop.run_until_complete(self.analyze_car_damage(image_bytes, metadata))
             return result
-        finally:
-            loop.close() 
+            
+        except Exception as e:
+            logger.error(f"Error in analyze_car_damage_sync: {str(e)}")
+            logger.error(traceback.format_exc())
+            raise 

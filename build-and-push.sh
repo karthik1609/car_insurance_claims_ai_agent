@@ -6,7 +6,7 @@ set -e
 # Default values
 REGISTRY=""
 IMAGE_NAME="car-insurance-claims-ai-agent"
-TAG="latest"
+TAG="v3.0.0"
 BUILD_ONLY=false
 PLATFORMS="linux/amd64,linux/arm64"
 
@@ -19,7 +19,7 @@ function show_help {
     echo "Options:"
     echo "  -r, --registry     Container registry URL (e.g., myacr.azurecr.io)"
     echo "  -n, --name         Image name (default: car-insurance-claims-ai-agent)"
-    echo "  -t, --tag          Image tag (default: latest)"
+    echo "  -t, --tag          Image tag (default: v3.0.0)"
     echo "  -p, --platforms    Platforms to build for (default: linux/amd64,linux/arm64)"
     echo "  -b, --build-only   Build image only, don't push"
     echo "  -h, --help         Show this help message"

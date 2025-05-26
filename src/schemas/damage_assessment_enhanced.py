@@ -79,10 +79,16 @@ class DamageData(BaseModel):
     damaged_parts: List[DamagedPart] = Field(..., description="List of damaged parts with details")
     cost_breakdown: CostBreakdown = Field(..., description="Detailed cost breakdown")
 
+class FraudAnalysis(BaseModel):
+    """Fraud analysis and risk assessment"""
+    fraud_commentary: Optional[str] = Field(None, description="Commentary on potential fraud indicators in the claim")
+    fraud_risk_level: str = Field(..., description="Assessed risk level of fraud/inauthenticity (very low, low, medium, high, very high)")
+
 class DamageAssessmentItem(BaseModel):
     """Single damage assessment item with vehicle info and damage data"""
     vehicle_info: VehicleInfo = Field(..., description="Vehicle information")
     damage_data: DamageData = Field(..., description="Damage assessment and cost data")
+    fraud_analysis: FraudAnalysis = Field(..., description="Fraud risk analysis and assessment")
 
 # This is the type we'll use for the API response
 EnhancedDamageAssessmentResponse = List[DamageAssessmentItem] 
