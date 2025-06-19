@@ -19,20 +19,16 @@ This document provides the answers to the risk assessment questionnaire based on
 
 ```mermaid
 graph TD
- User([Client/User]) -->|Uploads image or form| API[FastAPI Application
-(REST API)]
- subgraph Backend_Process [FastAPI Backend & Services]
- API -->|"Assess Damage" endpoint| DamageService[Damage Analysis
-Module<br/>(calls LLM for car damage)]
- API -->|"Generate Report" endpoint| ReportService[Accident Report
-Module<br/>(uses OCR for form data)]
- API --> Utils[Image Processing & Fraud Detection]
- DamageService --> Utils
- ReportService --> Utils
- end
- subgraph External_Services [External AI Services]
- DamageService --> LLMAPI[Groq LLM Cloud API<br/>(Llama model)]
- ReportService --> FormRecognizer[Azure Form Recognizer<br/>(custom
-OCR model)]
- end
+    User([Client/User]) -->|Uploads image or form| API["FastAPI Application<br/>(REST API)"]
+    subgraph Backend_Process [FastAPI Backend & Services]
+        API -->|"Assess Damage" endpoint| DamageService["Damage Analysis<br/>Module(calls LLM for car damage)"]
+        API -->|"Generate Report" endpoint| ReportService["Accident Report<br/>Module(uses OCR for form data)"]
+        API --> Utils["Image Processing & Fraud Detection"]
+        DamageService --> Utils
+        ReportService --> Utils
+    end
+    subgraph External_Services [External AI Services]
+        DamageService --> LLMAPI["Groq LLM Cloud API<br/>(Llama model)"]
+        ReportService --> FormRecognizer["Azure Form Recognizer<br/>(custom OCR model)"]
+    end
 ```

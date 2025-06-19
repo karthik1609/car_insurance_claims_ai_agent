@@ -16,26 +16,21 @@ This document details the re-evaluation of key business risks assuming the platf
 
 ```mermaid
 graph TD
- User([Client/User]) -->|Uploads image/form| API_GW[API Layer (Azure API/
-App Service)]
- subgraph Azure_Backend [Azure Cloud Backend]
- API_GW --> Orchestrator[Azure Prompt Flow Orchestrator<br/>(manages AI
-workflow)]
- Orchestrator --> VisionModel[Azure Computer Vision Model<br/>(damage
-detection)]
- Orchestrator --> OpenAI[Azure OpenAI Service<br/>(GPT-4 for analysis)]
- Orchestrator --> FormRecognizerAzure[Azure Form Recognizer<br/>(OCR, EU
-deployment)]
- Orchestrator --> HumanReview[Human Review Portal<br/>(if needed)]
- end
- subgraph Azure_Services [Supporting Azure Services]
- API_GW --> AppInsights[Azure Monitor & Logging]
- API_GW --> KeyVault[Azure Key Vault (Secrets)]
- API_GW --> Storage[Secure Blob Storage (Images/temp)]
- Orchestrator --> MLStudio[Azure ML Studio & Registry<br/>(model
-training & registry)]
- end
- OpenAI --> ContentFilter[Azure Content Safety]
- KeyVault --> API_GW
- KeyVault --> Orchestrator
+    User([Client/User]) -->|Uploads image/form| API_GW["API Layer (Azure API/<br/>App Service)"]
+    subgraph Azure_Backend [Azure Cloud Backend]
+        API_GW --> Orchestrator["Azure Prompt Flow Orchestrator<br/>(manages AI workflow)"]
+        Orchestrator --> VisionModel["Azure Computer Vision Model<br/>(damage detection)"]
+        Orchestrator --> OpenAI["Azure OpenAI Service<br/>(GPT-4 for analysis)"]
+        Orchestrator --> FormRecognizerAzure["Azure Form Recognizer<br/>(OCR, EU deployment)"]
+        Orchestrator --> HumanReview["Human Review Portal<br/>(if needed)"]
+    end
+    subgraph Azure_Services [Supporting Azure Services]
+        API_GW --> AppInsights["Azure Monitor & Logging"]
+        API_GW --> KeyVault["Azure Key Vault (Secrets)"]
+        API_GW --> Storage["Secure Blob Storage (Images/temp)"]
+        Orchestrator --> MLStudio["Azure ML Studio & Registry<br/>(model training & registry)"]
+    end
+    OpenAI --> ContentFilter["Azure Content Safety"]
+    KeyVault --> API_GW
+    KeyVault --> Orchestrator
 ```
