@@ -167,7 +167,7 @@ Finally, we illustrate a step-by-step **sequence** for a typical claim assessmen
 ```mermaid
 sequenceDiagram
     participant User as User (Client)
-    participant APIM as API Gateway (APIM)
+    participant APIM as "API Gateway (APIM)"
     participant Agent as "ClaimsAssistant" Agent
     participant Vision as Azure Vision Service
     participant FR as Form Recognizer
@@ -245,7 +245,7 @@ The context remains similar: the user interacts with an Azure-hosted claims AI s
 
 ```mermaid
 graph LR
-    User["Insurance Customer or Agent"] -- claim request --> System[Claims AI Assistant (Azure, multi-agent)]
+    User["Insurance Customer or Agent"] -- claim request --> System["Claims AI Assistant (Azure, multi-agent)"]
     System -- result JSON --> User
     System -- may escalate case --> Human["Human Claims Adjuster"]
     Human -- feedback/approval --> System
@@ -265,7 +265,7 @@ Now we show the **containers** inside the multi-agent AI assistant. The architec
 
 ```mermaid
 graph TD
-    APIM[Azure API Management] 
+    APIM["Azure API Management"] 
     subgraph "Azure AI Foundry Agent Service"
        style "Azure AI Foundry Agent Service" fill:#f0f8ff,stroke:#aaa,stroke-width:1px;
        DocAgent["Document Ingestor Agent"]
@@ -513,19 +513,19 @@ Below is a sequence flow for a typical claim in this multi-agent setup, highligh
 ```mermaid
 sequenceDiagram
     participant User as User (Client)
-    participant APIM as API Gateway
-    participant DocAg as Document Ingestor Agent
-    participant RetrAg as Retriever Agent
-    participant Vis as Vision API
-    participant OCR as Form Recognizer
-    participant Search as Cognitive Search
-    participant Reasoner as Reasoner Agent
-    participant Router as Model Router
+    participant APIM as "API Gateway"
+    participant DocAg as "Document Ingestor Agent"
+    participant RetrAg as "Retriever Agent"
+    participant Vis as "Vision API"
+    participant OCR as "Form Recognizer"
+    participant Search as "Cognitive Search"
+    participant Reasoner as "Reasoner Agent"
+    participant Router as "Model Router"
     participant G4 as GPT-4
     participant G35 as GPT-3.5
-    participant SafetyAg as Safety Agent
-    participant CS as Content Safety
-    participant Human as Human Reviewer
+    participant SafetyAg as "Safety Agent"
+    participant CS as "Content Safety"
+    participant Human as "Human Reviewer"
 
     User->>APIM: POST /assess-damage (with images & form)
     APIM->>+DocAg: Invoke DocIngestor (async)
@@ -605,7 +605,7 @@ Externally, the context remains the same as prior approaches: user calls the ser
 
 ```mermaid
 graph LR
-    User["Insurance Customer / Agent"] -- submits photos & form --> System[Claims AI Assistant (Hybrid Vision)]
+    User["Insurance Customer / Agent"] -- submits photos & form --> System["Claims AI Assistant (Hybrid Vision)"]
     System -- returns assessment JSON --> User
     System -- can request review --> Human["Expert Damage Assessor"]
     Human -- updated decision --> System
@@ -623,7 +623,7 @@ For Approach 3, the architecture can be seen as a blend of Approach 2 and a spec
 
 ```mermaid
 graph TD
-    APIM[API Gateway]
+    APIM["API Gateway"]
     subgraph "VisionAI" ["Azure Custom Vision Service"]
        VisionModel["Advanced Damage Detection Model"]
     end
@@ -793,14 +793,14 @@ This sequence will look much like Approach 1's, but highlighting the use of the 
 ```mermaid
 sequenceDiagram
     participant User as User
-    participant APIM as API Gateway
-    participant Agent as Claims Agent (Orchestrator)
-    participant VisionSvc as Custom Vision Model
-    participant FR as Form Recognizer
-    participant Search as Azure Search
-    participant LLM as Azure OpenAI (GPT-4/3.5)
-    participant Safety as Content Safety Filter
-    participant Human as Human Adjuster
+    participant APIM as "API Gateway"
+    participant Agent as "Claims Agent (Orchestrator)"
+    participant VisionSvc as "Custom Vision Model"
+    participant FR as "Form Recognizer"
+    participant Search as "Azure Search"
+    participant LLM as "Azure OpenAI (GPT-4/3.5)"
+    participant Safety as "Content Safety Filter"
+    participant Human as "Human Adjuster"
 
     User->>APIM: POST /assess-damage (images, form)
     APIM->>Agent: Forward request to agent
