@@ -53,8 +53,9 @@ graph TD
     Agent --> OpenAI 
     OpenAI --> ContentFilter 
     Agent -->|Potential| HumanReview["Manual Review Queue"]
-    Agent -.-> KV  %% Agent pulls secrets (like API keys) from Key Vault
-    APIM --> LogAnalytics %% APIM and Agent send logs to monitoring
+    Agent -.-> KV
+    APIM --> LogAnalytics
+    %% APIM and Agent send logs to monitoring
     Agent --> LogAnalytics
 ```
 
