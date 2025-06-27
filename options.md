@@ -82,12 +82,12 @@ The component diagram zooms into the **ClaimsAssistant Agent**, detailing its in
 flowchart TD
     subgraph ClaimsAssistant_Agent
         direction TB
-        A_In[Input Handler] --> B_Vision[Vision Analyzer<br/>(Image Tagging)]
-        B_Vision --> C_OCR[Form OCR Processor]
-        C_OCR --> D_Grounding[Knowledge Retrieval Module]
-        D_Grounding --> E_LLM[LLM Prompt Builder & Invoker]
-        E_LLM --> F_ResultParser[Response Parser & Validator]
-        F_ResultParser --> G_Escalation[Confidence & Safety Checker]
+        A_In["Input Handler"] --> B_Vision["Vision Analyzer<br/>(Image Tagging)"]
+        B_Vision --> C_OCR["Form OCR Processor"]
+        C_OCR --> D_Grounding["Knowledge Retrieval Module"]
+        D_Grounding --> E_LLM["LLM Prompt Builder & Invoker"]
+        E_LLM --> F_ResultParser["Response Parser & Validator"]
+        F_ResultParser --> G_Escalation["Confidence & Safety Checker"]
     end
     subgraph Azure_Services_Internal
         VisionAPI[[Computer Vision API]]
