@@ -1,4 +1,3 @@
----
 
 # **Approach 1: Azure-Native Single-Agent + RAG**
 
