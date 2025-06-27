@@ -267,7 +267,6 @@ Now we show the **containers** inside the multi-agent AI assistant. The architec
 graph TD
     APIM["Azure API Management"] 
     subgraph "Azure AI Foundry Agent Service"
-       style "Azure AI Foundry Agent Service" fill:#f0f8ff,stroke:#aaa,stroke-width:1px;
        DocAgent["Document Ingestor Agent"]
        RetrAgent["Retriever Agent"]
        ReasonerAgent["Reasoner Agent (Orchestrator)"]
@@ -695,19 +694,19 @@ flowchart TD
     subgraph "CoreAgent_Orchestrator"
       A0["Receive request"] --> A1["Call Custom Vision Model"]
       A1 --> |Image insights| A2{"Form Present?"}
-      A2 -->|Yes (form)| A3["Call Form Recognizer"]
-      A2 -->|No form| A4
+      A2 -->|"Yes (form)"| A3["Call Form Recognizer"]
+      A2 -->|"No form"| A4
       A3 --> A4["Compose query with vision+form data"]
       A4 --> A5["Search knowledge base"]
       A5 --> A6["Compile prompt with data & docs"]
       A6 --> A7{"Choose LLM model"}
-      A7 -->|Simple| A8["Call GPT-3.5"]
-      A7 -->|Complex| A9["Call GPT-4"]
+      A7 -->|"Simple"| A8["Call GPT-3.5"]
+      A7 -->|"Complex"| A9["Call GPT-4"]
       A8 --> A10
       A9 --> A10["Parse & inspect answer"]
       A10 --> A11{"Safe & Confident?"}
-      A11 -->|No| A12["Flag for human review"]
-      A11 -->|Yes| A13["Return JSON answer"]
+      A11 -->|"No"| A12["Flag for human review"]
+      A11 -->|"Yes"| A13["Return JSON answer"]
     end
 ```
 
@@ -810,7 +809,7 @@ sequenceDiagram
     FR-->>Agent: Extracted form data
     Agent->>Search: Query index with specific parts & context
     Search-->>Agent: Retrieved cost/manual info
-    Agent->>LLM: [If simple, use GPT-3.5; else GPT-4] -> Generate JSON answer
+    Agent->>LLM: Generate JSON answer (model choice: GPT-3.5 or GPT-4)
     LLM->>Safety: Automatic content safety check
     LLM-->>Agent: Draft assessment JSON
     alt Needs human verification
