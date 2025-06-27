@@ -29,9 +29,9 @@ The container diagram breaks down the Azure components inside the Claims AI Serv
 
 ```mermaid
 graph TD
-    UserClient([Client App<br/>or Web/Mobile UI]) 
+    UserClient(["Client App<br/>or Web/Mobile UI"]) 
     UserClient --> APIM["Azure API Management<br/>(REST Endpoint)"]
-    subgraph "Azure AI Agent Service"
+    subgraph "Azure AI Foundry Agent Service"
         Agent["ClaimsAssistant Agent<br/>(Prompt Flow Orchestrator)"]
     end
     subgraph "Azure Cognitive Services"
@@ -80,7 +80,7 @@ The component diagram zooms into the **ClaimsAssistant Agent**, detailing its in
 
 ```mermaid
 flowchart TD
-    subgraph ClaimsAssistant_Agent
+    subgraph "ClaimsAssistant_Agent"
         direction TB
         A_In["Input Handler"] --> B_Vision["Vision Analyzer<br/>(Image Tagging)"]
         B_Vision --> C_OCR["Form OCR Processor"]
@@ -89,7 +89,7 @@ flowchart TD
         E_LLM --> F_ResultParser["Response Parser & Validator"]
         F_ResultParser --> G_Escalation["Confidence & Safety Checker"]
     end
-    subgraph Azure_Services_Internal
+    subgraph "Azure_Services_Internal"
         VisionAPI[[Computer Vision API]]
         OCRAPI[[Form Recognizer API]]
         SearchAPI[[Cognitive Search Index]]
@@ -130,7 +130,7 @@ graph LR
     end
     subgraph Azure_Region_West_Europe["Azure Cloud (West Europe)"]
       subgraph Networking["Virtual Network"]
-        AgentNode[ClaimsAssistant Agent<br/>(Azure AI Agent Service)] 
+        AgentNode["ClaimsAssistant Agent<br/>(Azure AI Agent Service)"] 
       end
       APIMGw[Azure API Management] -->|HTTP Secure| AgentNode
       AgentNode -->|Vision API| VisionEP[(Azure Vision Endpoint)]
@@ -182,7 +182,7 @@ sequenceDiagram
     Vision -->> Agent: Detected damage tags/attributes
     Agent ->> FR: Extract data from accident form
     FR -->> Agent: Structured form fields (JSON)
-    Agent ->> Search: RAG query for relevant docs<br/>(parts costs, procedures)
+    Agent ->> Search: "RAG query for relevant docs<br/>(parts costs, procedures)"
     Search -->> Agent: Top relevant passages
     Agent ->> LLM: Compose prompt with context & invoke GPT-4
     LLM ->> Safety: (Automated) Check prompt & response:contentReference[oaicite:6]{index=6}
@@ -266,15 +266,15 @@ Now we show the **containers** inside the multi-agent AI assistant. The architec
 ```mermaid
 graph TD
     APIM[Azure API Management] 
-    subgraph Azure AI Foundry Agent Service
-       style Azure AI Foundry Agent Service fill:#f0f8ff,stroke:#aaa,stroke-width:1px;
+    subgraph "Azure AI Foundry Agent Service"
+       style "Azure AI Foundry Agent Service" fill:#f0f8ff,stroke:#aaa,stroke-width:1px;
        DocAgent["Document Ingestor Agent"]
        RetrAgent["Retriever Agent"]
        ReasonerAgent["Reasoner Agent (Orchestrator)"]
        RouterSvc["Model Router"]
        SafetyAgent["Safety Checker Agent"]
     end
-    subgraph CognitiveServices
+    subgraph "CognitiveServices"
        VisionAPI["Computer Vision API"]
        OCRAPI["Form Recognizer API"]
        SearchAPI["Azure Cognitive Search"]
@@ -283,7 +283,7 @@ graph TD
        SmallLM["Phi-3 Mini Model"]
        ContentSafety["Content Safety Service"]
     end
-    subgraph AuxServices
+    subgraph "AuxServices"
        KV2[(Key Vault)]
        Logs[(Monitoring & Analytics)]
        HumanReview["Human Review System"]
@@ -442,7 +442,7 @@ We now map these agents and services onto Azure infrastructure. This shows how e
 ```mermaid
 graph TD
     subgraph Azure West Europe ["Azure West Europe Region"]
-      subgraph AgentHub["Azure AI Foundry - Multi-Agent Project"]
+      subgraph "AgentHub" ["Azure AI Foundry - Multi-Agent Project"]
         DocPod["DocIngestor Agent Instance"]
         RetrPod["Retriever Agent Instance"]
         ReasonerPod["Reasoner Agent Instance"]
@@ -452,15 +452,15 @@ graph TD
       APIMGW[API Management Gateway]
       RouterFn["Model Router Function (Azure FN)"]
       KVVault[(Key Vault)]
-      SearchIndexRes[(Cognitive Search Index)]
-      OpenAI35[(Azure OpenAI GPT-3.5 Deployment)]
-      OpenAI4[(Azure OpenAI GPT-4 Deployment)]
-      SmallModel[(Custom Model on Azure ML / Container)]
-      VisionRes[(Computer Vision Endpoint)]
-      FRRes[(Form Recognizer Endpoint)]
-      ContentSafetyRes[(Content Safety API)]
+      SearchIndexRes[("Cognitive Search Index")]
+      OpenAI35[("Azure OpenAI GPT-3.5 Deployment")]
+      OpenAI4[("Azure OpenAI GPT-4 Deployment")]
+      SmallModel[("Custom Model on Azure ML / Container")]
+      VisionRes[("Computer Vision Endpoint")]
+              FRRes[("Form Recognizer Endpoint")]
+        ContentSafetyRes[("Content Safety API")]
       HumanPortal["Human Review App (Internal)"]
-      LogAnalyticsRes[(Log Analytics Workspace)]
+              LogAnalyticsRes[("Log Analytics Workspace")]
       
       %% Network and connectivity:
       APIMGW -->|HTTPS| DocPod
@@ -624,20 +624,20 @@ For Approach 3, the architecture can be seen as a blend of Approach 2 and a spec
 ```mermaid
 graph TD
     APIM[API Gateway]
-    subgraph VisionAI["Azure Custom Vision Service"]
+    subgraph "VisionAI" ["Azure Custom Vision Service"]
        VisionModel["Advanced Damage Detection Model"]
     end
-    subgraph Azure Agents Mesh
+    subgraph "Azure Agents Mesh"
        CoreAgent["Claims Reasoner Agent"]
     end
-    subgraph Azure Services
+    subgraph "Azure Services"
        SearchSvc3["Cognitive Search (RAG index)"]
        GPT4o["Azure OpenAI GPT-4"]
        GPT35o["Azure OpenAI GPT-3.5"]
        ContentSafe["Content Safety"]
        FormRecog["Form Recognizer"]
     end
-    subgraph Utils
+    subgraph "Utils"
        KV3[(Key Vault)]
        Log3[(Monitoring)]
        HumanQueue3["Human Review Queue"]
@@ -692,22 +692,22 @@ We'll focus on how the CoreAgent orchestrates the steps with the specialized vis
 
 ```mermaid
 flowchart TD
-    subgraph CoreAgent_Orchestrator
-      A0[Receive request] --> A1[Call Custom Vision Model]
-      A1 --> |Image insights| A2{Form Present?}
-      A2 -->|Yes (form)| A3[Call Form Recognizer]
+    subgraph "CoreAgent_Orchestrator"
+      A0["Receive request"] --> A1["Call Custom Vision Model"]
+      A1 --> |Image insights| A2{"Form Present?"}
+      A2 -->|Yes (form)| A3["Call Form Recognizer"]
       A2 -->|No form| A4
-      A3 --> A4[Compose query with vision+form data]
-      A4 --> A5[Search knowledge base]
-      A5 --> A6[Compile prompt with data & docs]
-      A6 --> A7{Choose LLM model}
-      A7 -->|Simple| A8[Call GPT-3.5]
-      A7 -->|Complex| A9[Call GPT-4]
+      A3 --> A4["Compose query with vision+form data"]
+      A4 --> A5["Search knowledge base"]
+      A5 --> A6["Compile prompt with data & docs"]
+      A6 --> A7{"Choose LLM model"}
+      A7 -->|Simple| A8["Call GPT-3.5"]
+      A7 -->|Complex| A9["Call GPT-4"]
       A8 --> A10
-      A9 --> A10[Parse & inspect answer]
-      A10 --> A11{Safe & Confident?}
-      A11 -->|No| A12[Flag for human review]
-      A11 -->|Yes| A13[Return JSON answer]
+      A9 --> A10["Parse & inspect answer"]
+      A10 --> A11{"Safe & Confident?"}
+      A11 -->|No| A12["Flag for human review"]
+      A11 -->|Yes| A13["Return JSON answer"]
     end
 ```
 
@@ -748,7 +748,7 @@ We show how the custom vision model and the rest are deployed in Azure:
 
 ```mermaid
 graph LR
-    subgraph Azure EU Region
+    subgraph "Azure EU Region"
       APIM3[API Management]
       AgentApp["Claims Core Agent (App Service)"]
       VisionContainer["Custom Vision Model Endpoint"]
@@ -885,26 +885,26 @@ This will look somewhat like Approach 2's multi-agent, but now explicitly showin
 ```mermaid
 graph TD
     Gateway["Azure MCP Gateway Service"]
-    subgraph Azure Agent Service (MCP Project)
+    subgraph "Azure Agent Service (MCP Project)"
       SQLAgent["SQL Grounding Agent"]
       SearchAgent["Retrieval Agent"]
       LLMAgent["LLM Orchestrator Agent"]
       SafetyAgent4["Safety/Compliance Agent"]
     end
-    subgraph DataSources
+    subgraph "DataSources"
       SQLDB["Azure SQL Database\n(Cost & Rates)"]
       SearchIndex4["Azure Cognitive Search\n(Knowledge)"]
     end
-    subgraph Models
+    subgraph "Models"
       Router4["Model Router"]
       GPT4_azure["Azure GPT-4"]
       GPT35_azure["Azure GPT-3.5"]
       OSModel["Optional: Other Model (HuggingFace)"]
     end
-    subgraph External (Future/Optional)
+    subgraph "External (Future/Optional)"
       ThirdPartyAgent["3rd-Party Agent (MCP client)"]
     end
-    subgraph Aux
+    subgraph "Aux"
       ContentSafety4["Content Safety API"]
       HumanReview4["Human Review Process"]
       Monitor4["Monitoring & Trace"]
@@ -1024,10 +1024,10 @@ We depict how these MCP components deploy on Azure:
 
 ```mermaid
 graph LR
-    subgraph Azure West Europe
+    subgraph "Azure West Europe"
       MCPGatewayApp["MCP Gateway App (Container)"]
       AgentServiceHub["Azure Foundry Agent Hub (MCP-enabled)"]
-      subgraph Agents
+      subgraph "Agents"
         AgentSQLInst["SQL Grounding Agent"]
         AgentSearchInst["Retrieval Agent"]
         AgentLLMInst["LLM Orchestrator Agent"]
